@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pedidos</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 30px; }
+        form { max-width: 400px; margin: auto; background: #f8f8f8; padding: 20px; border-radius: 10px; }
+        input, button { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; }
+        button { cursor: pointer; }
+        .btn-primary { background: #28a745; color: white; }
+        .btn-primary:hover { background: #218838; }
+        .btn-secondary { background: #007bff; color: white; display: none; }
+        .btn-secondary:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+
+    <h2>Registrar Pedido</h2>
+    <form id="pedidoForm">
+        <input type="text" id="establecimiento" placeholder="Nombre del establecimiento" required>
+        <input type="text" id="direccionEntrega" placeholder="Dirección de entrega" required>
+        <input type="email" id="correoRepartidor" placeholder="Correo del repartidor" required>
+        <input type="tel" id="telefonoRepartidor" placeholder="Teléfono del repartidor (WhatsApp)" required>
+        <input type="email" id="correoCliente" placeholder="Correo del cliente" required>
+        <input type="tel" id="telefonoCliente" placeholder="Teléfono del cliente (WhatsApp)" required>
+        <button type="submit" class="btn-primary">Enviar Pedido</button>
+    </form>
+
+    <button id="confirmarPedido" class="btn-secondary">Confirmar que el pedido está en camino</button>
+
+    <script>
+        let datosPedido = {};  // Guardará la información del pedido
+
+        document.getElementById("pedidoForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            // Capturar los valores ingresados
+            const establecimiento = document.getElementById("establecimiento").value;
+            const direccionEntrega = document.getElementById("direccionEntrega").value;
+            const correoRepartidor = document.getElementById("correoRepartidor").value;
+            const telefonoRepartidor = document.getElementById("telefonoRepartidor").value;
+            const correoCliente = document.getElementById("correoCliente").value;
+            const telefonoCliente = document.getElementById("telefonoCliente").value;
+
+            if (!establecimiento || !direccionEntrega || !correoRepartidor || !telefonoRepartidor || !correoCliente || !telefonoCliente) {
+                alert("Por favor, completa todos los campos.");
+                return;
+            }
+
+            // Guardamos los datos del pedido
+            datosPedido = { establecimiento, direccionEntrega, correoCliente, telefonoCliente };
+
+            // Construir los mensajes
+            const mensajePedido = `Nuevo Pedido 🚀%0A%0A🏪 *Establecimiento:* ${establecimiento}%0A📍 *Dirección de entrega:* ${direccionEntrega}%0A%0A🛵 Por favor, confirma la recepción del pedido.`;
+
+            // Enviar email al repartidor
+            const mailtoRepartidor = `mailto:${correoRepartidor}?subject=Nuevo Pedido de Reparto&body=${mensajePedido.replace(/%0A/g, '\n')}`;
+            window.open(mailtoRepartidor, "_blank");
+
+            // Enviar WhatsApp al repartidor
+            const whatsappRepartidor = `https://wa.me/${telefonoRepartidor}?text=${mensajePedido}`;
+            window.open(whatsappRepartidor, "_blank");
+
+            // Mostrar el botón para confirmar el pedido al cliente
+            document.getElementById("confirmarPedido").style.display = "block";
+        });
+
+        document.getElementById("confirmarPedido").addEventListener("click", function() {
+            const { establecimiento, direccionEntrega, correoCliente, telefonoCliente } = datosPedido;
+
+            // Mensaje de confirmación al cliente
+            const mensajeCliente = `Tu pedido está en camino 🚀%0A%0A🏪 *Establecimiento:* ${establecimiento}%0A📍 *Dirección de entrega:* ${direccionEntrega}%0A%0AGracias por tu pedido. ¡Te avisaremos cuando sea entregado!`;
+
+            // Enviar email al cliente
+            const mailtoCliente = `mailto:${correoCliente}?subject=Tu pedido está en camino&body=${mensajeCliente.replace(/%0A/g, '\n')}`;
+            window.open(mailtoCliente, "_blank");
+
+            // Enviar WhatsApp al cliente
+            const whatsappCliente = `https://wa.me/${telefonoCliente}?text=${mensajeCliente}`;
+            window.open(whatsappCliente, "_blank");
+        });
+    </script>
+
+</body>
+</html>
