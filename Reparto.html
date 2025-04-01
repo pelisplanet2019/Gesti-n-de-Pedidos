@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicio de Reparto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #002A8D;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #FF0000;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .btn {
+            display: block;
+            background-color: #FF0000;
+            color: white;
+            border: none;
+            padding: 15px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 100%;
+        }
+        .btn:hover {
+            background-color: #CC0000;
+        }
+        form {
+            display: none;
+            background: white;
+            color: black;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        input, textarea {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #FF0000;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #CC0000;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Servicio de Reparto</h1>
+    <p>Selecciona la opción que necesitas:</p>
+
+    <div class="container">
+        <button class="btn" onclick="mostrarFormulario()">🚚 Solicitar Reparto</button>
+
+        <!-- Formulario de Reparto -->
+        <form id="formulario" action="https://formspree.io/f/tu-endpoint" method="POST">
+            <h2>Datos del Envío</h2>
+
+            <label for="empresa">Nombre de la Empresa:</label>
+            <input type="text" id="empresa" name="empresa" required>
+
+            <label for="contacto">Contacto de la Empresa:</label>
+            <input type="text" id="contacto" name="contacto" required>
+
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" name="telefono" required>
+
+            <label for="direccion_recogida">Dirección de Recogida:</label>
+            <input type="text" id="direccion_recogida" name="direccion_recogida" required>
+
+            <label for="direccion_entrega">Dirección de Entrega:</label>
+            <input type="text" id="direccion_entrega" name="direccion_entrega" required>
+
+            <label for="detalles">Detalles del Paquete:</label>
+            <textarea id="detalles" name="detalles" placeholder="Tamaño, peso, contenido..." required></textarea>
+
+            <button type="submit">Enviar Solicitud</button>
+        </form>
+    </div>
+
+    <script>
+        function mostrarFormulario() {
+            document.getElementById("formulario").style.display = "block";
+        }
+    </script>
+
+</body>
+</html>
