@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solicitud de Reparto</title>
     <style>
-        /* Estilos Generales */
         body {
             font-family: Arial, sans-serif;
             background: linear-gradient(to right, #1e3c72, #2a5298);
@@ -17,11 +16,19 @@
 
         .container {
             background: rgba(255, 255, 255, 0.1);
-            max-width: 450px;
+            max-width: 600px;
             margin: 50px auto;
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 50px;
         }
 
         h2 {
@@ -67,28 +74,25 @@
             border-radius: 10px;
         }
 
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        select {
-            background: #fff;
-        }
-
-        .pago-container {
+        .form-group {
             display: flex;
             justify-content: space-between;
-            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
         }
 
-        .pago-container select,
-        .pago-container input {
-            width: 48%;
+        .form-group label {
+            width: 40%;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 55%;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
         }
 
         button {
@@ -113,6 +117,10 @@
 </head>
 <body>
 
+    <a href="https://imgbb.com/">
+        <img class="logo" src="https://i.ibb.co/5WxLc0c6/726472.png" alt="Logo">
+    </a>
+
     <div class="container">
         <h2>Selecciona un Repartidor</h2>
         <div class="repartidores-container">
@@ -127,38 +135,49 @@
         <form id="formReparto">
             <h2>Detalles del Pedido</h2>
 
-            <label>📍 Nombre del Establecimiento:</label>
-            <input type="text" id="nombreEstablecimiento" required>
+            <div class="form-group">
+                <label>📍 Establecimiento:</label>
+                <input type="text" id="nombreEstablecimiento" required>
+            </div>
 
-            <label>📌 Dirección del Establecimiento:</label>
-            <input type="text" id="direccionEstablecimiento" required>
+            <div class="form-group">
+                <label>📌 Dirección:</label>
+                <input type="text" id="direccionEstablecimiento" required>
+            </div>
 
-            <label>📞 Teléfono del Establecimiento:</label>
-            <input type="text" id="telefonoEstablecimiento" required>
+            <div class="form-group">
+                <label>📞 Teléfono:</label>
+                <input type="text" id="telefonoEstablecimiento" required>
+            </div>
 
-            <label>👤 Nombre del Cliente:</label>
-            <input type="text" id="nombreCliente" required>
+            <div class="form-group">
+                <label>👤 Cliente:</label>
+                <input type="text" id="nombreCliente" required>
+            </div>
 
-            <label>📍 Dirección del Cliente:</label>
-            <input type="text" id="direccionCliente" required>
+            <div class="form-group">
+                <label>📍 Dirección Cliente:</label>
+                <input type="text" id="direccionCliente" required>
+            </div>
 
-            <label>📞 Teléfono del Cliente:</label>
-            <input type="text" id="telefonoCliente" required>
+            <div class="form-group">
+                <label>📞 Teléfono Cliente:</label>
+                <input type="text" id="telefonoCliente" required>
+            </div>
 
-            <label>💰 Método de Pago y Monto:</label>
-            <div class="pago-container">
+            <div class="form-group">
+                <label>💰 Método de Pago:</label>
                 <select id="metodoPago">
+                    <option value="Pagado">Pagado</option>
                     <option value="Efectivo">Efectivo</option>
                     <option value="Tarjeta">Tarjeta</option>
                 </select>
-                <input type="text" id="montoPago" placeholder="Ejemplo: 15€">
             </div>
 
-            <label>💳 Estado del Pago:</label>
-            <select id="estadoPago">
-                <option value="Pagado">Pagado</option>
-                <option value="Pendiente">Pendiente</option>
-            </select>
+            <div class="form-group">
+                <label>💵 Monto:</label>
+                <input type="text" id="montoPago" placeholder="Ej: 15€">
+            </div>
 
             <button type="button" onclick="enviarATelegram()">📩 Enviar Solicitud</button>
         </form>
@@ -177,7 +196,6 @@
                 }
             });
 
-            // Mostrar formulario después de seleccionar un repartidor
             document.getElementById("formReparto").style.display = "block";
         }
 
@@ -185,7 +203,6 @@
             const botToken = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU"; // Reemplaza con el token de tu bot
             const chatID = "-1002649667521"; // Reemplaza con el ID de tu canal o grupo de Telegram
 
-            // Obtener valores del formulario
             const nombreEstablecimiento = document.getElementById("nombreEstablecimiento").value;
             const direccionEstablecimiento = document.getElementById("direccionEstablecimiento").value;
             const telefonoEstablecimiento = document.getElementById("telefonoEstablecimiento").value;
@@ -194,22 +211,8 @@
             const telefonoCliente = document.getElementById("telefonoCliente").value;
             const metodoPago = document.getElementById("metodoPago").value;
             const montoPago = document.getElementById("montoPago").value;
-            const estadoPago = document.getElementById("estadoPago").value;
 
-            // Formatear el mensaje para Telegram
-            const mensaje = `
-                🚀 *Nueva Solicitud de Reparto* 🚀
-                📍 *Establecimiento:* ${nombreEstablecimiento}
-                📌 *Dirección:* ${direccionEstablecimiento}
-                📞 *Teléfono:* ${telefonoEstablecimiento}
-                
-                👤 *Cliente:* ${nombreCliente}
-                📍 *Dirección Cliente:* ${direccionCliente}
-                📞 *Teléfono Cliente:* ${telefonoCliente}
-                
-                🛵 *Repartidor:* ${repartidorSeleccionado}
-                💰 *Pago:* ${metodoPago} - ${montoPago} (${estadoPago})
-            `;
+            const mensaje = `🚀 *Nueva Solicitud de Reparto* 🚀\n🛵 *Repartidor:* ${repartidorSeleccionado}\n📍 *Cliente:* ${nombreCliente}\n💰 *Pago:* ${metodoPago} - ${montoPago}`;
 
             const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatID}&text=${encodeURIComponent(mensaje)}&parse_mode=Markdown`;
 
