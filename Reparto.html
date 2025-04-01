@@ -7,20 +7,20 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #002A8D;
-            color: white;
+            background-color: #f4f4f4;
+            color: #333;
             text-align: center;
             padding: 20px;
         }
         h1 {
-            color: #FF0000;
+            color: #2c3e50;
         }
         .container {
             max-width: 400px;
             margin: auto;
         }
         .btn {
-            background-color: #FF0000;
+            background-color: #27ae60;
             color: white;
             border: none;
             padding: 15px;
@@ -31,7 +31,7 @@
             width: 100%;
         }
         .btn:hover {
-            background-color: #CC0000;
+            background-color: #219150;
         }
         form {
             display: none;
@@ -40,13 +40,16 @@
             padding: 20px;
             margin-top: 20px;
             border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
         }
         input, select {
-            width: 100%;
+            width: calc(100% - 20px);
             margin: 10px 0;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            display: block;
         }
         label {
             font-weight: bold;
@@ -54,7 +57,7 @@
             margin-top: 10px;
         }
         button {
-            background-color: #FF0000;
+            background-color: #27ae60;
             color: white;
             border: none;
             padding: 10px;
@@ -63,14 +66,14 @@
             border-radius: 5px;
         }
         button:hover {
-            background-color: #CC0000;
+            background-color: #219150;
         }
     </style>
 </head>
 <body>
 
     <h1>Solicitud de Reparto</h1>
-    <p>Rellena el formulario y gestionaremos tu pedido.</p>
+    <p>Rellena el formulario para gestionar tu pedido.</p>
 
     <div class="container">
         <button class="btn" onclick="mostrarFormulario()">📦 Solicitar Reparto</button>
