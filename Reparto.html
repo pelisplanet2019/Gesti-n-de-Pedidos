@@ -7,21 +7,21 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            color: white;
             text-align: center;
             padding: 20px;
         }
         h1 {
-            color: #2c3e50;
+            color: #f1c40f;
         }
         .container {
             max-width: 400px;
             margin: auto;
         }
         .btn {
-            background-color: #27ae60;
-            color: white;
+            background: #f1c40f;
+            color: #333;
             border: none;
             padding: 15px;
             margin: 10px;
@@ -29,27 +29,33 @@
             font-size: 16px;
             border-radius: 5px;
             width: 100%;
+            transition: 0.3s;
         }
         .btn:hover {
-            background-color: #219150;
+            background: #d4ac0d;
         }
         form {
             display: none;
-            background: white;
-            color: black;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
             padding: 20px;
             margin-top: 20px;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
             text-align: left;
         }
         input, select {
             width: calc(100% - 20px);
             margin: 10px 0;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: none;
             border-radius: 5px;
             display: block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
         }
         label {
             font-weight: bold;
@@ -57,16 +63,17 @@
             margin-top: 10px;
         }
         button {
-            background-color: #27ae60;
-            color: white;
+            background: #f1c40f;
+            color: #333;
             border: none;
             padding: 10px;
             cursor: pointer;
             width: 100%;
             border-radius: 5px;
+            transition: 0.3s;
         }
         button:hover {
-            background-color: #219150;
+            background: #d4ac0d;
         }
     </style>
 </head>
@@ -79,29 +86,29 @@
         <button class="btn" onclick="mostrarFormulario()">📦 Solicitar Reparto</button>
 
         <!-- Formulario -->
-        <form id="formulario" action="https://formspree.io/f/xldjpryl" method="POST">
+        <form id="formulario" action="https://formspree.io/f/tu-endpoint" method="POST">
             
             <!-- Datos del Establecimiento -->
             <h3>📍 Datos del Establecimiento</h3>
             <label for="nombre_establecimiento">Nombre del Establecimiento:</label>
-            <input type="text" id="nombre_establecimiento" name="nombre_establecimiento" required>
+            <input type="text" id="nombre_establecimiento" name="nombre_establecimiento" placeholder="Ej. Tienda XYZ" required>
 
             <label for="direccion_establecimiento">Dirección del Establecimiento:</label>
-            <input type="text" id="direccion_establecimiento" name="direccion_establecimiento" required>
+            <input type="text" id="direccion_establecimiento" name="direccion_establecimiento" placeholder="Ej. Calle 123, Ciudad" required>
 
-            <label for="telefono_establecimiento">Número de Contacto del Establecimiento:</label>
-            <input type="tel" id="telefono_establecimiento" name="telefono_establecimiento" required>
+            <label for="telefono_establecimiento">Número de Contacto:</label>
+            <input type="tel" id="telefono_establecimiento" name="telefono_establecimiento" placeholder="Ej. +34 600 123 456" required>
 
             <!-- Datos del Cliente -->
             <h3>👤 Datos del Cliente</h3>
             <label for="nombre_cliente">Nombre del Cliente:</label>
-            <input type="text" id="nombre_cliente" name="nombre_cliente" required>
+            <input type="text" id="nombre_cliente" name="nombre_cliente" placeholder="Ej. Juan Pérez" required>
 
             <label for="telefono_cliente">Teléfono del Cliente:</label>
-            <input type="tel" id="telefono_cliente" name="telefono_cliente" required>
+            <input type="tel" id="telefono_cliente" name="telefono_cliente" placeholder="Ej. +34 600 987 654" required>
 
             <label for="direccion_cliente">Dirección del Cliente:</label>
-            <input type="text" id="direccion_cliente" name="direccion_cliente" required>
+            <input type="text" id="direccion_cliente" name="direccion_cliente" placeholder="Ej. Calle 456, Ciudad" required>
 
             <!-- Estado del Pago -->
             <label for="pagado">Estado del Pago:</label>
