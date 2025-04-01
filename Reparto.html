@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tu Reparto Expess</title>
+    <title>Tu Reparto Express</title>
     <style>
         /* Estilos Generales */
         body {
@@ -26,6 +26,38 @@
 
         h2 {
             color: #ffcc00;
+        }
+
+        .repartidores-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .repartidor-box {
+            background: #ffcc00;
+            color: black;
+            font-weight: bold;
+            padding: 15px;
+            width: 90px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .repartidor-box:hover {
+            background-color: #e6b800;
+        }
+
+        .seleccionado {
+            background-color: #00cc66 !important;
+            color: white;
+        }
+
+        #formReparto {
+            display: none;
+            margin-top: 15px;
         }
 
         input, select {
@@ -52,48 +84,6 @@
             width: 48%;
         }
 
-        .repartidores-container {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-        }
-
-        .repartidor-box {
-            background: #ffcc00;
-            color: black;
-            font-weight: bold;
-            padding: 15px;
-            width: 90px;
-            text-align: center;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: 0.3s;
-        }
-
-        .repartidor-box:hover {
-            background-color: #e6b800;
-        }
-
-        .seleccionado {
-            background-color: #00cc66 !important;
-            color: white;
-        }
-
-        #btnSolicitarRepartidor {
-            display: none;
-            background-color: #ff5733;
-            color: white;
-            font-weight: bold;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-            margin-top: 10px;
-            transition: 0.3s;
-        }
-
         button {
             background-color: #ffcc00;
             color: black;
@@ -116,8 +106,17 @@
 <body>
 
     <div class="container">
-        <h2>Solicitud de Reparto</h2>
+        <h2>Selecciona un Repartidor</h2>
+        <div class="repartidores-container">
+            <div class="repartidor-box" onclick="seleccionarRepartidor(1)">Repartidor 1</div>
+            <div class="repartidor-box" onclick="seleccionarRepartidor(2)">Repartidor 2</div>
+            <div class="repartidor-box" onclick="seleccionarRepartidor(3)">Repartidor 3</div>
+            <div class="repartidor-box" onclick="seleccionarRepartidor(4)">Repartidor 4</div>
+        </div>
+
         <form id="formReparto">
+            <h2>Detalles del Pedido</h2>
+
             <label>📍 Nombre del Establecimiento:</label>
             <input type="text" id="nombreEstablecimiento" required>
 
@@ -136,15 +135,6 @@
             <label>📞 Teléfono del Cliente:</label>
             <input type="text" id="telefonoCliente" required>
 
-            <label>🛵 Seleccionar Repartidor:</label>
-            <div class="repartidores-container">
-                <div class="repartidor-box" onclick="seleccionarRepartidor(1)">Repartidor 1</div>
-                <div class="repartidor-box" onclick="seleccionarRepartidor(2)">Repartidor 2</div>
-                <div class="repartidor-box" onclick="seleccionarRepartidor(3)">Repartidor 3</div>
-                <div class="repartidor-box" onclick="seleccionarRepartidor(4)">Repartidor 4</div>
-            </div>
-            <button id="btnSolicitarRepartidor" onclick="alert('Solicitando un repartidor...')">🔍 Solicitar un Repartidor</button>
-
             <label>💰 Método de Pago y Monto:</label>
             <div class="pago-container">
                 <select id="metodoPago">
@@ -153,6 +143,12 @@
                 </select>
                 <input type="text" id="montoPago" placeholder="Ejemplo: 15€">
             </div>
+
+            <label>💳 Estado del Pago:</label>
+            <select id="estadoPago">
+                <option value="Pagado">Pagado</option>
+                <option value="Pendiente">Pendiente</option>
+            </select>
 
             <button type="button" onclick="enviarATelegram()">📩 Enviar Solicitud</button>
         </form>
@@ -171,9 +167,8 @@
                 }
             });
 
-            // Si no hay repartidor disponible, mostrar botón de "Solicitar uno"
-            const btnSolicitar = document.getElementById("btnSolicitarRepartidor");
-            btnSolicitar.style.display = (repartidorSeleccionado ? "none" : "block");
+            // Mostrar formulario después de seleccionar un repartidor
+            document.getElementById("formReparto").style.display = "block";
         }
 
         function enviarATelegram() {
@@ -189,10 +184,11 @@
             const telefonoCliente = document.getElementById("telefonoCliente").value;
             const metodoPago = document.getElementById("metodoPago").value;
             const montoPago = document.getElementById("montoPago").value;
+            const estadoPago = document.getElementById("estadoPago").value;
 
             // Formatear el mensaje para Telegram
             const mensaje = `
-                🚀 *Nueva Solicitud de Reparto* 🚀
+                🚀 *Nuevo Reparto* 🚀
                 📍 *Establecimiento:* ${nombreEstablecimiento}
                 📌 *Dirección:* ${direccionEstablecimiento}
                 📞 *Teléfono:* ${telefonoEstablecimiento}
@@ -201,8 +197,8 @@
                 📍 *Dirección Cliente:* ${direccionCliente}
                 📞 *Teléfono Cliente:* ${telefonoCliente}
                 
-                🛵 *Repartidor:* ${repartidorSeleccionado || "Ninguno seleccionado"}
-                💰 *Pago:* ${metodoPago} - ${montoPago}
+                🛵 *Repartidor:* ${repartidorSeleccionado}
+                💰 *Pago:* ${metodoPago} - ${montoPago} (${estadoPago})
             `;
 
             const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatID}&text=${encodeURIComponent(mensaje)}&parse_mode=Markdown`;
