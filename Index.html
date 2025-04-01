@@ -29,6 +29,7 @@
             cursor: pointer;
             font-size: 16px;
             border-radius: 5px;
+            width: 100%;
         }
         .btn:hover {
             background-color: #CC0000;
@@ -45,6 +46,8 @@
             width: 100%;
             margin: 10px 0;
             padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
         button {
             background-color: #FF0000;
@@ -53,6 +56,10 @@
             padding: 10px;
             cursor: pointer;
             width: 100%;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #CC0000;
         }
     </style>
 </head>
@@ -62,9 +69,9 @@
     <p>Selecciona el trámite que deseas realizar:</p>
 
     <div class="container">
-        <button class="btn" onclick="mostrarFormulario('visado')">📄 Solicitar Visado</button>
-        <button class="btn" onclick="mostrarFormulario('vuelo')">✈️ Reservar Vuelo</button>
-        <button class="btn" onclick="mostrarFormulario('vuelo-visado')">🌍 Vuelo + Visado</button>
+        <button class="btn" onclick="mostrarFormulario('Visado')">📄 Solicitar Visado</button>
+        <button class="btn" onclick="mostrarFormulario('Vuelo')">✈️ Reservar Vuelo</button>
+        <button class="btn" onclick="mostrarFormulario('Vuelo + Visado')">🌍 Vuelo + Visado</button>
 
         <!-- Formulario -->
         <form id="formulario" action="https://formspree.io/f/tu-email" method="POST">
