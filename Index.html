@@ -3,73 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visados y Viajes a Cuba</title>
+    <title>Reservas de Visado y Vuelos</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; text-align: center; }
-        header { background-color: #002a8f; color: white; padding: 15px; }
-        nav ul { list-style: none; padding: 0; }
-        nav ul li { display: inline; margin: 0 15px; }
-        nav ul li a { color: white; text-decoration: none; cursor: pointer; }
-        .section { padding: 50px; display: none; }
-        .active { display: block; }
-        .btn { padding: 10px 20px; background-color: #d52b1e; color: white; text-decoration: none; border-radius: 5px; cursor: pointer; }
-        footer { margin-top: 20px; padding: 10px; background-color: #333; color: white; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #002A8D; /* Azul de la bandera cubana */
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #FF0000; /* Rojo de la bandera cubana */
+        }
+        form {
+            background: white;
+            color: black;
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+            border-radius: 10px;
+        }
+        input, select, textarea {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+        }
+        button {
+            background-color: #FF0000;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Visados y Viajes a Cuba</h1>
-        <nav>
-            <ul>
-                <li><a onclick="showSection('inicio')">Inicio</a></li>
-                <li><a onclick="showSection('tramites')">Trámites</a></li>
-                <li><a onclick="showSection('vuelos')">Vuelos</a></li>
-                <li><a onclick="showSection('contacto')">Contacto</a></li>
-            </ul>
-        </nav>
-    </header>
-    
-    <section id="inicio" class="section active">
-        <h2>Tu guía para viajar a Cuba sin complicaciones</h2>
-        <p>Información actualizada sobre visados, vuelos y más.</p>
-        <button class="btn" onclick="showSection('tramites')">Ver trámites</button>
-        <button class="btn" onclick="showSection('vuelos')">Ver vuelos</button>
-    </section>
-    
-    <section id="tramites" class="section">
-        <h2>Trámites de Visado</h2>
-        <ul>
-            <li>Turista</li>
-            <li>Familiar</li>
-            <li>Negocios</li>
-        </ul>
-    </section>
-    
-    <section id="vuelos" class="section">
-        <h2>Reservas de Vuelos</h2>
-        <p>Encuentra vuelos directos a Cuba desde distintas ciudades.</p>
-        <ul>
-            <li>Madrid - La Habana</li>
-            <li>Barcelona - Santiago de Cuba</li>
-            <li>Miami - Holguín</li>
-        </ul>
-    </section>
-    
-    <section id="contacto" class="section">
-        <h2>Contacto</h2>
-        <p>Email: info@visadoscuba.com</p>
-        <p>Teléfono: +34 600 123 456</p>
-    </section>
-    
-    <footer>
-        <p>&copy; 2025 Visados y Viajes a Cuba</p>
-    </footer>
-    
-    <script>
-        function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
-            document.getElementById(sectionId).classList.add('active');
-        }
-    </script>
+
+    <h1>Reserva tu Visado o Vuelo a Cuba</h1>
+    <p>Selecciona el servicio que necesitas y envía tu solicitud.</p>
+
+    <form action="https://formspree.io/f/tu-email" method="POST">
+        <label for="nombre">Nombre Completo:</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <label for="email">Correo Electrónico:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="servicio">Selecciona un servicio:</label>
+        <select id="servicio" name="servicio">
+            <option value="vuelo">Solo Vuelo</option>
+            <option value="visado">Solo Visado</option>
+            <option value="vuelo-visado">Vuelo + Visado</option>
+        </select>
+
+        <label for="mensaje">Detalles del viaje:</label>
+        <textarea id="mensaje" name="mensaje" placeholder="Escribe fechas, aeropuerto, número de pasaporte..."></textarea>
+
+        <button type="submit">Enviar Solicitud</button>
+    </form>
+
 </body>
 </html>
