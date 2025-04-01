@@ -6,13 +6,13 @@
     <title>Visados y Viajes a Cuba</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; text-align: center; }
-        header { background-color: #ff5722; color: white; padding: 15px; }
+        header { background-color: #002a8f; color: white; padding: 15px; }
         nav ul { list-style: none; padding: 0; }
         nav ul li { display: inline; margin: 0 15px; }
         nav ul li a { color: white; text-decoration: none; cursor: pointer; }
         .section { padding: 50px; display: none; }
         .active { display: block; }
-        .btn { padding: 10px 20px; background-color: #ff5722; color: white; text-decoration: none; border-radius: 5px; cursor: pointer; }
+        .btn { padding: 10px 20px; background-color: #d52b1e; color: white; text-decoration: none; border-radius: 5px; cursor: pointer; }
         footer { margin-top: 20px; padding: 10px; background-color: #333; color: white; }
     </style>
 </head>
@@ -23,6 +23,7 @@
             <ul>
                 <li><a onclick="showSection('inicio')">Inicio</a></li>
                 <li><a onclick="showSection('tramites')">Trámites</a></li>
+                <li><a onclick="showSection('vuelos')">Vuelos</a></li>
                 <li><a onclick="showSection('contacto')">Contacto</a></li>
             </ul>
         </nav>
@@ -32,6 +33,7 @@
         <h2>Tu guía para viajar a Cuba sin complicaciones</h2>
         <p>Información actualizada sobre visados, vuelos y más.</p>
         <button class="btn" onclick="showSection('tramites')">Ver trámites</button>
+        <button class="btn" onclick="showSection('vuelos')">Ver vuelos</button>
     </section>
     
     <section id="tramites" class="section">
@@ -40,6 +42,16 @@
             <li>Turista</li>
             <li>Familiar</li>
             <li>Negocios</li>
+        </ul>
+    </section>
+    
+    <section id="vuelos" class="section">
+        <h2>Reservas de Vuelos</h2>
+        <p>Encuentra vuelos directos a Cuba desde distintas ciudades.</p>
+        <ul>
+            <li>Madrid - La Habana</li>
+            <li>Barcelona - Santiago de Cuba</li>
+            <li>Miami - Holguín</li>
         </ul>
     </section>
     
