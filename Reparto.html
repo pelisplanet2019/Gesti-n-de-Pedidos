@@ -75,17 +75,32 @@
     <div class="container">
         <button class="btn" onclick="mostrarFormulario()">📦 Solicitar Reparto</button>
 
-        <!-- Formulario Simplificado -->
+        <!-- Formulario -->
         <form id="formulario" action="https://formspree.io/f/xldjpryl" method="POST">
-            <label for="empresa">Nombre de la Empresa:</label>
-            <input type="text" id="empresa" name="empresa" required>
+            
+            <!-- Datos del Establecimiento -->
+            <h3>📍 Datos del Establecimiento</h3>
+            <label for="nombre_establecimiento">Nombre del Establecimiento:</label>
+            <input type="text" id="nombre_establecimiento" name="nombre_establecimiento" required>
 
-            <label for="telefono">Teléfono de Contacto:</label>
-            <input type="tel" id="telefono" name="telefono" required>
+            <label for="direccion_establecimiento">Dirección del Establecimiento:</label>
+            <input type="text" id="direccion_establecimiento" name="direccion_establecimiento" required>
 
-            <label for="direccion_entrega">Dirección de Entrega:</label>
-            <input type="text" id="direccion_entrega" name="direccion_entrega" required>
+            <label for="telefono_establecimiento">Número de Contacto del Establecimiento:</label>
+            <input type="tel" id="telefono_establecimiento" name="telefono_establecimiento" required>
 
+            <!-- Datos del Cliente -->
+            <h3>👤 Datos del Cliente</h3>
+            <label for="nombre_cliente">Nombre del Cliente:</label>
+            <input type="text" id="nombre_cliente" name="nombre_cliente" required>
+
+            <label for="telefono_cliente">Teléfono del Cliente:</label>
+            <input type="tel" id="telefono_cliente" name="telefono_cliente" required>
+
+            <label for="direccion_cliente">Dirección del Cliente:</label>
+            <input type="text" id="direccion_cliente" name="direccion_cliente" required>
+
+            <!-- Estado del Pago -->
             <label for="pagado">Estado del Pago:</label>
             <select id="pagado" name="pagado">
                 <option value="Pendiente">💰 Pendiente de Pago</option>
