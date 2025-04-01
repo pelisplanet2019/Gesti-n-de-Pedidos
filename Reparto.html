@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Servicio de Reparto</title>
+    <title>Solicitud de Reparto</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,11 +16,10 @@
             color: #FF0000;
         }
         .container {
-            max-width: 600px;
+            max-width: 400px;
             margin: auto;
         }
         .btn {
-            display: block;
             background-color: #FF0000;
             color: white;
             border: none;
@@ -42,12 +41,17 @@
             margin-top: 20px;
             border-radius: 10px;
         }
-        input, textarea {
+        input, select {
             width: 100%;
             margin: 10px 0;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
         }
         button {
             background-color: #FF0000;
@@ -65,33 +69,28 @@
 </head>
 <body>
 
-    <h1>Servicio de Reparto</h1>
-    <p>Selecciona la opción que necesitas:</p>
+    <h1>Solicitud de Reparto</h1>
+    <p>Rellena el formulario y gestionaremos tu pedido.</p>
 
     <div class="container">
-        <button class="btn" onclick="mostrarFormulario()">🚚 Solicitar Reparto</button>
+        <button class="btn" onclick="mostrarFormulario()">📦 Solicitar Reparto</button>
 
-        <!-- Formulario de Reparto -->
-        <form id="formulario" action="https://formspree.io/f/xdkewnve" method="POST">
-            <h2>Datos del Envío</h2>
-
+        <!-- Formulario Simplificado -->
+        <form id="formulario" action="https://formspree.io/f/mkgjqwaat" method="POST">
             <label for="empresa">Nombre de la Empresa:</label>
             <input type="text" id="empresa" name="empresa" required>
 
-            <label for="contacto">Contacto de la Empresa:</label>
-            <input type="text" id="contacto" name="contacto" required>
-
-            <label for="telefono">Teléfono:</label>
+            <label for="telefono">Teléfono de Contacto:</label>
             <input type="tel" id="telefono" name="telefono" required>
-
-            <label for="direccion_recogida">Dirección de Recogida:</label>
-            <input type="text" id="direccion_recogida" name="direccion_recogida" required>
 
             <label for="direccion_entrega">Dirección de Entrega:</label>
             <input type="text" id="direccion_entrega" name="direccion_entrega" required>
 
-            <label for="detalles">Detalles del Paquete:</label>
-            <textarea id="detalles" name="detalles" placeholder="Tamaño, peso, contenido..." required></textarea>
+            <label for="pagado">Estado del Pago:</label>
+            <select id="pagado" name="pagado">
+                <option value="Pendiente">💰 Pendiente de Pago</option>
+                <option value="Pagado">✅ Pagado</option>
+            </select>
 
             <button type="submit">Enviar Solicitud</button>
         </form>
