@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservas de Visado y Vuelos</title>
+    <title>Reservar Visado y Vuelos</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,12 +15,30 @@
         h1 {
             color: #FF0000; /* Rojo de la bandera cubana */
         }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .btn {
+            display: block;
+            background-color: #FF0000;
+            color: white;
+            border: none;
+            padding: 15px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background-color: #CC0000;
+        }
         form {
+            display: none;
             background: white;
             color: black;
             padding: 20px;
-            max-width: 400px;
-            margin: auto;
+            margin-top: 20px;
             border-radius: 10px;
         }
         input, select, textarea {
@@ -41,27 +59,36 @@
 <body>
 
     <h1>Reserva tu Visado o Vuelo a Cuba</h1>
-    <p>Selecciona el servicio que necesitas y envía tu solicitud.</p>
+    <p>Selecciona el trámite que deseas realizar:</p>
 
-    <form action="https://formspree.io/f/tu-email" method="POST">
-        <label for="nombre">Nombre Completo:</label>
-        <input type="text" id="nombre" name="nombre" required>
+    <div class="container">
+        <button class="btn" onclick="mostrarFormulario('visado')">📄 Solicitar Visado</button>
+        <button class="btn" onclick="mostrarFormulario('vuelo')">✈️ Reservar Vuelo</button>
+        <button class="btn" onclick="mostrarFormulario('vuelo-visado')">🌍 Vuelo + Visado</button>
 
-        <label for="email">Correo Electrónico:</label>
-        <input type="email" id="email" name="email" required>
+        <!-- Formulario -->
+        <form id="formulario" action="https://formspree.io/f/tu-email" method="POST">
+            <input type="hidden" id="tipo_servicio" name="servicio">
+            
+            <label for="nombre">Nombre Completo:</label>
+            <input type="text" id="nombre" name="nombre" required>
 
-        <label for="servicio">Selecciona un servicio:</label>
-        <select id="servicio" name="servicio">
-            <option value="vuelo">Solo Vuelo</option>
-            <option value="visado">Solo Visado</option>
-            <option value="vuelo-visado">Vuelo + Visado</option>
-        </select>
+            <label for="email">Correo Electrónico:</label>
+            <input type="email" id="email" name="email" required>
 
-        <label for="mensaje">Detalles del viaje:</label>
-        <textarea id="mensaje" name="mensaje" placeholder="Escribe fechas, aeropuerto, número de pasaporte..."></textarea>
+            <label for="mensaje">Detalles del viaje:</label>
+            <textarea id="mensaje" name="mensaje" placeholder="Escribe fechas, aeropuerto, número de pasaporte..." required></textarea>
 
-        <button type="submit">Enviar Solicitud</button>
-    </form>
+            <button type="submit">Enviar Solicitud</button>
+        </form>
+    </div>
+
+    <script>
+        function mostrarFormulario(tipo) {
+            document.getElementById("formulario").style.display = "block";
+            document.getElementById("tipo_servicio").value = tipo;
+        }
+    </script>
 
 </body>
 </html>
