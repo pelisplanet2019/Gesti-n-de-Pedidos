@@ -3,222 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solicitud de Reparto</title>
+    <title>Gestión de Repartos</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #1e3c72, #2a5298);
-            color: white;
-            text-align: center;
+            background-color: #f8f9fa;
             margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            background: rgba(255, 255, 255, 0.1);
-            max-width: 600px;
-            margin: 50px auto;
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-            position: relative;
-        }
-
-        .logo {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 50px;
-        }
-
-        h2 {
-            color: #ffcc00;
-            margin-bottom: 20px;
-        }
-
-        .repartidores-container {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .repartidor-box {
-            background: #ffcc00;
-            color: black;
-            font-weight: bold;
-            padding: 15px;
-            width: 100px;
             text-align: center;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: 0.3s;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
         }
-
-        .repartidor-box:hover {
-            background-color: #e6b800;
-            transform: scale(1.05);
-        }
-
-        .seleccionado {
-            background-color: #00cc66 !important;
-            color: white;
-        }
-
-        #formReparto {
-            display: none;
-            margin-top: 15px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 15px;
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            margin: auto;
             border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
-
-        .form-group {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
+        h2 {
+            color: #333;
         }
-
-        .form-group label {
-            width: 40%;
+        .divider {
+            height: 2px;
+            background-color: #ddd;
+            margin: 20px 0;
+        }
+        label {
+            font-weight: bold;
+            display: block;
             text-align: left;
-            font-weight: bold;
+            margin: 10px 0 5px;
         }
-
-        .form-group input, .form-group select {
-            width: 55%;
-            padding: 8px;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        button {
-            background-color: #ffcc00;
-            color: black;
-            font-weight: bold;
-            border: none;
-            padding: 12px;
+        input, select {
             width: 100%;
-            cursor: pointer;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
-            margin-top: 10px;
-            transition: 0.3s;
         }
-
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
         button:hover {
-            background-color: #e6b800;
-            transform: scale(1.05);
+            background-color: #218838;
+        }
+        .notification {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #ff9800;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <a href="https://imgbb.com/">
-        <img class="logo" src="https://i.ibb.co/5WxLc0c6/726472.png" alt="Logo">
-    </a>
+<div class="container">
+    <h2>Formulario de Pedido</h2>
 
-    <div class="container">
-        <h2>Selecciona un Repartidor</h2>
-        <div class="repartidores-container">
-            <div class="repartidor-box" onclick="seleccionarRepartidor(1)">Repartidor 1</div>
-            <div class="repartidor-box" onclick="seleccionarRepartidor(2)">Repartidor 2</div>
-        </div>
-        <div class="repartidores-container">
-            <div class="repartidor-box" onclick="seleccionarRepartidor(3)">Repartidor 3</div>
-            <div class="repartidor-box" onclick="seleccionarRepartidor(4)">Repartidor 4</div>
-        </div>
+    <label>Nombre del Establecimiento:</label>
+    <input type="text" id="empresa" placeholder="Ejemplo: Tienda XYZ">
 
-        <form id="formReparto">
-            <h2>Detalles del Pedido</h2>
+    <label>Dirección del Establecimiento:</label>
+    <input type="text" id="direccion_empresa" placeholder="Dirección completa">
 
-            <div class="form-group">
-                <label>📍 Establecimiento:</label>
-                <input type="text" id="nombreEstablecimiento" required>
-            </div>
+    <label>Número de Contacto del Establecimiento:</label>
+    <input type="text" id="telefono_empresa" placeholder="Teléfono">
 
-            <div class="form-group">
-                <label>📌 Dirección:</label>
-                <input type="text" id="direccionEstablecimiento" required>
-            </div>
+    <div class="divider"></div>
 
-            <div class="form-group">
-                <label>📞 Teléfono:</label>
-                <input type="text" id="telefonoEstablecimiento" required>
-            </div>
+    <label>Nombre del Cliente:</label>
+    <input type="text" id="cliente" placeholder="Nombre del cliente">
 
-            <div class="form-group">
-                <label>👤 Cliente:</label>
-                <input type="text" id="nombreCliente" required>
-            </div>
+    <label>Dirección del Cliente:</label>
+    <input type="text" id="direccion_cliente" placeholder="Dirección de entrega">
 
-            <div class="form-group">
-                <label>📍 Dirección Cliente:</label>
-                <input type="text" id="direccionCliente" required>
-            </div>
+    <label>Teléfono del Cliente:</label>
+    <input type="text" id="telefono_cliente" placeholder="Teléfono de contacto">
 
-            <div class="form-group">
-                <label>📞 Teléfono Cliente:</label>
-                <input type="text" id="telefonoCliente" required>
-            </div>
+    <label>Método de Pago:</label>
+    <select id="metodo_pago">
+        <option value="pagado">Pagado</option>
+        <option value="efectivo">Efectivo</option>
+    </select>
 
-            <div class="form-group">
-                <label>💰 Método de Pago:</label>
-                <select id="metodoPago">
-                    <option value="Pagado">Pagado</option>
-                    <option value="Efectivo">Efectivo</option>
-                    <option value="Tarjeta">Tarjeta</option>
-                </select>
-            </div>
+    <button onclick="enviarPedido()">Enviar Pedido</button>
+</div>
 
-            <div class="form-group">
-                <label>💵 Monto:</label>
-                <input type="text" id="montoPago" placeholder="Ej: 15€">
-            </div>
+<div class="notification" id="notificacionCliente">
+    📦 ¡Tu pedido está en camino! 🚚
+</div>
 
-            <button type="button" onclick="enviarATelegram()">📩 Enviar Solicitud</button>
-        </form>
-    </div>
+<script>
+    function enviarPedido() {
+        let empresa = document.getElementById("empresa").value;
+        let direccionEmpresa = document.getElementById("direccion_empresa").value;
+        let telefonoEmpresa = document.getElementById("telefono_empresa").value;
+        let cliente = document.getElementById("cliente").value;
+        let direccionCliente = document.getElementById("direccion_cliente").value;
+        let telefonoCliente = document.getElementById("telefono_cliente").value;
+        let metodoPago = document.getElementById("metodo_pago").value;
 
-    <script>
-        let repartidorSeleccionado = null;
+        let mensaje = `🚀 *Nuevo Pedido* 🚀\n\n`
+            + `🏬 *Establecimiento*: ${empresa}\n📍 *Dirección Empresa*: ${direccionEmpresa}\n📞 *Teléfono Empresa*: ${telefonoEmpresa}\n\n`
+            + `👤 *Cliente*: ${cliente}\n📍 *Dirección Cliente*: ${direccionCliente}\n📞 *Teléfono Cliente*: ${telefonoCliente}\n\n`
+            + `💳 *Método de Pago*: ${metodoPago}\n\n`
+            + `[🚚 Marcar como En Camino](javascript:pedidoEnCamino())`;
 
-        function seleccionarRepartidor(numero) {
-            const cajas = document.querySelectorAll('.repartidor-box');
-            cajas.forEach((caja, index) => {
-                caja.classList.remove('seleccionado');
-                if (index + 1 === numero) {
-                    caja.classList.add('seleccionado');
-                    repartidorSeleccionado = `Repartidor ${numero}`;
+        let botToken = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
+        let chatIdRepartidor = "-1002649667521"; 
+
+        let url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatIdRepartidor}&text=${encodeURIComponent(mensaje)}&parse_mode=Markdown`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    alert("Pedido enviado correctamente.");
+                } else {
+                    alert("Error al enviar el pedido.");
                 }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Error en la conexión con Telegram.");
             });
+    }
 
-            document.getElementById("formReparto").style.display = "block";
-        }
-
-        function enviarATelegram() {
-            const botToken = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU"; // Reemplaza con el token de tu bot
-            const chatID = "-1002649667521"; // Reemplaza con el ID de tu canal o grupo de Telegram
-
-            const nombreEstablecimiento = document.getElementById("nombreEstablecimiento").value;
-            const direccionEstablecimiento = document.getElementById("direccionEstablecimiento").value;
-            const telefonoEstablecimiento = document.getElementById("telefonoEstablecimiento").value;
-            const nombreCliente = document.getElementById("nombreCliente").value;
-            const direccionCliente = document.getElementById("direccionCliente").value;
-            const telefonoCliente = document.getElementById("telefonoCliente").value;
-            const metodoPago = document.getElementById("metodoPago").value;
-            const montoPago = document.getElementById("montoPago").value;
-
-            const mensaje = `🚀 *Nueva Solicitud de Reparto* 🚀\n🛵 *Repartidor:* ${repartidorSeleccionado}\n📍 *Cliente:* ${nombreCliente}\n💰 *Pago:* ${metodoPago} - ${montoPago}`;
-
-            const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatID}&text=${encodeURIComponent(mensaje)}&parse_mode=Markdown`;
-
-            fetch(url).then(() => alert("✅ Solicitud enviada."));
-        }
-    </script>
+    function pedidoEnCamino() {
+        document.getElementById("notificacionCliente").style.display = "block";
+    }
+</script>
 
 </body>
 </html>
