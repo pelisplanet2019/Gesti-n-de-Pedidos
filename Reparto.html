@@ -31,10 +31,6 @@
             font-size: 14px;
             border-radius: 5px;
         }
-        .pedido-btn.bloqueado {
-            background-color: #e74c3c;
-            cursor: not-allowed;
-        }
         .formulario {
             display: none;
             margin-top: 20px;
@@ -76,13 +72,14 @@
 <body>
     <div class="container">
         <h2>Gestión de Pedidos</h2>
-        <p>Selecciona un repartidor para ver el formulario:</p>
+        <p>Selecciona un repartidor para enviar un pedido:</p>
         
         <div>
-            <button class="pedido-btn" id="repartidor1" onclick="mostrarFormulario(1)">Julian</button>
-            <button class="pedido-btn" id="repartidor2" onclick="mostrarFormulario(2)">Luis</button>
-            <button class="pedido-btn" id="repartidor3" onclick="mostrarFormulario(3)">Manuel</button>
-            <button class="pedido-btn" id="repartidor4" onclick="mostrarFormulario(4)">Jose</button>
+            <button class="pedido-btn" onclick="mostrarFormulario('Repartidor 1')">Julian</button>
+            <button class="pedido-btn" onclick="mostrarFormulario('Repartidor 2')">Repartidor 2</button>
+            <button class="pedido-btn" onclick="mostrarFormulario('Repartidor 3')">Repartidor 3</button>
+            <button class="pedido-btn" onclick="mostrarFormulario('Repartidor 4')">Repartidor 4</button>
+            <button class="pedido-btn" onclick="mostrarFormulario('Repartidor 5')">Repartidor 5</button>
         </div>
 
         <div id="formulario-pedido" class="formulario">
@@ -119,7 +116,7 @@
             <button class="boton-accion" onclick="enviarPedido()">Enviar Pedido a Telegram</button>
             
             <p class="temporizador" id="temporizador">Tiempo: 00:00</p>
-            <button class="boton-accion" onclick="iniciarTemporizador()">Iniciar Entrega</button>
+            <button class="boton-accion" onclick="iniciarTemporizador()">En Camino</button>
             <button class="boton-accion" onclick="detenerTemporizador()">Entregado</button>
         </div>
     </div>
@@ -128,35 +125,26 @@
         let temporizador;
         let segundos = 0;
         let minutos = 0;
-        let pedidoSeleccionado = null;
         let repartidorSeleccionado = null;
 
-        // Objeto con los nombres de los repartidores
-        const repartidores = {
-            1: "Juan Pérez",
-            2: "Carlos Rodríguez",
-            3: "Luis Martínez",
-            4: "Ana González"
-        };
-
         function mostrarFormulario(repartidor) {
-            // Ocultar cualquier formulario visible
-            document.getElementById("formulario-pedido").style.display = "none";
+            // Limpiar formulario
+            document.getElementById("nombreEmpresa").value = '';
+            document.getElementById("direccionEmpresa").value = '';
+            document.getElementById("telefonoEmpresa").value = '';
+            document.getElementById("nombreCliente").value = '';
+            document.getElementById("direccionCliente").value = '';
+            document.getElementById("telefonoCliente").value = '';
+            document.getElementById("metodoPago").value = 'Efectivo';
 
-            // Comprobar si el repartidor está bloqueado
-            if (document.getElementById(`repartidor${repartidor}`).classList.contains('bloqueado')) {
-                alert('Este repartidor ya está en camino, por favor espera.');
-                return;
-            }
-
-            repartidorSeleccionado = repartidor;
+            // Mostrar el formulario
             document.getElementById("formulario-pedido").style.display = "block";
 
-            // Cambiar el estado del repartidor a rojo (bloqueado)
-            document.querySelectorAll('.pedido-btn').forEach((button) => {
-                button.classList.remove('bloqueado');
-            });
-            document.getElementById(`repartidor${repartidor}`).classList.add('bloqueado');
+            // Guardar el repartidor seleccionado
+            repartidorSeleccionado = repartidor;
+
+            // Actualizar el mensaje de Telegram con el nombre del repartidor
+            document.getElementById("formulario-pedido").querySelector("h3").innerText = `Detalles del Pedido - ${repartidor}`;
         }
 
         function enviarPedido() {
@@ -169,10 +157,7 @@
             let telefonoCliente = document.getElementById("telefonoCliente").value;
             let metodoPago = document.getElementById("metodoPago").value;
 
-            // Obtener el nombre real del repartidor desde el objeto 'repartidores'
-            let nombreRepartidor = repartidores[repartidorSeleccionado];
-
-            let mensaje = `🚀 Pedido para Repartidor: ${nombreRepartidor}\n🏢 Empresa: ${nombreEmpresa}\n📍 Dirección Empresa: ${direccionEmpresa}\n📞 Teléfono Empresa: ${telefonoEmpresa}\n\n👤 Cliente: ${nombreCliente}\n📍 Dirección Cliente: ${direccionCliente}\n📞 Teléfono Cliente: ${telefonoCliente}\n💳 Pago: ${metodoPago}`;
+            let mensaje = `🚀 Pedido\n🏢 Empresa: ${nombreEmpresa}\n📍 Dirección Empresa: ${direccionEmpresa}\n📞 Teléfono Empresa: ${telefonoEmpresa}\n\n👤 Cliente: ${nombreCliente}\n📍 Dirección Cliente: ${direccionCliente}\n📞 Teléfono Cliente: ${telefonoCliente}\n💳 Pago: ${metodoPago}\n🧑‍💼 Repartidor: ${repartidorSeleccionado}`;
 
             let token = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
             let chatId = "-1002649667521";
@@ -181,12 +166,8 @@
             fetch(url)
                 .then(response => {
                     alert("Pedido enviado a Telegram");
-
-                    // Ocultar el formulario después de enviar el pedido
+                    // Limpiar y ocultar el formulario después de enviar
                     document.getElementById("formulario-pedido").style.display = "none";
-                    
-                    // Liberar al repartidor (cambiar el estado a verde)
-                    document.getElementById(`repartidor${repartidorSeleccionado}`).classList.remove('bloqueado');
                 })
                 .catch(error => alert("Error al enviar pedido"));
         }
@@ -210,9 +191,6 @@
         function detenerTemporizador() {
             clearInterval(temporizador);
             alert("Pedido entregado y temporizador detenido");
-
-            // Liberar al repartidor (cambiar el estado a verde)
-            document.getElementById(`repartidor${repartidorSeleccionado}`).classList.remove('bloqueado');
         }
     </script>
 </body>
