@@ -8,45 +8,37 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #34495e;
-            color: white;
             text-align: center;
+            color: white;
             padding: 20px;
         }
         .container {
             width: 90%;
             max-width: 800px;
             margin: auto;
-            padding: 20px;
-        }
-        .section {
             background: #566573;
-            padding: 15px;
-            margin: 15px 0;
+            padding: 20px;
             border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
-        .pedido-btn, .repartidor-btn {
+        .pedido-btn {
             background-color: #4CAF50;
             color: white;
-            padding: 10px;
+            padding: 10px 15px;
             margin: 5px;
             border: none;
             cursor: pointer;
             font-size: 14px;
             border-radius: 5px;
         }
-        .formulario {
-            display: none;
-            margin-top: 15px;
-            padding: 15px;
-            border-radius: 8px;
-            background-color: #2C3E50;
-            color: white;
-            text-align: left;
+        .pedido-btn.bloqueado {
+            background-color: #e74c3c;
+            cursor: not-allowed;
         }
         .boton-accion {
             background-color: #28a745;
             color: white;
-            padding: 8px;
+            padding: 8px 12px;
             border: none;
             cursor: pointer;
             font-size: 14px;
@@ -66,131 +58,139 @@
             border-radius: 5px;
             display: block;
         }
-        .repartidor-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        .separador {
+            border-top: 2px solid white;
+            margin: 10px 0;
         }
-        .repartidor {
-            padding: 10px;
-            background: #4CAF50;
-            color: white;
-            border-radius: 5px;
+        .pedido-container {
+            margin-bottom: 20px;
         }
-        .en-reparto {
-            background-color: red !important;
-        }
-        .libre {
-            background-color: #4CAF50 !important;
+        .repartidor-btn-container {
+            margin-bottom: 15px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Gestión de Pedidos</h2>
+        <p>Selecciona un repartidor para enviar un pedido:</p>
 
         <!-- Sección de Pedidos -->
-        <div class="section">
-            <h3>Pedidos</h3>
-            <button class="pedido-btn" onclick="mostrarFormulario(1)">Pedido 1</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(2)">Pedido 2</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(3)">Pedido 3</button>
-        </div>
+        <div id="pedidos">
+            <div class="pedido-container" id="pedido1">
+                <h3>Pedido 1</h3>
+                <h4>Detalles del Pedido</h4>
+                <label>Nombre del Cliente:</label>
+                <input type="text" id="nombreCliente1">
+                <label>Dirección:</label>
+                <input type="text" id="direccionCliente1">
+                <label>Teléfono:</label>
+                <input type="text" id="telefonoCliente1">
+                <label>Método de Pago:</label>
+                <select id="metodoPago1">
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Pagado">Pagado</option>
+                </select>
+                <button class="boton-accion" onclick="enviarPedido(1)">Enviar Pedido a Telegram</button>
+            </div>
 
-        <div id="formulario-pedido" class="formulario">
-            <h3>Detalles del Pedido</h3>
-            
-            <label>Nombre del Cliente:</label>
-            <input type="text" id="nombreCliente">
-            
-            <label>Dirección:</label>
-            <input type="text" id="direccionCliente">
-            
-            <label>Teléfono:</label>
-            <input type="text" id="telefonoCliente">
-            
-            <button class="boton-accion" onclick="enviarPedido()">Enviar Pedido a Telegram</button>
+            <div class="pedido-container" id="pedido2">
+                <h3>Pedido 2</h3>
+                <h4>Detalles del Pedido</h4>
+                <label>Nombre del Cliente:</label>
+                <input type="text" id="nombreCliente2">
+                <label>Dirección:</label>
+                <input type="text" id="direccionCliente2">
+                <label>Teléfono:</label>
+                <input type="text" id="telefonoCliente2">
+                <label>Método de Pago:</label>
+                <select id="metodoPago2">
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Pagado">Pagado</option>
+                </select>
+                <button class="boton-accion" onclick="enviarPedido(2)">Enviar Pedido a Telegram</button>
+            </div>
         </div>
 
         <!-- Sección de Repartidores -->
-        <div class="section">
-            <h3>Repartidores</h3>
-            <div class="repartidor-container">
-                <div class="repartidor libre" id="repartidor1">
-                    <span>Repartidor 1</span>
-                    <button class="boton-accion" onclick="iniciarReparto(1)">Iniciar Reparto</button>
-                    <button class="boton-accion" onclick="finalizarReparto(1)">Entregado</button>
-                </div>
-                <div class="repartidor libre" id="repartidor2">
-                    <span>Repartidor 2</span>
-                    <button class="boton-accion" onclick="iniciarReparto(2)">Iniciar Reparto</button>
-                    <button class="boton-accion" onclick="finalizarReparto(2)">Entregado</button>
-                </div>
-                <div class="repartidor libre" id="repartidor3">
-                    <span>Repartidor 3</span>
-                    <button class="boton-accion" onclick="iniciarReparto(3)">Iniciar Reparto</button>
-                    <button class="boton-accion" onclick="finalizarReparto(3)">Entregado</button>
-                </div>
+        <div id="repartidores">
+            <h2>Repartidores</h2>
+            <div class="repartidor-btn-container">
+                <button class="pedido-btn" id="repartidor1" onclick="iniciarReparto(1)">Repartidor 1</button>
+                <button class="boton-accion" id="iniciar1" onclick="iniciarReparto(1)">Iniciar Reparto</button>
+                <button class="boton-accion" id="entregado1" onclick="entregado(1)" disabled>Entregado</button>
+            </div>
+
+            <div class="repartidor-btn-container">
+                <button class="pedido-btn" id="repartidor2" onclick="iniciarReparto(2)">Repartidor 2</button>
+                <button class="boton-accion" id="iniciar2" onclick="iniciarReparto(2)">Iniciar Reparto</button>
+                <button class="boton-accion" id="entregado2" onclick="entregado(2)" disabled>Entregado</button>
+            </div>
+
+            <div class="repartidor-btn-container">
+                <button class="pedido-btn" id="repartidor3" onclick="iniciarReparto(3)">Repartidor 3</button>
+                <button class="boton-accion" id="iniciar3" onclick="iniciarReparto(3)">Iniciar Reparto</button>
+                <button class="boton-accion" id="entregado3" onclick="entregado(3)" disabled>Entregado</button>
             </div>
         </div>
     </div>
 
     <script>
-        let pedidoSeleccionado = null;
+        let temporizador;
+        let segundos = 0;
+        let minutos = 0;
+        let repartidorSeleccionado = null;
 
-        function mostrarFormulario(pedido) {
-            pedidoSeleccionado = pedido;
-            document.getElementById("formulario-pedido").style.display = "block";
-        }
+        function enviarPedido(pedidoId) {
+            let nombreCliente = document.getElementById(`nombreCliente${pedidoId}`).value;
+            let direccionCliente = document.getElementById(`direccionCliente${pedidoId}`).value;
+            let telefonoCliente = document.getElementById(`telefonoCliente${pedidoId}`).value;
+            let metodoPago = document.getElementById(`metodoPago${pedidoId}`).value;
 
-        function enviarPedido() {
-            let nombreCliente = document.getElementById("nombreCliente").value;
-            let direccionCliente = document.getElementById("direccionCliente").value;
-            let telefonoCliente = document.getElementById("telefonoCliente").value;
+            let mensaje = `Pedido ${pedidoId}:\n\n` +
+                `👤 Cliente: ${nombreCliente}\n📍 Dirección: ${direccionCliente}\n📞 Teléfono: ${telefonoCliente}\n💳 Pago: ${metodoPago}`;
 
-            let mensaje = `🚀 Pedido ${pedidoSeleccionado}\n👤 Cliente: ${nombreCliente}\n📍 Dirección: ${direccionCliente}\n📞 Teléfono: ${telefonoCliente}`;
-            
+            // Token y chat ID de Telegram
             let token = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
             let chatId = "-1002649667521";
             let url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensaje)}`;
 
             fetch(url)
-                .then(response => alert("Pedido enviado a Telegram"))
-                .catch(error => alert("Error al enviar pedido"));
-
-            document.getElementById("formulario-pedido").style.display = "none";
-            document.getElementById("nombreCliente").value = "";
-            document.getElementById("direccionCliente").value = "";
-            document.getElementById("telefonoCliente").value = "";
+                .then(response => {
+                    alert(`Pedido ${pedidoId} enviado a Telegram`);
+                })
+                .catch(error => {
+                    alert("Error al enviar pedido a Telegram");
+                });
         }
 
-        function iniciarReparto(num) {
-            let repartidor = document.getElementById(`repartidor${num}`);
-            repartidor.classList.remove("libre");
-            repartidor.classList.add("en-reparto");
+        function iniciarReparto(idRepartidor) {
+            // Iniciar reparto y bloquear botón de iniciar
+            document.getElementById(`iniciar${idRepartidor}`).disabled = true;
+            document.getElementById(`iniciar${idRepartidor}`).style.backgroundColor = '#e74c3c'; // Rojo
+            document.getElementById(`entregado${idRepartidor}`).disabled = false;
+            document.getElementById(`entregado${idRepartidor}`).style.backgroundColor = '#28a745'; // Verde
 
-            let tiempoRestante = 30 * 60;
-            let temporizador = setInterval(() => {
-                if (tiempoRestante <= 0) {
-                    clearInterval(temporizador);
-                } else {
-                    tiempoRestante--;
+            // Aquí va la lógica para iniciar el temporizador
+            segundos = 0;
+            minutos = 0;
+            temporizador = setInterval(function() {
+                segundos++;
+                if (segundos >= 60) {
+                    segundos = 0;
+                    minutos++;
                 }
+                console.log(`${minutos}m ${segundos}s`);
             }, 1000);
-
-            repartidor.setAttribute("data-temporizador", temporizador);
         }
 
-        function finalizarReparto(num) {
-            let repartidor = document.getElementById(`repartidor${num}`);
-            repartidor.classList.remove("en-reparto");
-            repartidor.classList.add("libre");
+        function entregado(idRepartidor) {
+            // Detener temporizador y desbloquear botón de iniciar
+            clearInterval(temporizador);
 
-            let temporizador = repartidor.getAttribute("data-temporizador");
-            if (temporizador) {
-                clearInterval(temporizador);
-                repartidor.removeAttribute("data-temporizador");
-            }
+            document.getElementById(`entregado${idRepartidor}`).disabled = true;
+            document.getElementById(`iniciar${idRepartidor}`).disabled = false;
+            document.getElementById(`iniciar${idRepartidor}`).style.backgroundColor = '#4CAF50'; // Verde
         }
     </script>
 </body>
