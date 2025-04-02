@@ -3,103 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pedidos - Envío a Telegram</title>
+    <title>Gestión de Pedidos</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #2c3e50, #4ca1af);
+            color: white;
             text-align: center;
-            background-color: #f4f4f4;
             padding: 20px;
         }
         .container {
             background: white;
+            color: black;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            margin: auto;
-        }
-        input, button {
             width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+            max-width: 500px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
         }
+        h2 { margin-bottom: 20px; }
         button {
-            background-color: #007BFF;
-            color: white;
+            padding: 10px;
+            margin: 10px;
+            border: none;
             cursor: pointer;
+            font-size: 16px;
+            width: 80%;
+            border-radius: 5px;
+            color: white;
         }
-        button:hover {
-            background-color: #0056b3;
-        }
+        .btn-enviar { background-color: #2980b9; }
+        .btn-en-camino { background-color: #f39c12; }
+        .btn-entregado { background-color: #2ecc71; }
+        .btn-entregado:disabled, .btn-en-camino:disabled { opacity: 0.5; cursor: not-allowed; }
+        .timer { font-size: 20px; font-weight: bold; margin-top: 15px; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>Enviar Pedido</h2>
-        <input type="text" id="cliente" placeholder="Nombre del Cliente" required>
-        <input type="text" id="telefono" placeholder="Teléfono del Cliente" required>
-        <input type="text" id="direccion" placeholder="Dirección de Entrega" required>
-        <button onclick="enviarPedido()">Enviar Pedido</button>
+        <h2>📩 Enviar Pedido a Telegram</h2>
+        <button class="btn-enviar" onclick="enviarPedidoTelegram()">Enviar Pedido</button>
+    </div>
+
+    <div class="container">
+        <h2>🚚 Gestión de Reparto</h2>
+        <button class="btn-en-camino" onclick="iniciarReparto()">En Camino</button>
+        <button class="btn-entregado" onclick="pedidoEntregado()" disabled>Pedido Entregado</button>
+        <p class="timer" id="temporizador">⏳ Tiempo: 00:00</p>
     </div>
 
     <script>
-        function enviarPedido() {
-            // 🔹 TOKEN y CHAT ID del bot de Telegram
-            const BOT_TOKEN = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
-            const CHAT_ID = "-1002649667521";
+        const BOT_TOKEN = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
+        const CHAT_ID = "-1002649667521";
+        let tiempoInicio, temporizador;
 
-            // 🔹 Capturar datos del formulario
-            let cliente = document.getElementById("cliente").value;
-            let telefono = document.getElementById("telefono").value;
-            let direccion = document.getElementById("direccion").value;
+        function enviarPedidoTelegram() {
+            let nombreCliente = "Juan Pérez";
+            let direccionCliente = "Calle 123, Ciudad";
+            let telefonoCliente = "123456789";
+            let nombreTienda = "Tienda X";
+            let direccionTienda = "Avenida 456, Ciudad";
+            let telefonoTienda = "987654321";
 
-            if (cliente === "" || telefono === "" || direccion === "") {
-                alert("Por favor, completa todos los campos.");
-                return;
-            }
+            let mensaje = `📦 *Nuevo Pedido Disponible*\n🏪 *Tienda:* ${nombreTienda}\n📍 Dirección: ${direccionTienda}\n📞 Teléfono: ${telefonoTienda}\n\n👤 *Cliente:* ${nombreCliente}\n🏠 Dirección: ${direccionCliente}\n📞 Teléfono: ${telefonoCliente}\n\n🛵 *Repartidor, pulsa el botón fijado en Telegram para aceptar el pedido.*`;
 
-            // 🔹 Mensaje con datos del pedido
-            let mensaje = `🚚 *Nuevo Pedido Disponible*:\n\n` +
-                          `📍 *Cliente:* ${cliente}\n` +
-                          `📞 *Teléfono:* ${telefono}\n` +
-                          `🏠 *Dirección:* ${direccion}\n\n` +
-                          `⚡ *Repartidor:* Pulsa un botón para actualizar el estado.`;
-
-            // 🔹 Botones en Telegram (Aceptar Pedido y Pedido Entregado)
-            let botones = {
-                inline_keyboard: [
-                    [{ text: "✅ Aceptar Pedido", callback_data: "pedido_aceptado" }],
-                    [{ text: "📦 Pedido Entregado", callback_data: "pedido_entregado" }]
-                ]
-            };
-
-            // 🔹 Enviar el pedido a Telegram
-            let url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-            let params = {
-                chat_id: CHAT_ID,
-                text: mensaje,
-                parse_mode: "Markdown",
-                reply_markup: JSON.stringify(botones)
-            };
-
-            fetch(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(params)
-            })
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(mensaje)}`)
             .then(response => response.json())
-            .then(data => {
-                if (data.ok) {
-                    alert("📩 Pedido enviado al repartidor.");
-                } else {
-                    alert("❌ Error al enviar el pedido.");
-                }
-            })
-            .catch(error => console.error("Error:", error));
+            .then(data => console.log("Mensaje enviado", data))
+            .catch(error => console.error("Error enviando mensaje:", error));
+        }
+
+        function iniciarReparto() {
+            tiempoInicio = new Date().getTime();
+            document.querySelector(".btn-en-camino").disabled = true;
+            document.querySelector(".btn-entregado").disabled = false;
+            actualizarTemporizador();
+            enviarMensajeTelegram("🚚 El repartidor ha iniciado la entrega.");
+        }
+
+        function actualizarTemporizador() {
+            temporizador = setInterval(() => {
+                let tiempoActual = new Date().getTime();
+                let tiempoTranscurrido = tiempoActual - tiempoInicio;
+                let minutos = Math.floor((tiempoTranscurrido / 1000) / 60);
+                let segundos = Math.floor((tiempoTranscurrido / 1000) % 60);
+                document.getElementById("temporizador").textContent = `⏳ Tiempo: ${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
+            }, 1000);
+        }
+
+        function pedidoEntregado() {
+            clearInterval(temporizador);
+            document.getElementById("temporizador").textContent = "✅ Pedido entregado.";
+            enviarMensajeTelegram("✅ Pedido entregado con éxito.");
+            document.querySelector(".btn-entregado").disabled = true;
+        }
+
+        function enviarMensajeTelegram(mensaje) {
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(mensaje)}`)
+            .then(response => response.json())
+            .then(data => console.log("Mensaje enviado", data))
+            .catch(error => console.error("Error al enviar mensaje:", error));
         }
     </script>
 
