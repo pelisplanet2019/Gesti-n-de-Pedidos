@@ -63,42 +63,36 @@
             border-radius: 5px;
             display: block;
         }
+        .repartidor {
+            background-color: #f39c12;
+            color: white;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .repartidor.rojo {
+            background-color: #e74c3c;
+        }
+        .repartidor.verde {
+            background-color: #2ecc71;
+        }
         .separador {
             border-top: 2px solid white;
             margin: 10px 0;
-        }
-        .repartidor-btn {
-            background-color: #27ae60;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100px;
-            text-align: center;
-        }
-        .repartidor-btn.occupied {
-            background-color: #e74c3c;
-            cursor: not-allowed;
-        }
-        .repartidor-btn:disabled {
-            background-color: #bdc3c7;
-        }
-        .repartidor-btn:hover {
-            background-color: #2ecc71;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Gestión de Pedidos</h2>
-        <p>Selecciona un pedido para ver el formulario:</p>
+        <p>Selecciona un repartidor para ver el formulario:</p>
         
         <div>
-            <button class="pedido-btn" onclick="mostrarFormulario(1)">Pedido 1</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(2)">Pedido 2</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(3)">Pedido 3</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(4)">Pedido 4</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(5)">Pedido 5</button>
+            <button class="repartidor" id="repartidor1" onclick="mostrarFormulario(1)">Julian</button>
+            <button class="repartidor" id="repartidor2" onclick="mostrarFormulario(2)">Luis</button>
+            <button class="repartidor" id="repartidor3" onclick="mostrarFormulario(3)">Manuel</button>
+            <button class="repartidor" id="repartidor4" onclick="mostrarFormulario(4)">Pepe</button>
         </div>
 
         <div id="formulario-pedido" class="formulario">
@@ -138,14 +132,6 @@
             <button class="boton-accion" onclick="iniciarTemporizador()">En Camino</button>
             <button class="boton-accion" onclick="detenerTemporizador()">Entregado</button>
         </div>
-
-        <div>
-            <h3>Selecciona un repartidor:</h3>
-            <button id="repartidor1" class="repartidor-btn" onclick="seleccionarRepartidor(1)">Repartidor 1</button>
-            <button id="repartidor2" class="repartidor-btn" onclick="seleccionarRepartidor(2)">Repartidor 2</button>
-            <button id="repartidor3" class="repartidor-btn" onclick="seleccionarRepartidor(3)">Repartidor 3</button>
-            <button id="repartidor4" class="repartidor-btn" onclick="seleccionarRepartidor(4)">Repartidor 4</button>
-        </div>
     </div>
 
     <script>
@@ -153,11 +139,17 @@
         let segundos = 0;
         let minutos = 0;
         let pedidoSeleccionado = null;
-        let repartidores = [false, false, false, false]; // Estado de los repartidores (false = libre, true = ocupado)
+        let repartidorSeleccionado = null;
 
-        function mostrarFormulario(pedido) {
-            pedidoSeleccionado = pedido;
+        function mostrarFormulario(repartidor) {
+            repartidorSeleccionado = repartidor;
             document.getElementById("formulario-pedido").style.display = "block";
+
+            // Cambiar el estado del repartidor a rojo
+            document.querySelectorAll('.repartidor').forEach((button) => {
+                button.classList.remove('rojo', 'verde');
+            });
+            document.getElementById(`repartidor${repartidor}`).classList.add('rojo');
         }
 
         function enviarPedido() {
@@ -170,7 +162,7 @@
             let telefonoCliente = document.getElementById("telefonoCliente").value;
             let metodoPago = document.getElementById("metodoPago").value;
 
-            let mensaje = `🚀 Pedido ${pedidoSeleccionado}\n🏢 Empresa: ${nombreEmpresa}\n📍 Dirección Empresa: ${direccionEmpresa}\n📞 Teléfono Empresa: ${telefonoEmpresa}\n\n👤 Cliente: ${nombreCliente}\n📍 Dirección Cliente: ${direccionCliente}\n📞 Teléfono Cliente: ${telefonoCliente}\n💳 Pago: ${metodoPago}`;
+            let mensaje = `🚀 Pedido para Repartidor ${repartidorSeleccionado}\n🏢 Empresa: ${nombreEmpresa}\n📍 Dirección Empresa: ${direccionEmpresa}\n📞 Teléfono Empresa: ${telefonoEmpresa}\n\n👤 Cliente: ${nombreCliente}\n📍 Dirección Cliente: ${direccionCliente}\n📞 Teléfono Cliente: ${telefonoCliente}\n💳 Pago: ${metodoPago}`;
 
             let token = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
             let chatId = "-1002649667521";
@@ -200,23 +192,11 @@
         function detenerTemporizador() {
             clearInterval(temporizador);
             alert("Pedido entregado y temporizador detenido");
-        }
 
-        function seleccionarRepartidor(id) {
-            if (repartidores[id - 1]) {
-                alert("Este repartidor ya está ocupado.");
-                return;
-            }
-
-            // Marcar al repartidor como ocupado
-            repartidores[id - 1] = true;
-            document.getElementById(`repartidor${id}`).classList.add("occupied");
-            document.getElementById(`repartidor${id}`).disabled = true;
-            alert(`Repartidor ${id} seleccionado. El pedido será enviado a Telegram.`);
-            
-            // Aquí enviarías el pedido y los datos a Telegram junto con el repartidor
+            // Cambiar el estado del repartidor a verde
+            document.getElementById(`repartidor${repartidorSeleccionado}`).classList.remove('rojo');
+            document.getElementById(`repartidor${repartidorSeleccionado}`).classList.add('verde');
         }
     </script>
-
 </body>
 </html>
