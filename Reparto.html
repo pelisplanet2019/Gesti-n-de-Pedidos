@@ -79,8 +79,8 @@
         <p>Selecciona un repartidor para enviar un pedido:</p>
         
         <div>
-            <button class="pedido-btn" id="repartidor1" onclick="mostrarFormulario('Juan Pérez', 1)">Repartidor 1</button>
-            <button class="pedido-btn" id="repartidor2" onclick="mostrarFormulario('Carlos García', 2)">Repartidor 2</button>
+            <button class="pedido-btn" id="repartidor1" onclick="mostrarFormulario('Julian Monteoliva', 1)">Repartidor 1</button>
+            <button class="pedido-btn" id="repartidor2" onclick="mostrarFormulario('Luis Lopez', 2)">Repartidor 2</button>
             <button class="pedido-btn" id="repartidor3" onclick="mostrarFormulario('María López', 3)">Repartidor 3</button>
             <button class="pedido-btn" id="repartidor4" onclick="mostrarFormulario('Luis Rodríguez', 4)">Repartidor 4</button>
             <button class="pedido-btn" id="repartidor5" onclick="mostrarFormulario('Ana Martínez', 5)">Repartidor 5</button>
@@ -119,10 +119,13 @@
             </select>
 
             <button class="boton-accion" onclick="enviarPedido()">Enviar Pedido a Telegram</button>
-            
-            <p class="temporizador" id="temporizador">Tiempo: 00:00</p>
-            <button class="boton-accion" onclick="iniciarTemporizador()">En Camino</button>
+        </div>
+
+        <!-- Botones de acción para 'En camino' y 'Entregado' -->
+        <div id="acciones-repartidor" style="display: none;">
+            <button class="boton-accion" onclick="iniciarTemporizador()">Iniciar Reparto</button>
             <button class="boton-accion" onclick="detenerTemporizador()">Entregado</button>
+            <p class="temporizador" id="temporizador">Tiempo: 00:00</p>
         </div>
     </div>
 
@@ -132,6 +135,7 @@
         let minutos = 0;
         let nombreRepartidor = null;
         let idRepartidor = null;
+        let temporizadorActivo = false;
 
         function mostrarFormulario(nombreReal, id) {
             // Limpia el formulario si ya hay datos
@@ -148,7 +152,8 @@
             idRepartidor = id;
             document.getElementById("repartidorSeleccionado").innerText = "Repartidor: " + nombreRepartidor;
             document.getElementById("formulario-pedido").style.display = "block";
-
+            document.getElementById("acciones-repartidor").style.display = "block";  // Mostrar los botones de acción
+            
             // Bloquea el botón del repartidor seleccionado
             let botonesRepartidores = document.querySelectorAll(".pedido-btn");
             botonesRepartidores.forEach(btn => {
@@ -158,6 +163,11 @@
                     btn.setAttribute('disabled', true); // Bloquea el botón
                 }
             });
+
+            // Inicializa el temporizador si es necesario
+            if (temporizadorActivo) {
+                iniciarTemporizador();
+            }
         }
 
         function enviarPedido() {
@@ -181,11 +191,15 @@
                     alert("Pedido enviado a Telegram");
                     // Oculta el formulario después de enviar el mensaje
                     document.getElementById("formulario-pedido").style.display = "none";
+                    document.getElementById("acciones-repartidor").style.display = "none";  // Ocultar los botones de acción
                 })
                 .catch(error => alert("Error al enviar pedido"));
         }
 
         function iniciarTemporizador() {
+            if (temporizadorActivo) return;
+
+            temporizadorActivo = true;
             segundos = 0;
             minutos = 0;
             document.getElementById("temporizador").innerText = "Tiempo: 00:00";
@@ -203,6 +217,7 @@
 
         function detenerTemporizador() {
             clearInterval(temporizador);
+            temporizadorActivo = false;
             alert("Pedido entregado y temporizador detenido");
 
             // Desbloquea el repartidor después de marcar como entregado
