@@ -71,6 +71,9 @@
             border-top: 2px solid white;
             margin: 10px 0;
         }
+        .repartidor-btn-container {
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -79,38 +82,47 @@
         <p>Selecciona un repartidor para enviar un pedido:</p>
 
         <!-- Botones de los repartidores -->
-        <div>
-            <button class="pedido-btn" id="repartidor1" onclick="mostrarFormulario('Juan Pérez', 1)">Repartidor 1</button>
+        <div class="repartidor-btn-container">
+            <button class="pedido-btn" id="repartidor1" onclick="mostrarFormulario('Julian Monteoliva', 1)">Julian Monteoliva</button>
             <div id="repartidor1-botones" style="display: none;">
-                <button class="boton-accion" id="iniciar1" onclick="iniciarReparto(1)" >Iniciar Reparto</button>
-                <button class="boton-accion" id="entregado1" onclick="entregado(1)" >Entregado</button>
-            </div>
-
-            <button class="pedido-btn" id="repartidor2" onclick="mostrarFormulario('Carlos García', 2)">Repartidor 2</button>
-            <div id="repartidor2-botones" style="display: none;">
-                <button class="boton-accion" id="iniciar2" onclick="iniciarReparto(2)" >Iniciar Reparto</button>
-                <button class="boton-accion" id="entregado2" onclick="entregado(2)" >Entregado</button>
-            </div>
-
-            <button class="pedido-btn" id="repartidor3" onclick="mostrarFormulario('María López', 3)">Repartidor 3</button>
-            <div id="repartidor3-botones" style="display: none;">
-                <button class="boton-accion" id="iniciar3" onclick="iniciarReparto(3)" >Iniciar Reparto</button>
-                <button class="boton-accion" id="entregado3" onclick="entregado(3)" >Entregado</button>
-            </div>
-
-            <button class="pedido-btn" id="repartidor4" onclick="mostrarFormulario('Luis Rodríguez', 4)">Repartidor 4</button>
-            <div id="repartidor4-botones" style="display: none;">
-                <button class="boton-accion" id="iniciar4" onclick="iniciarReparto(4)" >Iniciar Reparto</button>
-                <button class="boton-accion" id="entregado4" onclick="entregado(4)" >Entregado</button>
-            </div>
-
-            <button class="pedido-btn" id="repartidor5" onclick="mostrarFormulario('Ana Martínez', 5)">Repartidor 5</button>
-            <div id="repartidor5-botones" style="display: none;">
-                <button class="boton-accion" id="iniciar5" onclick="iniciarReparto(5)" >Iniciar Reparto</button>
-                <button class="boton-accion" id="entregado5" onclick="entregado(5)" >Entregado</button>
+                <button class="boton-accion" id="iniciar1" onclick="iniciarReparto(1)">Iniciar Reparto</button>
+                <button class="boton-accion" id="entregado1" onclick="entregado(1)" disabled>Entregado</button>
             </div>
         </div>
 
+        <div class="repartidor-btn-container">
+            <button class="pedido-btn" id="repartidor2" onclick="mostrarFormulario('Carlos García', 2)">Repartidor 2</button>
+            <div id="repartidor2-botones" style="display: none;">
+                <button class="boton-accion" id="iniciar2" onclick="iniciarReparto(2)">Iniciar Reparto</button>
+                <button class="boton-accion" id="entregado2" onclick="entregado(2)" disabled>Entregado</button>
+            </div>
+        </div>
+
+        <div class="repartidor-btn-container">
+            <button class="pedido-btn" id="repartidor3" onclick="mostrarFormulario('Luis López', 3)">Luis Lopez</button>
+            <div id="repartidor3-botones" style="display: none;">
+                <button class="boton-accion" id="iniciar3" onclick="iniciarReparto(3)">Iniciar Reparto</button>
+                <button class="boton-accion" id="entregado3" onclick="entregado(3)" disabled>Entregado</button>
+            </div>
+        </div>
+
+        <div class="repartidor-btn-container">
+            <button class="pedido-btn" id="repartidor4" onclick="mostrarFormulario('Luis Rodríguez', 4)">Luis Rodríguez</button>
+            <div id="repartidor4-botones" style="display: none;">
+                <button class="boton-accion" id="iniciar4" onclick="iniciarReparto(4)">Iniciar Reparto</button>
+                <button class="boton-accion" id="entregado4" onclick="entregado(4)" disabled>Entregado</button>
+            </div>
+        </div>
+
+        <div class="repartidor-btn-container">
+            <button class="pedido-btn" id="repartidor5" onclick="mostrarFormulario('Ana Martínez', 5)">Repartidor 5</button>
+            <div id="repartidor5-botones" style="display: none;">
+                <button class="boton-accion" id="iniciar5" onclick="iniciarReparto(5)">Iniciar Reparto</button>
+                <button class="boton-accion" id="entregado5" onclick="entregado(5)" disabled>Entregado</button>
+            </div>
+        </div>
+
+        <!-- Formulario de detalles del pedido -->
         <div id="formulario-pedido" class="formulario">
             <h3>Detalles del Pedido</h3>
             <p id="repartidorSeleccionado">Repartidor: </p>
@@ -149,6 +161,7 @@
 
     <script>
         let repartidores = [false, false, false, false, false];  // Indica si el repartidor está ocupado o no.
+        let temporizadores = {}; // Temporizadores individuales para cada repartidor.
 
         function mostrarFormulario(nombreReal, id) {
             // Limpiar el formulario
@@ -195,20 +208,25 @@
 
         function iniciarReparto(id) {
             if (repartidores[id - 1]) {
-                alert("Este repartidor ya está ocupado.");
-                return;
+                return; // Si ya está ocupado, no hacer nada
             }
-            repartidores[id - 1] = true;  // El repartidor se bloquea
 
-            // Cambiar el color del botón a bloqueado
+            repartidores[id - 1] = true;
             document.getElementById("iniciar" + id).disabled = true;
             document.getElementById("entregado" + id).disabled = false;
+
+            // Iniciar temporizador de 40 minutos
+            temporizadores[id] = setTimeout(() => {
+                alert(`El reparto de Repartidor ${id} ha expirado.`);
+                repartidores[id - 1] = false;
+                document.getElementById("iniciar" + id).disabled = false;
+                document.getElementById("entregado" + id).disabled = true;
+            }, 40 * 60 * 1000); // 40 minutos en milisegundos
         }
 
         function entregado(id) {
-            repartidores[id - 1] = false;  // El repartidor se desbloquea
-
-            // Cambiar el color del botón a disponible
+            clearTimeout(temporizadores[id]); // Detener el temporizador
+            repartidores[id - 1] = false;
             document.getElementById("iniciar" + id).disabled = false;
             document.getElementById("entregado" + id).disabled = true;
         }
