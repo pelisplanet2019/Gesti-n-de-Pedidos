@@ -34,7 +34,7 @@
             border: none;
             cursor: pointer;
             font-size: 16px;
-            width: 80px;
+            width: 100px;
             border-radius: 5px;
             background: #2ecc71;
             color: white;
@@ -82,13 +82,13 @@
         <button onclick="mostrarFormulario(10)">Pedido 10</button>
     </div>
 
-    <!-- Formularios de pedidos -->
+    <!-- Contenedor de formularios -->
     <div id="pedidoForms"></div>
 
     <script>
         const BOT_TOKEN = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
         const CHAT_ID = "-1002649667521";
-        let tiempoInicio, temporizador;
+        let temporizador;
 
         function mostrarFormulario(numPedido) {
             let pedidoForms = document.getElementById("pedidoForms");
@@ -108,6 +108,7 @@
                     <p class="timer" id="temporizador${numPedido}">⏳ Tiempo: 00:00</p>
                 </div>
             `;
+            document.getElementById("pedidoForms").style.display = "block";
         }
 
         function enviarPedidoTelegram(numPedido) {
@@ -130,13 +131,9 @@
         }
 
         function iniciarReparto(numPedido) {
-            tiempoInicio = new Date().getTime();
+            let tiempoInicio = new Date().getTime();
             document.querySelector(`.btn-en-camino`).disabled = true;
             document.querySelector(`.btn-entregado`).disabled = false;
-            actualizarTemporizador(numPedido);
-        }
-
-        function actualizarTemporizador(numPedido) {
             temporizador = setInterval(() => {
                 let tiempoActual = new Date().getTime();
                 let tiempoTranscurrido = tiempoActual - tiempoInicio;
