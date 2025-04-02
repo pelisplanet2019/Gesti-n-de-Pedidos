@@ -79,10 +79,10 @@
         <p>Selecciona un repartidor para ver el formulario:</p>
         
         <div>
-            <button class="pedido-btn" id="repartidor1" onclick="mostrarFormulario(1)">Julian</button>
-            <button class="pedido-btn" id="repartidor2" onclick="mostrarFormulario(2)">Luis</button>
-            <button class="pedido-btn" id="repartidor3" onclick="mostrarFormulario(3)">Manuel</button>
-            <button class="pedido-btn" id="repartidor4" onclick="mostrarFormulario(4)">Pepe</button>
+            <button class="pedido-btn" id="repartidor1" onclick="mostrarFormulario(1)">Repartidor 1</button>
+            <button class="pedido-btn" id="repartidor2" onclick="mostrarFormulario(2)">Repartidor 2</button>
+            <button class="pedido-btn" id="repartidor3" onclick="mostrarFormulario(3)">Repartidor 3</button>
+            <button class="pedido-btn" id="repartidor4" onclick="mostrarFormulario(4)">Repartidor 4</button>
         </div>
 
         <div id="formulario-pedido" class="formulario">
@@ -131,7 +131,18 @@
         let pedidoSeleccionado = null;
         let repartidorSeleccionado = null;
 
+        // Objeto con los nombres de los repartidores
+        const repartidores = {
+            1: "Juan Pérez",
+            2: "Carlos Rodríguez",
+            3: "Luis Martínez",
+            4: "Ana González"
+        };
+
         function mostrarFormulario(repartidor) {
+            // Ocultar cualquier formulario visible
+            document.getElementById("formulario-pedido").style.display = "none";
+
             // Comprobar si el repartidor está bloqueado
             if (document.getElementById(`repartidor${repartidor}`).classList.contains('bloqueado')) {
                 alert('Este repartidor ya está en camino, por favor espera.');
@@ -158,14 +169,25 @@
             let telefonoCliente = document.getElementById("telefonoCliente").value;
             let metodoPago = document.getElementById("metodoPago").value;
 
-            let mensaje = `🚀 Pedido para Repartidor ${repartidorSeleccionado}\n🏢 Empresa: ${nombreEmpresa}\n📍 Dirección Empresa: ${direccionEmpresa}\n📞 Teléfono Empresa: ${telefonoEmpresa}\n\n👤 Cliente: ${nombreCliente}\n📍 Dirección Cliente: ${direccionCliente}\n📞 Teléfono Cliente: ${telefonoCliente}\n💳 Pago: ${metodoPago}`;
+            // Obtener el nombre real del repartidor desde el objeto 'repartidores'
+            let nombreRepartidor = repartidores[repartidorSeleccionado];
+
+            let mensaje = `🚀 Pedido para Repartidor: ${nombreRepartidor}\n🏢 Empresa: ${nombreEmpresa}\n📍 Dirección Empresa: ${direccionEmpresa}\n📞 Teléfono Empresa: ${telefonoEmpresa}\n\n👤 Cliente: ${nombreCliente}\n📍 Dirección Cliente: ${direccionCliente}\n📞 Teléfono Cliente: ${telefonoCliente}\n💳 Pago: ${metodoPago}`;
 
             let token = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
             let chatId = "-1002649667521";
             let url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensaje)}`;
 
             fetch(url)
-                .then(response => alert("Pedido enviado a Telegram"))
+                .then(response => {
+                    alert("Pedido enviado a Telegram");
+
+                    // Ocultar el formulario después de enviar el pedido
+                    document.getElementById("formulario-pedido").style.display = "none";
+                    
+                    // Liberar al repartidor (cambiar el estado a verde)
+                    document.getElementById(`repartidor${repartidorSeleccionado}`).classList.remove('bloqueado');
+                })
                 .catch(error => alert("Error al enviar pedido"));
         }
 
