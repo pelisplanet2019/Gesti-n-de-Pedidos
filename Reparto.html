@@ -79,11 +79,11 @@
         <p>Selecciona un repartidor para enviar un pedido:</p>
         
         <div>
-            <button class="pedido-btn" id="repartidor1" onclick="mostrarFormulario('Julian Monteoliva')">Julian Monteoliva</button>
-            <button class="pedido-btn" id="repartidor2" onclick="mostrarFormulario('Luis Lopez')">Luis Lopez</button>
-            <button class="pedido-btn" id="repartidor3" onclick="mostrarFormulario('María López')">Repartidor 3</button>
-            <button class="pedido-btn" id="repartidor4" onclick="mostrarFormulario('Luis Rodríguez')">Repartidor 4</button>
-            <button class="pedido-btn" id="repartidor5" onclick="mostrarFormulario('Ana Martínez')">Repartidor 5</button>
+            <button class="pedido-btn" id="repartidor1" onclick="mostrarFormulario('Juan Pérez', 1)">Repartidor 1</button>
+            <button class="pedido-btn" id="repartidor2" onclick="mostrarFormulario('Carlos García', 2)">Repartidor 2</button>
+            <button class="pedido-btn" id="repartidor3" onclick="mostrarFormulario('María López', 3)">Repartidor 3</button>
+            <button class="pedido-btn" id="repartidor4" onclick="mostrarFormulario('Luis Rodríguez', 4)">Repartidor 4</button>
+            <button class="pedido-btn" id="repartidor5" onclick="mostrarFormulario('Ana Martínez', 5)">Repartidor 5</button>
         </div>
 
         <div id="formulario-pedido" class="formulario">
@@ -121,7 +121,7 @@
             <button class="boton-accion" onclick="enviarPedido()">Enviar Pedido a Telegram</button>
             
             <p class="temporizador" id="temporizador">Tiempo: 00:00</p>
-            <button class="boton-accion" onclick="iniciarTemporizador()">Iniciar Reparto</button>
+            <button class="boton-accion" onclick="iniciarTemporizador()">En Camino</button>
             <button class="boton-accion" onclick="detenerTemporizador()">Entregado</button>
         </div>
     </div>
@@ -131,21 +131,32 @@
         let segundos = 0;
         let minutos = 0;
         let nombreRepartidor = null;
+        let idRepartidor = null;
 
-        function mostrarFormulario(nombreReal) {
+        function mostrarFormulario(nombreReal, id) {
+            // Limpia el formulario si ya hay datos
+            document.getElementById("nombreEmpresa").value = "";
+            document.getElementById("direccionEmpresa").value = "";
+            document.getElementById("telefonoEmpresa").value = "";
+            document.getElementById("nombreCliente").value = "";
+            document.getElementById("direccionCliente").value = "";
+            document.getElementById("telefonoCliente").value = "";
+            document.getElementById("metodoPago").value = "Efectivo";
+
             // Muestra el formulario con el nombre del repartidor
             nombreRepartidor = nombreReal;
+            idRepartidor = id;
             document.getElementById("repartidorSeleccionado").innerText = "Repartidor: " + nombreRepartidor;
             document.getElementById("formulario-pedido").style.display = "block";
 
             // Bloquea el botón del repartidor seleccionado
             let botonesRepartidores = document.querySelectorAll(".pedido-btn");
             botonesRepartidores.forEach(btn => {
-                if (btn.innerText === "Repartidor 1" && nombreReal === "Juan Pérez") btn.classList.add('bloqueado');
-                if (btn.innerText === "Repartidor 2" && nombreReal === "Carlos García") btn.classList.add('bloqueado');
-                if (btn.innerText === "Repartidor 3" && nombreReal === "María López") btn.classList.add('bloqueado');
-                if (btn.innerText === "Repartidor 4" && nombreReal === "Luis Rodríguez") btn.classList.add('bloqueado');
-                if (btn.innerText === "Repartidor 5" && nombreReal === "Ana Martínez") btn.classList.add('bloqueado');
+                btn.classList.remove('bloqueado');
+                if (btn.innerText === `Repartidor ${id}`) {
+                    btn.classList.add('bloqueado');
+                    btn.setAttribute('disabled', true); // Bloquea el botón
+                }
             });
         }
 
@@ -193,6 +204,15 @@
         function detenerTemporizador() {
             clearInterval(temporizador);
             alert("Pedido entregado y temporizador detenido");
+
+            // Desbloquea el repartidor después de marcar como entregado
+            let botonesRepartidores = document.querySelectorAll(".pedido-btn");
+            botonesRepartidores.forEach(btn => {
+                if (btn.innerText === `Repartidor ${idRepartidor}`) {
+                    btn.classList.remove('bloqueado');
+                    btn.removeAttribute('disabled');
+                }
+            });
         }
     </script>
 </body>
