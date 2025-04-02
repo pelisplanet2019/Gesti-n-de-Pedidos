@@ -3,145 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Repartos</title>
+    <title>Pedidos - Envío a Telegram</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 20px;
             text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
         }
         .container {
-            max-width: 600px;
             background: white;
             padding: 20px;
-            margin: auto;
             border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: auto;
         }
-        h2 {
-            color: #333;
-        }
-        .divider {
-            height: 2px;
-            background-color: #ddd;
-            margin: 20px 0;
-        }
-        label {
-            font-weight: bold;
-            display: block;
-            text-align: left;
-            margin: 10px 0 5px;
-        }
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
+        input, button {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
             border-radius: 5px;
+            border: 1px solid #ccc;
         }
         button {
-            background-color: #28a745;
+            background-color: #007BFF;
             color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
             cursor: pointer;
-            width: 100%;
         }
         button:hover {
-            background-color: #218838;
-        }
-        .notification {
-            display: none;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #ff9800;
-            color: white;
-            border-radius: 5px;
-            font-weight: bold;
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>Formulario de Pedido</h2>
+    <div class="container">
+        <h2>Enviar Pedido</h2>
+        <input type="text" id="cliente" placeholder="Nombre del Cliente" required>
+        <input type="text" id="telefono" placeholder="Teléfono del Cliente" required>
+        <input type="text" id="direccion" placeholder="Dirección de Entrega" required>
+        <button onclick="enviarPedido()">Enviar Pedido</button>
+    </div>
 
-    <label>Nombre del Establecimiento:</label>
-    <input type="text" id="empresa" placeholder="Ejemplo: Tienda XYZ">
+    <script>
+        function enviarPedido() {
+            // 🔹 TOKEN y CHAT ID del bot de Telegram
+            const BOT_TOKEN = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
+            const CHAT_ID = "-1002649667521";
 
-    <label>Dirección del Establecimiento:</label>
-    <input type="text" id="direccion_empresa" placeholder="Dirección completa">
+            // 🔹 Capturar datos del formulario
+            let cliente = document.getElementById("cliente").value;
+            let telefono = document.getElementById("telefono").value;
+            let direccion = document.getElementById("direccion").value;
 
-    <label>Número de Contacto del Establecimiento:</label>
-    <input type="text" id="telefono_empresa" placeholder="Teléfono">
+            if (cliente === "" || telefono === "" || direccion === "") {
+                alert("Por favor, completa todos los campos.");
+                return;
+            }
 
-    <div class="divider"></div>
+            // 🔹 Mensaje con datos del pedido
+            let mensaje = `🚚 *Nuevo Pedido Disponible*:\n\n` +
+                          `📍 *Cliente:* ${cliente}\n` +
+                          `📞 *Teléfono:* ${telefono}\n` +
+                          `🏠 *Dirección:* ${direccion}\n\n` +
+                          `⚡ *Repartidor:* Pulsa un botón para actualizar el estado.`;
 
-    <label>Nombre del Cliente:</label>
-    <input type="text" id="cliente" placeholder="Nombre del cliente">
+            // 🔹 Botones en Telegram (Aceptar Pedido y Pedido Entregado)
+            let botones = {
+                inline_keyboard: [
+                    [{ text: "✅ Aceptar Pedido", callback_data: "pedido_aceptado" }],
+                    [{ text: "📦 Pedido Entregado", callback_data: "pedido_entregado" }]
+                ]
+            };
 
-    <label>Dirección del Cliente:</label>
-    <input type="text" id="direccion_cliente" placeholder="Dirección de entrega">
+            // 🔹 Enviar el pedido a Telegram
+            let url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+            let params = {
+                chat_id: CHAT_ID,
+                text: mensaje,
+                parse_mode: "Markdown",
+                reply_markup: JSON.stringify(botones)
+            };
 
-    <label>Teléfono del Cliente:</label>
-    <input type="text" id="telefono_cliente" placeholder="Teléfono de contacto">
-
-    <label>Método de Pago:</label>
-    <select id="metodo_pago">
-        <option value="pagado">Pagado</option>
-        <option value="efectivo">Efectivo</option>
-    </select>
-
-    <button onclick="enviarPedido()">Enviar Pedido</button>
-</div>
-
-<div class="notification" id="notificacionCliente">
-    📦 ¡Tu pedido está en camino! 🚚
-</div>
-
-<script>
-    function enviarPedido() {
-        let empresa = document.getElementById("empresa").value;
-        let direccionEmpresa = document.getElementById("direccion_empresa").value;
-        let telefonoEmpresa = document.getElementById("telefono_empresa").value;
-        let cliente = document.getElementById("cliente").value;
-        let direccionCliente = document.getElementById("direccion_cliente").value;
-        let telefonoCliente = document.getElementById("telefono_cliente").value;
-        let metodoPago = document.getElementById("metodo_pago").value;
-
-        let mensaje = `🚀 *Nuevo Pedido* 🚀\n\n`
-            + `🏬 *Establecimiento*: ${empresa}\n📍 *Dirección Empresa*: ${direccionEmpresa}\n📞 *Teléfono Empresa*: ${telefonoEmpresa}\n\n`
-            + `👤 *Cliente*: ${cliente}\n📍 *Dirección Cliente*: ${direccionCliente}\n📞 *Teléfono Cliente*: ${telefonoCliente}\n\n`
-            + `💳 *Método de Pago*: ${metodoPago}\n\n`
-            + `[🚚 Marcar como En Camino](javascript:pedidoEnCamino())`;
-
-        let botToken = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
-        let chatIdRepartidor = "-1002649667521"; 
-
-        let url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatIdRepartidor}&text=${encodeURIComponent(mensaje)}&parse_mode=Markdown`;
-
-        fetch(url)
+            fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(params)
+            })
             .then(response => response.json())
             .then(data => {
                 if (data.ok) {
-                    alert("Pedido enviado correctamente.");
+                    alert("📩 Pedido enviado al repartidor.");
                 } else {
-                    alert("Error al enviar el pedido.");
+                    alert("❌ Error al enviar el pedido.");
                 }
             })
-            .catch(error => {
-                console.error("Error:", error);
-                alert("Error en la conexión con Telegram.");
-            });
-    }
-
-    function pedidoEnCamino() {
-        document.getElementById("notificacionCliente").style.display = "block";
-    }
-</script>
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
 
 </body>
 </html>
