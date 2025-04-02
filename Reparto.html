@@ -7,13 +7,14 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #34495e;
             text-align: center;
+            color: white;
         }
         .container {
             width: 80%;
             margin: auto;
-            background: white;
+            background: #566573;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -33,6 +34,9 @@
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            background-color: #566573;
+            text-align: left;
+            color: white;
         }
         .boton-accion {
             background-color: #28a745;
@@ -48,6 +52,17 @@
             font-weight: bold;
             margin-top: 10px;
         }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        .separador {
+            border-top: 2px solid white;
+            margin: 15px 0;
+        }
     </style>
 </head>
 <body>
@@ -55,7 +70,6 @@
         <h2>Gestión de Pedidos</h2>
         <p>Selecciona un pedido para ver el formulario:</p>
         
-        <!-- Botones de pedidos -->
         <div>
             <button class="pedido-btn" onclick="mostrarFormulario(1)">Pedido 1</button>
             <button class="pedido-btn" onclick="mostrarFormulario(2)">Pedido 2</button>
@@ -69,9 +83,22 @@
             <button class="pedido-btn" onclick="mostrarFormulario(10)">Pedido 10</button>
         </div>
 
-        <!-- Formulario de pedido -->
         <div id="formulario-pedido" class="formulario">
             <h3>Detalles del Pedido</h3>
+            
+            <h4>Datos de la Empresa</h4>
+            <label>Nombre del Establecimiento:</label>
+            <input type="text" id="nombreEmpresa"><br><br>
+
+            <label>Dirección del Establecimiento:</label>
+            <input type="text" id="direccionEmpresa"><br><br>
+
+            <label>Número de Contacto:</label>
+            <input type="text" id="telefonoEmpresa"><br><br>
+
+            <div class="separador"></div>
+
+            <h4>Datos del Cliente</h4>
             <label>Nombre del Cliente:</label>
             <input type="text" id="nombreCliente"><br><br>
 
@@ -89,7 +116,6 @@
 
             <button class="boton-accion" onclick="enviarPedido()">Enviar Pedido a Telegram</button>
             
-            <!-- Temporizador -->
             <p class="temporizador" id="temporizador">Tiempo: 00:00</p>
             <button class="boton-accion" onclick="iniciarTemporizador()">En Camino</button>
             <button class="boton-accion" onclick="detenerTemporizador()">Entregado</button>
@@ -108,12 +134,16 @@
         }
 
         function enviarPedido() {
-            let nombre = document.getElementById("nombreCliente").value;
-            let direccion = document.getElementById("direccionCliente").value;
-            let telefono = document.getElementById("telefonoCliente").value;
+            let nombreEmpresa = document.getElementById("nombreEmpresa").value;
+            let direccionEmpresa = document.getElementById("direccionEmpresa").value;
+            let telefonoEmpresa = document.getElementById("telefonoEmpresa").value;
+
+            let nombreCliente = document.getElementById("nombreCliente").value;
+            let direccionCliente = document.getElementById("direccionCliente").value;
+            let telefonoCliente = document.getElementById("telefonoCliente").value;
             let metodoPago = document.getElementById("metodoPago").value;
 
-            let mensaje = `🚀 Pedido ${pedidoSeleccionado}\n👤 Cliente: ${nombre}\n📍 Dirección: ${direccion}\n📞 Teléfono: ${telefono}\n💳 Pago: ${metodoPago}`;
+            let mensaje = `🚀 Pedido ${pedidoSeleccionado}\n🏢 Empresa: ${nombreEmpresa}\n📍 Dirección Empresa: ${direccionEmpresa}\n📞 Teléfono Empresa: ${telefonoEmpresa}\n\n👤 Cliente: ${nombreCliente}\n📍 Dirección Cliente: ${direccionCliente}\n📞 Teléfono Cliente: ${telefonoCliente}\n💳 Pago: ${metodoPago}`;
 
             let token = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
             let chatId = "-1002649667521";
