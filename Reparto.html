@@ -7,148 +7,143 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #2c3e50, #4ca1af);
-            color: white;
+            background-color: #f4f4f4;
             text-align: center;
-            padding: 20px;
         }
         .container {
+            width: 80%;
+            margin: auto;
             background: white;
-            color: black;
             padding: 20px;
             border-radius: 10px;
-            width: 90%;
-            max-width: 600px;
-            margin: auto;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
-        h2 { margin-bottom: 20px; }
-        .pedido-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .pedido-buttons button {
+        .pedido-btn {
+            background-color: #4CAF50;
+            color: white;
             padding: 10px;
+            margin: 5px;
             border: none;
             cursor: pointer;
             font-size: 16px;
-            width: 100px;
-            border-radius: 5px;
-            background: #2ecc71;
-            color: white;
         }
-        .pedido-form {
+        .formulario {
             display: none;
             margin-top: 20px;
-        }
-        input {
-            width: 90%;
-            padding: 8px;
-            margin: 5px 0;
+            padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        button {
+        .boton-accion {
+            background-color: #28a745;
+            color: white;
             padding: 10px;
             border: none;
             cursor: pointer;
             font-size: 16px;
-            width: 80%;
-            border-radius: 5px;
-            color: white;
+            margin: 5px;
+        }
+        .temporizador {
+            font-size: 18px;
+            font-weight: bold;
             margin-top: 10px;
         }
-        .btn-enviar, .btn-en-camino, .btn-entregado { background-color: #2ecc71; }
-        .btn-entregado:disabled, .btn-en-camino:disabled { opacity: 0.5; cursor: not-allowed; }
-        .timer { font-size: 20px; font-weight: bold; margin-top: 15px; }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h2>Gestión de Pedidos</h2>
+        <p>Selecciona un pedido para ver el formulario:</p>
+        
+        <!-- Botones de pedidos -->
+        <div>
+            <button class="pedido-btn" onclick="mostrarFormulario(1)">Pedido 1</button>
+            <button class="pedido-btn" onclick="mostrarFormulario(2)">Pedido 2</button>
+            <button class="pedido-btn" onclick="mostrarFormulario(3)">Pedido 3</button>
+            <button class="pedido-btn" onclick="mostrarFormulario(4)">Pedido 4</button>
+            <button class="pedido-btn" onclick="mostrarFormulario(5)">Pedido 5</button>
+            <button class="pedido-btn" onclick="mostrarFormulario(6)">Pedido 6</button>
+            <button class="pedido-btn" onclick="mostrarFormulario(7)">Pedido 7</button>
+            <button class="pedido-btn" onclick="mostrarFormulario(8)">Pedido 8</button>
+            <button class="pedido-btn" onclick="mostrarFormulario(9)">Pedido 9</button>
+            <button class="pedido-btn" onclick="mostrarFormulario(10)">Pedido 10</button>
+        </div>
 
-    <h2>📦 Gestión de Pedidos</h2>
-    
-    <div class="pedido-buttons">
-        <button onclick="mostrarFormulario(1)">Pedido 1</button>
-        <button onclick="mostrarFormulario(2)">Pedido 2</button>
-        <button onclick="mostrarFormulario(3)">Pedido 3</button>
-        <button onclick="mostrarFormulario(4)">Pedido 4</button>
-        <button onclick="mostrarFormulario(5)">Pedido 5</button>
-        <button onclick="mostrarFormulario(6)">Pedido 6</button>
-        <button onclick="mostrarFormulario(7)">Pedido 7</button>
-        <button onclick="mostrarFormulario(8)">Pedido 8</button>
-        <button onclick="mostrarFormulario(9)">Pedido 9</button>
-        <button onclick="mostrarFormulario(10)">Pedido 10</button>
+        <!-- Formulario de pedido -->
+        <div id="formulario-pedido" class="formulario">
+            <h3>Detalles del Pedido</h3>
+            <label>Nombre del Cliente:</label>
+            <input type="text" id="nombreCliente"><br><br>
+
+            <label>Dirección del Cliente:</label>
+            <input type="text" id="direccionCliente"><br><br>
+
+            <label>Teléfono del Cliente:</label>
+            <input type="text" id="telefonoCliente"><br><br>
+
+            <label>Método de Pago:</label>
+            <select id="metodoPago">
+                <option value="Efectivo">Efectivo</option>
+                <option value="Pagado">Pagado</option>
+            </select><br><br>
+
+            <button class="boton-accion" onclick="enviarPedido()">Enviar Pedido a Telegram</button>
+            
+            <!-- Temporizador -->
+            <p class="temporizador" id="temporizador">Tiempo: 00:00</p>
+            <button class="boton-accion" onclick="iniciarTemporizador()">En Camino</button>
+            <button class="boton-accion" onclick="detenerTemporizador()">Entregado</button>
+        </div>
     </div>
 
-    <!-- Contenedor de formularios -->
-    <div id="pedidoForms"></div>
-
     <script>
-        const BOT_TOKEN = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
-        const CHAT_ID = "-1002649667521";
         let temporizador;
+        let segundos = 0;
+        let minutos = 0;
+        let pedidoSeleccionado = null;
 
-        function mostrarFormulario(numPedido) {
-            let pedidoForms = document.getElementById("pedidoForms");
-            pedidoForms.innerHTML = `
-                <div class="container pedido-form">
-                    <h2>📋 Formulario Pedido ${numPedido}</h2>
-                    <input type="text" id="nombreTienda${numPedido}" placeholder="Nombre del Establecimiento">
-                    <input type="text" id="direccionTienda${numPedido}" placeholder="Dirección del Establecimiento">
-                    <input type="text" id="telefonoTienda${numPedido}" placeholder="Teléfono del Establecimiento">
-                    <hr>
-                    <input type="text" id="nombreCliente${numPedido}" placeholder="Nombre del Cliente">
-                    <input type="text" id="direccionCliente${numPedido}" placeholder="Dirección del Cliente">
-                    <input type="text" id="telefonoCliente${numPedido}" placeholder="Teléfono del Cliente">
-                    <button class="btn-enviar" onclick="enviarPedidoTelegram(${numPedido})">Enviar Pedido</button>
-                    <button class="btn-en-camino" onclick="iniciarReparto(${numPedido})" disabled>En Camino</button>
-                    <button class="btn-entregado" onclick="pedidoEntregado(${numPedido})" disabled>Pedido Entregado</button>
-                    <p class="timer" id="temporizador${numPedido}">⏳ Tiempo: 00:00</p>
-                </div>
-            `;
-            document.getElementById("pedidoForms").style.display = "block";
+        function mostrarFormulario(pedido) {
+            pedidoSeleccionado = pedido;
+            document.getElementById("formulario-pedido").style.display = "block";
         }
 
-        function enviarPedidoTelegram(numPedido) {
-            let nombreTienda = document.getElementById(`nombreTienda${numPedido}`).value;
-            let direccionTienda = document.getElementById(`direccionTienda${numPedido}`).value;
-            let telefonoTienda = document.getElementById(`telefonoTienda${numPedido}`).value;
-            let nombreCliente = document.getElementById(`nombreCliente${numPedido}`).value;
-            let direccionCliente = document.getElementById(`direccionCliente${numPedido}`).value;
-            let telefonoCliente = document.getElementById(`telefonoCliente${numPedido}`).value;
+        function enviarPedido() {
+            let nombre = document.getElementById("nombreCliente").value;
+            let direccion = document.getElementById("direccionCliente").value;
+            let telefono = document.getElementById("telefonoCliente").value;
+            let metodoPago = document.getElementById("metodoPago").value;
 
-            let mensaje = `📦 *Nuevo Pedido #${numPedido} Disponible*\n🏪 *Tienda:* ${nombreTienda}\n📍 Dirección: ${direccionTienda}\n📞 Teléfono: ${telefonoTienda}\n\n👤 *Cliente:* ${nombreCliente}\n🏠 Dirección: ${direccionCliente}\n📞 Teléfono: ${telefonoCliente}\n\n🛵 *Repartidor, pulsa el botón fijado en Telegram para aceptar el pedido.*`;
+            let mensaje = `🚀 Pedido ${pedidoSeleccionado}\n👤 Cliente: ${nombre}\n📍 Dirección: ${direccion}\n📞 Teléfono: ${telefono}\n💳 Pago: ${metodoPago}`;
 
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(mensaje)}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log("Mensaje enviado", data);
-                document.querySelector(`.btn-en-camino`).disabled = false;
-            })
-            .catch(error => console.error("Error enviando mensaje:", error));
+            let token = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
+            let chatId = "-1002649667521";
+            let url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensaje)}`;
+
+            fetch(url)
+                .then(response => alert("Pedido enviado a Telegram"))
+                .catch(error => alert("Error al enviar pedido"));
         }
 
-        function iniciarReparto(numPedido) {
-            let tiempoInicio = new Date().getTime();
-            document.querySelector(`.btn-en-camino`).disabled = true;
-            document.querySelector(`.btn-entregado`).disabled = false;
+        function iniciarTemporizador() {
+            segundos = 0;
+            minutos = 0;
+            document.getElementById("temporizador").innerText = "Tiempo: 00:00";
+
             temporizador = setInterval(() => {
-                let tiempoActual = new Date().getTime();
-                let tiempoTranscurrido = tiempoActual - tiempoInicio;
-                let minutos = Math.floor((tiempoTranscurrido / 1000) / 60);
-                let segundos = Math.floor((tiempoTranscurrido / 1000) % 60);
-                document.getElementById(`temporizador${numPedido}`).textContent = `⏳ Tiempo: ${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
+                segundos++;
+                if (segundos === 60) {
+                    minutos++;
+                    segundos = 0;
+                }
+                let tiempo = `Tiempo: ${String(minutos).padStart(2, "0")}:${String(segundos).padStart(2, "0")}`;
+                document.getElementById("temporizador").innerText = tiempo;
             }, 1000);
         }
 
-        function pedidoEntregado(numPedido) {
+        function detenerTemporizador() {
             clearInterval(temporizador);
-            document.getElementById(`temporizador${numPedido}`).textContent = "✅ Pedido entregado.";
-            document.querySelector(`.btn-entregado`).disabled = true;
+            alert("Pedido entregado y temporizador detenido");
         }
     </script>
-
 </body>
 </html>
