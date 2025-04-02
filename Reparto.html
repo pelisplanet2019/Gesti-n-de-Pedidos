@@ -79,11 +79,11 @@
         <p>Selecciona un repartidor para enviar un pedido:</p>
         
         <div>
-            <button class="pedido-btn" id="repartidor1" onclick="mostrarFormulario('Repartidor 1', 'Juan Pérez')">Repartidor 1</button>
-            <button class="pedido-btn" id="repartidor2" onclick="mostrarFormulario('Repartidor 2', 'Carlos García')">Repartidor 2</button>
-            <button class="pedido-btn" id="repartidor3" onclick="mostrarFormulario('Repartidor 3', 'María López')">Repartidor 3</button>
-            <button class="pedido-btn" id="repartidor4" onclick="mostrarFormulario('Repartidor 4', 'Luis Rodríguez')">Repartidor 4</button>
-            <button class="pedido-btn" id="repartidor5" onclick="mostrarFormulario('Repartidor 5', 'Ana Martínez')">Repartidor 5</button>
+            <button class="pedido-btn" id="repartidor1" onclick="mostrarFormulario('Juan Pérez')">Repartidor 1</button>
+            <button class="pedido-btn" id="repartidor2" onclick="mostrarFormulario('Carlos García')">Repartidor 2</button>
+            <button class="pedido-btn" id="repartidor3" onclick="mostrarFormulario('María López')">Repartidor 3</button>
+            <button class="pedido-btn" id="repartidor4" onclick="mostrarFormulario('Luis Rodríguez')">Repartidor 4</button>
+            <button class="pedido-btn" id="repartidor5" onclick="mostrarFormulario('Ana Martínez')">Repartidor 5</button>
         </div>
 
         <div id="formulario-pedido" class="formulario">
@@ -130,22 +130,23 @@
         let temporizador;
         let segundos = 0;
         let minutos = 0;
-        let pedidoSeleccionado = null;
-        let repartidorSeleccionado = null;
         let nombreRepartidor = null;
 
-        function mostrarFormulario(repartidorId, nombreReal) {
-            // Desbloquea todos los repartidores
-            desbloquearRepartidores();
-
-            // Bloquea el repartidor seleccionado
-            document.getElementById(repartidorId).classList.add('bloqueado');
-
-            // Muestra el formulario y el nombre del repartidor
-            repartidorSeleccionado = repartidorId;
+        function mostrarFormulario(nombreReal) {
+            // Muestra el formulario con el nombre del repartidor
             nombreRepartidor = nombreReal;
             document.getElementById("repartidorSeleccionado").innerText = "Repartidor: " + nombreRepartidor;
             document.getElementById("formulario-pedido").style.display = "block";
+
+            // Bloquea el botón del repartidor seleccionado
+            let botonesRepartidores = document.querySelectorAll(".pedido-btn");
+            botonesRepartidores.forEach(btn => {
+                if (btn.innerText === "Repartidor 1" && nombreReal === "Juan Pérez") btn.classList.add('bloqueado');
+                if (btn.innerText === "Repartidor 2" && nombreReal === "Carlos García") btn.classList.add('bloqueado');
+                if (btn.innerText === "Repartidor 3" && nombreReal === "María López") btn.classList.add('bloqueado');
+                if (btn.innerText === "Repartidor 4" && nombreReal === "Luis Rodríguez") btn.classList.add('bloqueado');
+                if (btn.innerText === "Repartidor 5" && nombreReal === "Ana Martínez") btn.classList.add('bloqueado');
+            });
         }
 
         function enviarPedido() {
@@ -169,8 +170,6 @@
                     alert("Pedido enviado a Telegram");
                     // Oculta el formulario después de enviar el mensaje
                     document.getElementById("formulario-pedido").style.display = "none";
-                    // Desbloquea el repartidor
-                    document.getElementById(repartidorSeleccionado).classList.remove('bloqueado');
                 })
                 .catch(error => alert("Error al enviar pedido"));
         }
@@ -194,15 +193,6 @@
         function detenerTemporizador() {
             clearInterval(temporizador);
             alert("Pedido entregado y temporizador detenido");
-            // Desbloquea el repartidor
-            document.getElementById(repartidorSeleccionado).classList.remove('bloqueado');
-        }
-
-        function desbloquearRepartidores() {
-            // Desbloquea todos los repartidores
-            for (let i = 1; i <= 5; i++) {
-                document.getElementById("repartidor" + i).classList.remove('bloqueado');
-            }
         }
     </script>
 </body>
