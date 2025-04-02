@@ -3,195 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Pedidos</title>
+    <title>Solicitud de Reparto</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #34495e;
-            text-align: center;
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
             color: white;
+            text-align: center;
             padding: 20px;
+        }
+        h1 {
+            color: #f1c40f;
         }
         .container {
-            width: 90%;
-            max-width: 800px;
+            max-width: 400px;
             margin: auto;
-            background: #566573;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
-        .pedido-btn {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            margin: 5px;
+        .btn {
+            background: #f1c40f;
+            color: #333;
             border: none;
+            padding: 15px;
+            margin: 10px;
             cursor: pointer;
-            font-size: 14px;
-            border-radius: 5px;
-        }
-        .pedido-btn.bloqueado {
-            background-color: #e74c3c;
-            cursor: not-allowed;
-        }
-        .boton-accion {
-            background-color: #28a745;
-            color: white;
-            padding: 8px 12px;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            border-radius: 5px;
-            margin-top: 5px;
-        }
-        .temporizador {
             font-size: 16px;
-            font-weight: bold;
-            margin-top: 10px;
+            border-radius: 5px;
+            width: 100%;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: #d4ac0d;
+        }
+        form {
+            display: none;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+            text-align: left;
         }
         input, select {
             width: calc(100% - 20px);
-            padding: 6px;
-            margin: 5px 0;
+            margin: 10px 0;
+            padding: 10px;
             border: none;
             border-radius: 5px;
             display: block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
         }
-        .separador {
-            border-top: 2px solid white;
-            margin: 10px 0;
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
         }
-        .pedido-container {
-            margin-bottom: 20px;
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
         }
-        .repartidor-btn-container {
-            margin-bottom: 15px;
+        button {
+            background: #f1c40f;
+            color: #333;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #d4ac0d;
         }
     </style>
 </head>
 <body>
+
+    <h1>Solicitud de Reparto</h1>
+    <p>Rellena el formulario para gestionar tu pedido.</p>
+
     <div class="container">
-        <h2>Gestión de Pedidos</h2>
-        <p>Selecciona un repartidor para enviar un pedido:</p>
+        <button class="btn" onclick="mostrarFormulario()">📦 Solicitar Reparto</button>
 
-        <!-- Sección de Pedidos -->
-        <div id="pedidos">
-            <div class="pedido-container" id="pedido1">
-                <h3>Pedido 1</h3>
-                <h4>Detalles del Pedido</h4>
-                <label>Nombre del Cliente:</label>
-                <input type="text" id="nombreCliente1">
-                <label>Dirección:</label>
-                <input type="text" id="direccionCliente1">
-                <label>Teléfono:</label>
-                <input type="text" id="telefonoCliente1">
-                <label>Método de Pago:</label>
-                <select id="metodoPago1">
-                    <option value="Efectivo">Efectivo</option>
-                    <option value="Pagado">Pagado</option>
-                </select>
-                <button class="boton-accion" onclick="enviarPedido(1)">Enviar Pedido a Telegram</button>
-            </div>
+        <!-- Formulario -->
+        <form id="formulario">
+            
+            <!-- Datos del Establecimiento -->
+            <h3>📍 Datos del Establecimiento</h3>
+            <label for="nombre_establecimiento">Nombre del Establecimiento:</label>
+            <input type="text" id="nombre_establecimiento" name="nombre_establecimiento" placeholder="Ej. Tienda XYZ" required>
 
-            <div class="pedido-container" id="pedido2">
-                <h3>Pedido 2</h3>
-                <h4>Detalles del Pedido</h4>
-                <label>Nombre del Cliente:</label>
-                <input type="text" id="nombreCliente2">
-                <label>Dirección:</label>
-                <input type="text" id="direccionCliente2">
-                <label>Teléfono:</label>
-                <input type="text" id="telefonoCliente2">
-                <label>Método de Pago:</label>
-                <select id="metodoPago2">
-                    <option value="Efectivo">Efectivo</option>
-                    <option value="Pagado">Pagado</option>
-                </select>
-                <button class="boton-accion" onclick="enviarPedido(2)">Enviar Pedido a Telegram</button>
-            </div>
-        </div>
+            <label for="direccion_establecimiento">Dirección del Establecimiento:</label>
+            <input type="text" id="direccion_establecimiento" name="direccion_establecimiento" placeholder="Ej. Calle 123, Ciudad" required>
 
-        <!-- Sección de Repartidores -->
-        <div id="repartidores">
-            <h2>Repartidores</h2>
-            <div class="repartidor-btn-container">
-                <button class="pedido-btn" id="repartidor1" onclick="iniciarReparto(1)">Repartidor 1</button>
-                <button class="boton-accion" id="iniciar1" onclick="iniciarReparto(1)">Iniciar Reparto</button>
-                <button class="boton-accion" id="entregado1" onclick="entregado(1)" disabled>Entregado</button>
-            </div>
+            <label for="telefono_establecimiento">Número de Contacto:</label>
+            <input type="tel" id="telefono_establecimiento" name="telefono_establecimiento" placeholder="Ej. +34 600 123 456" required>
 
-            <div class="repartidor-btn-container">
-                <button class="pedido-btn" id="repartidor2" onclick="iniciarReparto(2)">Repartidor 2</button>
-                <button class="boton-accion" id="iniciar2" onclick="iniciarReparto(2)">Iniciar Reparto</button>
-                <button class="boton-accion" id="entregado2" onclick="entregado(2)" disabled>Entregado</button>
-            </div>
+            <!-- Datos del Cliente -->
+            <h3>👤 Datos del Cliente</h3>
+            <label for="nombre_cliente">Nombre del Cliente:</label>
+            <input type="text" id="nombre_cliente" name="nombre_cliente" placeholder="Ej. Juan Pérez" required>
 
-            <div class="repartidor-btn-container">
-                <button class="pedido-btn" id="repartidor3" onclick="iniciarReparto(3)">Repartidor 3</button>
-                <button class="boton-accion" id="iniciar3" onclick="iniciarReparto(3)">Iniciar Reparto</button>
-                <button class="boton-accion" id="entregado3" onclick="entregado(3)" disabled>Entregado</button>
-            </div>
-        </div>
+            <label for="telefono_cliente">Teléfono del Cliente:</label>
+            <input type="tel" id="telefono_cliente" name="telefono_cliente" placeholder="Ej. +34 600 987 654" required>
+
+            <label for="direccion_cliente">Dirección del Cliente:</label>
+            <input type="text" id="direccion_cliente" name="direccion_cliente" placeholder="Ej. Calle 456, Ciudad" required>
+
+            <!-- Estado del Pago -->
+            <label for="pagado">Estado del Pago:</label>
+            <select id="pagado" name="pagado">
+                <option value="Pendiente">💰 Pendiente de Pago</option>
+                <option value="Pagado">✅ Pagado</option>
+            </select>
+
+            <button type="button" onclick="enviarTelegram()">Enviar Solicitud</button>
+        </form>
     </div>
 
     <script>
-        let temporizador;
-        let segundos = 0;
-        let minutos = 0;
-        let repartidorSeleccionado = null;
+        function mostrarFormulario() {
+            document.getElementById("formulario").style.display = "block";
+        }
 
-        function enviarPedido(pedidoId) {
-            let nombreCliente = document.getElementById(`nombreCliente${pedidoId}`).value;
-            let direccionCliente = document.getElementById(`direccionCliente${pedidoId}`).value;
-            let telefonoCliente = document.getElementById(`telefonoCliente${pedidoId}`).value;
-            let metodoPago = document.getElementById(`metodoPago${pedidoId}`).value;
+        function enviarTelegram() {
+            const botToken = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";  // 🔹 Reemplaza con el token de tu bot
+            const chatID = "-1002649667521";  // 🔹 Reemplaza con tu chat ID o grupo
+            
+            const nombreEstablecimiento = document.getElementById("nombre_establecimiento").value;
+            const direccionEstablecimiento = document.getElementById("direccion_establecimiento").value;
+            const telefonoEstablecimiento = document.getElementById("telefono_establecimiento").value;
+            
+            const nombreCliente = document.getElementById("nombre_cliente").value;
+            const telefonoCliente = document.getElementById("telefono_cliente").value;
+            const direccionCliente = document.getElementById("direccion_cliente").value;
+            
+            const estadoPago = document.getElementById("pagado").value;
 
-            let mensaje = `Pedido ${pedidoId}:\n\n` +
-                `👤 Cliente: ${nombreCliente}\n📍 Dirección: ${direccionCliente}\n📞 Teléfono: ${telefonoCliente}\n💳 Pago: ${metodoPago}`;
+            const mensaje = `
+📦 *Nueva Solicitud de Reparto* 📦
 
-            // Token y chat ID de Telegram
-            let token = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
-            let chatId = "-1002649667521";
-            let url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensaje)}`;
+🏪 *Establecimiento:*
+- Nombre: ${nombreEstablecimiento}
+- Dirección: ${direccionEstablecimiento}
+- Teléfono: ${telefonoEstablecimiento}
+
+👤 *Cliente:*
+- Nombre: ${nombreCliente}
+- Teléfono: ${telefonoCliente}
+- Dirección: ${direccionCliente}
+
+💰 *Estado del Pago:* ${estadoPago}
+            `;
+
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatID}&text=${encodeURIComponent(mensaje)}&parse_mode=Markdown`;
 
             fetch(url)
                 .then(response => {
-                    alert(`Pedido ${pedidoId} enviado a Telegram`);
+                    if (response.ok) {
+                        alert("Solicitud enviada con éxito a Telegram ✅");
+                    } else {
+                        alert("Error al enviar la solicitud ❌");
+                    }
                 })
                 .catch(error => {
-                    alert("Error al enviar pedido a Telegram");
+                    alert("No se pudo conectar con Telegram ❌");
+                    console.error("Error:", error);
                 });
         }
-
-        function iniciarReparto(idRepartidor) {
-            // Iniciar reparto y bloquear botón de iniciar
-            document.getElementById(`iniciar${idRepartidor}`).disabled = true;
-            document.getElementById(`iniciar${idRepartidor}`).style.backgroundColor = '#e74c3c'; // Rojo
-            document.getElementById(`entregado${idRepartidor}`).disabled = false;
-            document.getElementById(`entregado${idRepartidor}`).style.backgroundColor = '#28a745'; // Verde
-
-            // Aquí va la lógica para iniciar el temporizador
-            segundos = 0;
-            minutos = 0;
-            temporizador = setInterval(function() {
-                segundos++;
-                if (segundos >= 60) {
-                    segundos = 0;
-                    minutos++;
-                }
-                console.log(`${minutos}m ${segundos}s`);
-            }, 1000);
-        }
-
-        function entregado(idRepartidor) {
-            // Detener temporizador y desbloquear botón de iniciar
-            clearInterval(temporizador);
-
-            document.getElementById(`entregado${idRepartidor}`).disabled = true;
-            document.getElementById(`iniciar${idRepartidor}`).disabled = false;
-            document.getElementById(`iniciar${idRepartidor}`).style.backgroundColor = '#4CAF50'; // Verde
-        }
     </script>
+
 </body>
 </html>
