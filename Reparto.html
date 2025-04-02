@@ -31,6 +31,10 @@
             font-size: 14px;
             border-radius: 5px;
         }
+        .pedido-btn.bloqueado {
+            background-color: #e74c3c;
+            cursor: not-allowed;
+        }
         .formulario {
             display: none;
             margin-top: 20px;
@@ -63,20 +67,6 @@
             border-radius: 5px;
             display: block;
         }
-        .repartidor {
-            background-color: #f39c12;
-            color: white;
-            padding: 10px 20px;
-            margin: 5px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .repartidor.rojo {
-            background-color: #e74c3c;
-        }
-        .repartidor.verde {
-            background-color: #2ecc71;
-        }
         .separador {
             border-top: 2px solid white;
             margin: 10px 0;
@@ -89,10 +79,10 @@
         <p>Selecciona un repartidor para ver el formulario:</p>
         
         <div>
-            <button class="repartidor" id="repartidor1" onclick="mostrarFormulario(1)">Julian</button>
-            <button class="repartidor" id="repartidor2" onclick="mostrarFormulario(2)">Luis</button>
-            <button class="repartidor" id="repartidor3" onclick="mostrarFormulario(3)">Manuel</button>
-            <button class="repartidor" id="repartidor4" onclick="mostrarFormulario(4)">Pepe</button>
+            <button class="pedido-btn" id="repartidor1" onclick="mostrarFormulario(1)">Julian</button>
+            <button class="pedido-btn" id="repartidor2" onclick="mostrarFormulario(2)">Luis</button>
+            <button class="pedido-btn" id="repartidor3" onclick="mostrarFormulario(3)">Manuel</button>
+            <button class="pedido-btn" id="repartidor4" onclick="mostrarFormulario(4)">Pepe</button>
         </div>
 
         <div id="formulario-pedido" class="formulario">
@@ -142,14 +132,20 @@
         let repartidorSeleccionado = null;
 
         function mostrarFormulario(repartidor) {
+            // Comprobar si el repartidor está bloqueado
+            if (document.getElementById(`repartidor${repartidor}`).classList.contains('bloqueado')) {
+                alert('Este repartidor ya está en camino, por favor espera.');
+                return;
+            }
+
             repartidorSeleccionado = repartidor;
             document.getElementById("formulario-pedido").style.display = "block";
 
-            // Cambiar el estado del repartidor a rojo
-            document.querySelectorAll('.repartidor').forEach((button) => {
-                button.classList.remove('rojo', 'verde');
+            // Cambiar el estado del repartidor a rojo (bloqueado)
+            document.querySelectorAll('.pedido-btn').forEach((button) => {
+                button.classList.remove('bloqueado');
             });
-            document.getElementById(`repartidor${repartidor}`).classList.add('rojo');
+            document.getElementById(`repartidor${repartidor}`).classList.add('bloqueado');
         }
 
         function enviarPedido() {
@@ -193,9 +189,8 @@
             clearInterval(temporizador);
             alert("Pedido entregado y temporizador detenido");
 
-            // Cambiar el estado del repartidor a verde
-            document.getElementById(`repartidor${repartidorSeleccionado}`).classList.remove('rojo');
-            document.getElementById(`repartidor${repartidorSeleccionado}`).classList.add('verde');
+            // Liberar al repartidor (cambiar el estado a verde)
+            document.getElementById(`repartidor${repartidorSeleccionado}`).classList.remove('bloqueado');
         }
     </script>
 </body>
