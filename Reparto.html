@@ -10,58 +10,62 @@
             background-color: #34495e;
             text-align: center;
             color: white;
+            padding: 20px;
         }
         .container {
-            width: 80%;
+            width: 90%;
+            max-width: 800px;
             margin: auto;
             background: #566573;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
         .pedido-btn {
             background-color: #4CAF50;
             color: white;
-            padding: 10px;
+            padding: 10px 15px;
             margin: 5px;
             border: none;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
+            border-radius: 5px;
         }
         .formulario {
             display: none;
             margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #566573;
-            text-align: left;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #2C3E50;
             color: white;
+            text-align: left;
         }
         .boton-accion {
             background-color: #28a745;
             color: white;
-            padding: 10px;
+            padding: 8px 12px;
             border: none;
             cursor: pointer;
-            font-size: 16px;
-            margin: 5px;
+            font-size: 14px;
+            border-radius: 5px;
+            margin-top: 5px;
         }
         .temporizador {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             margin-top: 10px;
         }
         input, select {
-            width: 100%;
-            padding: 8px;
+            width: calc(100% - 20px);
+            padding: 6px;
             margin: 5px 0;
             border: none;
             border-radius: 5px;
+            display: block;
         }
         .separador {
             border-top: 2px solid white;
-            margin: 15px 0;
+            margin: 10px 0;
         }
     </style>
 </head>
@@ -76,11 +80,6 @@
             <button class="pedido-btn" onclick="mostrarFormulario(3)">Pedido 3</button>
             <button class="pedido-btn" onclick="mostrarFormulario(4)">Pedido 4</button>
             <button class="pedido-btn" onclick="mostrarFormulario(5)">Pedido 5</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(6)">Pedido 6</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(7)">Pedido 7</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(8)">Pedido 8</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(9)">Pedido 9</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(10)">Pedido 10</button>
         </div>
 
         <div id="formulario-pedido" class="formulario">
@@ -88,31 +87,31 @@
             
             <h4>Datos de la Empresa</h4>
             <label>Nombre del Establecimiento:</label>
-            <input type="text" id="nombreEmpresa"><br><br>
+            <input type="text" id="nombreEmpresa">
 
             <label>Dirección del Establecimiento:</label>
-            <input type="text" id="direccionEmpresa"><br><br>
+            <input type="text" id="direccionEmpresa">
 
             <label>Número de Contacto:</label>
-            <input type="text" id="telefonoEmpresa"><br><br>
+            <input type="text" id="telefonoEmpresa">
 
             <div class="separador"></div>
 
             <h4>Datos del Cliente</h4>
             <label>Nombre del Cliente:</label>
-            <input type="text" id="nombreCliente"><br><br>
+            <input type="text" id="nombreCliente">
 
             <label>Dirección del Cliente:</label>
-            <input type="text" id="direccionCliente"><br><br>
+            <input type="text" id="direccionCliente">
 
             <label>Teléfono del Cliente:</label>
-            <input type="text" id="telefonoCliente"><br><br>
+            <input type="text" id="telefonoCliente">
 
             <label>Método de Pago:</label>
             <select id="metodoPago">
                 <option value="Efectivo">Efectivo</option>
                 <option value="Pagado">Pagado</option>
-            </select><br><br>
+            </select>
 
             <button class="boton-accion" onclick="enviarPedido()">Enviar Pedido a Telegram</button>
             
