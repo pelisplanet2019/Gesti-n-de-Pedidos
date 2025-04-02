@@ -3,175 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solicitud de Reparto</title>
+    <title>Gestión de Pedidos</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-            color: white;
+            background-color: #34495e;
             text-align: center;
+            color: white;
             padding: 20px;
-        }
-        h1 {
-            color: #f1c40f;
         }
         .container {
-            max-width: 400px;
+            width: 90%;
+            max-width: 800px;
             margin: auto;
-        }
-        .btn {
-            background: #f1c40f;
-            color: #333;
-            border: none;
-            padding: 15px;
-            margin: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 5px;
-            width: 100%;
-            transition: 0.3s;
-        }
-        .btn:hover {
-            background: #d4ac0d;
-        }
-        form {
-            display: none;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            background: #566573;
             padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .pedido-btn, .repartidor-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+        .formulario {
+            display: none;
             margin-top: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #2C3E50;
+            color: white;
             text-align: left;
         }
-        input, select {
-            width: calc(100% - 20px);
-            margin: 10px 0;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            display: block;
-            background: rgba(255, 255, 255, 0.2);
+        .boton-accion {
+            background-color: #28a745;
             color: white;
-        }
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 10px;
-        }
-        button {
-            background: #f1c40f;
-            color: #333;
+            padding: 8px 12px;
             border: none;
-            padding: 10px;
             cursor: pointer;
-            width: 100%;
+            font-size: 14px;
             border-radius: 5px;
-            transition: 0.3s;
+            margin-top: 5px;
         }
-        button:hover {
-            background: #d4ac0d;
+        .repartidor-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1B2631;
+            border-radius: 8px;
+        }
+        .bloqueado {
+            background-color: red !important;
+        }
+        .libre {
+            background-color: green !important;
         }
     </style>
 </head>
 <body>
-
-    <h1>Solicitud de Reparto</h1>
-    <p>Rellena el formulario para gestionar tu pedido.</p>
-
     <div class="container">
-        <button class="btn" onclick="mostrarFormulario()">📦 Solicitar Reparto</button>
+        <h2>Gestión de Pedidos</h2>
 
-        <!-- Formulario -->
-        <form id="formulario">
+        <h3>Pedidos</h3>
+        <div>
+            <!-- 15 botones para los pedidos -->
+            <script>
+                for (let i = 1; i <= 15; i++) {
+                    document.write(`<button class="pedido-btn" onclick="mostrarFormulario(${i})">Pedido ${i}</button>`);
+                }
+            </script>
+        </div>
+
+        <div id="formulario-pedido" class="formulario">
+            <h3>Detalles del Pedido</h3>
             
-            <!-- Datos del Establecimiento -->
-            <h3>📍 Datos del Establecimiento</h3>
-            <label for="nombre_establecimiento">Nombre del Establecimiento:</label>
-            <input type="text" id="nombre_establecimiento" name="nombre_establecimiento" placeholder="BK Kinepolis" required>
+            <h4>Datos de la Empresa</h4>
+            <label>Nombre del Establecimiento:</label>
+            <input type="text" id="nombreEmpresa" value="Mi Empresa" readonly>
 
-            <label for="direccion_establecimiento">Dirección del Establecimiento:</label>
-            <input type="text" id="direccion_establecimiento" name="direccion_establecimiento" placeholder="Calle 123, Ciudad" required>
+            <label>Dirección del Establecimiento:</label>
+            <input type="text" id="direccionEmpresa" value="Calle Principal, 123" readonly>
 
-            <label for="telefono_establecimiento">Número de Contacto:</label>
-            <input type="tel" id="telefono_establecimiento" name="telefono_establecimiento" placeholder="+34 600 123 456" required>
+            <label>Número de Contacto:</label>
+            <input type="text" id="telefonoEmpresa" value="123456789" readonly>
 
-            <!-- Datos del Cliente -->
-            <h3>👤 Datos del Cliente</h3>
-            <label for="nombre_cliente">Nombre del Cliente:</label>
-            <input type="text" id="nombre_cliente" name="nombre_cliente" placeholder="Ej. Juan Pérez" required>
+            <div class="separador"></div>
 
-            <label for="telefono_cliente">Teléfono del Cliente:</label>
-            <input type="tel" id="telefono_cliente" name="telefono_cliente" placeholder="Ej. +34 600 987 654" required>
+            <h4>Datos del Cliente</h4>
+            <label>Nombre del Cliente:</label>
+            <input type="text" id="nombreCliente">
 
-            <label for="direccion_cliente">Dirección del Cliente:</label>
-            <input type="text" id="direccion_cliente" name="direccion_cliente" placeholder="Ej. Calle 456, Ciudad" required>
+            <label>Dirección del Cliente:</label>
+            <input type="text" id="direccionCliente">
 
-            <!-- Estado del Pago -->
-            <label for="pagado">Estado del Pago:</label>
-            <select id="pagado" name="pagado">
-                <option value="Pendiente">💰 Pendiente de Pago</option>
-                <option value="Pagado">✅ Pagado</option>
+            <label>Teléfono del Cliente:</label>
+            <input type="text" id="telefonoCliente">
+
+            <label>Método de Pago:</label>
+            <select id="metodoPago">
+                <option value="Efectivo">Efectivo</option>
+                <option value="Pagado">Pagado</option>
             </select>
 
-            <button type="button" onclick="enviarTelegram()">Enviar Solicitud</button>
-        </form>
+            <button class="boton-accion" onclick="enviarPedido()">Enviar Pedido a Telegram</button>
+        </div>
+
+        <h3>Repartidores</h3>
+        <div class="repartidor-container">
+            <script>
+                for (let i = 1; i <= 15; i++) {
+                    document.write(`
+                        <div>
+                            <button class="repartidor-btn" id="repartidor${i}" onclick="seleccionarRepartidor(${i})">Repartidor ${i}</button>
+                            <button class="boton-accion" id="inicio${i}" onclick="iniciarReparto(${i})">Iniciar Reparto</button>
+                            <button class="boton-accion" id="entregado${i}" onclick="finalizarReparto(${i})" style="display:none;">Entregado</button>
+                        </div>
+                    `);
+                }
+            </script>
+        </div>
     </div>
 
     <script>
-        function mostrarFormulario() {
-            document.getElementById("formulario").style.display = "block";
+        let pedidoSeleccionado = null;
+        let repartidores = {};
+
+        function mostrarFormulario(pedido) {
+            pedidoSeleccionado = pedido;
+            document.getElementById("formulario-pedido").style.display = "block";
         }
 
-        function enviarTelegram() {
-            const botToken = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";  // 🔹 Reemplaza con el token de tu bot
-            const chatID = "-1002649667521";  // 🔹 Reemplaza con tu chat ID o grupo
-            
-            const nombreEstablecimiento = document.getElementById("nombre_establecimiento").value;
-            const direccionEstablecimiento = document.getElementById("direccion_establecimiento").value;
-            const telefonoEstablecimiento = document.getElementById("telefono_establecimiento").value;
-            
-            const nombreCliente = document.getElementById("nombre_cliente").value;
-            const telefonoCliente = document.getElementById("telefono_cliente").value;
-            const direccionCliente = document.getElementById("direccion_cliente").value;
-            
-            const estadoPago = document.getElementById("pagado").value;
+        function enviarPedido() {
+            let nombreCliente = document.getElementById("nombreCliente").value;
+            let direccionCliente = document.getElementById("direccionCliente").value;
+            let telefonoCliente = document.getElementById("telefonoCliente").value;
+            let metodoPago = document.getElementById("metodoPago").value;
 
-            const mensaje = `
-📦 *Nueva Solicitud de Reparto* 📦
+            let mensaje = `🚀 Pedido ${pedidoSeleccionado}\n👤 Cliente: ${nombreCliente}\n📍 Dirección: ${direccionCliente}\n📞 Teléfono: ${telefonoCliente}\n💳 Pago: ${metodoPago}`;
 
-🏪 *Establecimiento:*
-- Nombre: ${nombreEstablecimiento}
-- Dirección: ${direccionEstablecimiento}
-- Teléfono: ${telefonoEstablecimiento}
-
-👤 *Cliente:*
-- Nombre: ${nombreCliente}
-- Teléfono: ${telefonoCliente}
-- Dirección: ${direccionCliente}
-
-💰 *Estado del Pago:* ${estadoPago}
-            `;
-
-            const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatID}&text=${encodeURIComponent(mensaje)}&parse_mode=Markdown`;
+            let token = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
+            let chatId = "-1002649667521";
+            let url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensaje)}`;
 
             fetch(url)
-                .then(response => {
-                    if (response.ok) {
-                        alert("Solicitud enviada con éxito a Telegram ✅");
-                    } else {
-                        alert("Error al enviar la solicitud ❌");
-                    }
-                })
-                .catch(error => {
-                    alert("No se pudo conectar con Telegram ❌");
-                    console.error("Error:", error);
-                });
+                .then(response => alert("Pedido enviado a Telegram"))
+                .catch(error => alert("Error al enviar pedido"));
+
+            document.getElementById("formulario-pedido").reset();
+            document.getElementById("formulario-pedido").style.display = "none";
+        }
+
+        function seleccionarRepartidor(id) {
+            if (!repartidores[id]) {
+                repartidores[id] = { estado: "libre" };
+            }
+        }
+
+        function iniciarReparto(id) {
+            if (repartidores[id].estado === "libre") {
+                repartidores[id].estado = "ocupado";
+                document.getElementById(`repartidor${id}`).classList.add("bloqueado");
+                document.getElementById(`inicio${id}`).style.display = "none";
+                document.getElementById(`entregado${id}`).style.display = "inline-block";
+                alert(`Repartidor ${id} ha iniciado el reparto`);
+            }
+        }
+
+        function finalizarReparto(id) {
+            repartidores[id].estado = "libre";
+            document.getElementById(`repartidor${id}`).classList.remove("bloqueado");
+            document.getElementById(`repartidor${id}`).classList.add("libre");
+            document.getElementById(`inicio${id}`).style.display = "inline-block";
+            document.getElementById(`entregado${id}`).style.display = "none";
+            alert(`Repartidor ${id} ha entregado el pedido`);
         }
     </script>
-
 </body>
 </html>
