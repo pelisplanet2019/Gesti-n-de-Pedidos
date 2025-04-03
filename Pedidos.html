@@ -5,91 +5,162 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Pedidos</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #34495e; color: white; text-align: center; padding: 20px; }
-        .container { width: 80%; max-width: 600px; margin: auto; background: #566573; padding: 20px; border-radius: 8px; }
-        .pedido-btn { background-color: #3498db; color: white; padding: 10px; margin: 5px; border: none; cursor: pointer; border-radius: 5px; width: 100%; }
-        .formulario { display: none; background-color: #2C3E50; padding: 15px; border-radius: 8px; text-align: left; margin-top: 10px; }
-        input, select { width: 100%; padding: 8px; margin: 5px 0; border-radius: 5px; }
-        .boton-enviar { background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; width: 100%; }
-        .datos-empresa { background-color: #1C2833; padding: 10px; border-radius: 8px; margin-bottom: 10px; text-align: left; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: auto;
+            background: #34495e;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #1B2631;
+        }
+
+        h2, h3 {
+            color: #f39c12;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+
+        .formulario {
+            display: none;
+            margin-top: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #2C3E50;
+            color: white;
+            text-align: left;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #34495e;
+            color: white;
+        }
+
+        .boton-accion {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .bloqueado {
+            background-color: red !important;
+        }
+
+        .libre {
+            background-color: green !important;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>📦 Gestión de Pedidos 📦</h2>
+        <h2>📦 Gestión de Pedidos y Reparto</h2>
 
-        <!-- Datos fijos de la empresa -->
-        <div class="datos-empresa">
-            <h3>🏪 Establecimiento</h3>
-            <p><strong>Nombre:</strong> BURGER KING</p>
-            <p><strong>Dirección:</strong> KINEPOLIS</p>
-            <p><strong>Teléfono:</strong> 6000</p>
-        </div>
+        <!-- SECCIÓN PEDIDOS -->
+        <div class="section">
+            <h3>📜 Pedidos</h3>
+            <div>
+                <script>
+                    for (let i = 1; i <= 15; i++) {
+                        document.write(`<button class="button" onclick="mostrarFormulario(${i})">Pedido ${i}</button>`);
+                    }
+                </script>
+            </div>
 
-        <!-- Botones para cada pedido -->
-        <h3>📋 Selecciona un Pedido:</h3>
-        <div id="botones-pedidos">
-            <button class="pedido-btn" onclick="mostrarFormulario(1)">Pedido 1</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(2)">Pedido 2</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(3)">Pedido 3</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(4)">Pedido 4</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(5)">Pedido 5</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(6)">Pedido 6</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(7)">Pedido 7</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(8)">Pedido 8</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(9)">Pedido 9</button>
-            <button class="pedido-btn" onclick="mostrarFormulario(10)">Pedido 10</button>
-        </div>
+            <div id="formulario-pedido" class="formulario">
+                <h3>✍️ Detalles del Pedido</h3>
+                
+                <h4>🏪 Datos de la Empresa</h4>
+                <label>Nombre del Establecimiento:</label>
+                <input type="text" id="nombreEmpresa" value="BK KINEPOLIS" readonly>
 
-        <!-- Formularios de pedidos -->
-        <div id="formularios-pedidos"></div>
-    </div>
+                <label>Dirección del Establecimiento:</label>
+                <input type="text" id="direccionEmpresa" value="Calle Principal, 123" readonly>
 
-    <script>
-        function mostrarFormulario(pedidoId) {
-            // Eliminar cualquier formulario anterior
-            document.getElementById("formularios-pedidos").innerHTML = "";
+                <label>Número de Contacto:</label>
+                <input type="text" id="telefonoEmpresa" value="123456789" readonly>
 
-            // Crear un nuevo formulario
-            let formulario = document.createElement("div");
-            formulario.className = "formulario";
-            formulario.innerHTML = `
-                <h3>Detalles del Pedido ${pedidoId}</h3>
+                <h4>👤 Datos del Cliente</h4>
                 <label>Nombre del Cliente:</label>
-                <input type="text" id="nombreCliente${pedidoId}">
-                <label>Teléfono:</label>
-                <input type="text" id="telefonoCliente${pedidoId}">
-                <label>Dirección:</label>
-                <input type="text" id="direccionCliente${pedidoId}">
-                <label>Método de Pago:</label>
-                <select id="metodoPago${pedidoId}">
+                <input type="text" id="nombreCliente">
+
+                <label>Dirección del Cliente:</label>
+                <input type="text" id="direccionCliente">
+
+                <label>Teléfono del Cliente:</label>
+                <input type="text" id="telefonoCliente">
+
+                <label>💰 Estado del Pago:</label>
+                <select id="metodoPago">
                     <option value="Pendiente">Pendiente</option>
                     <option value="Pagado">Pagado</option>
                 </select>
-                <button class="boton-enviar" onclick="enviarPedido(${pedidoId})">Enviar a Telegram</button>
-            `;
 
-            document.getElementById("formularios-pedidos").appendChild(formulario);
+                <button class="boton-accion" onclick="enviarPedido()">📩 Enviar Pedido a Telegram</button>
+            </div>
+        </div>
+
+    <script>
+        let pedidoSeleccionado = null;
+        let repartidores = {};
+
+        function mostrarFormulario(pedido) {
+            pedidoSeleccionado = pedido;
+            document.getElementById("formulario-pedido").style.display = "block";
         }
 
-        function enviarPedido(pedidoId) {
-            let nombreCliente = document.getElementById(`nombreCliente${pedidoId}`).value;
-            let telefonoCliente = document.getElementById(`telefonoCliente${pedidoId}`).value;
-            let direccionCliente = document.getElementById(`direccionCliente${pedidoId}`).value;
-            let metodoPago = document.getElementById(`metodoPago${pedidoId}`).value;
+        function enviarPedido() {
+            let nombreCliente = document.getElementById("nombreCliente").value;
+            let direccionCliente = document.getElementById("direccionCliente").value;
+            let telefonoCliente = document.getElementById("telefonoCliente").value;
+            let metodoPago = document.getElementById("metodoPago").value;
 
-            let mensaje = `📦 Nueva Solicitud de Reparto 📦\n🏪 Establecimiento:\n- Nombre: Mi Tienda\n- Dirección: Calle Principal 123\n- Teléfono: 600123456\n\n👤 Cliente:\n- Nombre: ${nombreCliente}\n- Teléfono: ${telefonoCliente}\n- Dirección: ${direccionCliente}\n\n💰 Estado del Pago: ${metodoPago}`;
+            let mensaje = `📦 Nueva Solicitud de Reparto 📦\n\n🏪 *Establecimiento:*\n- Nombre: Mi Empresa\n- Dirección: Calle Principal, 123\n- Teléfono: 123456789\n\n👤 *Cliente:*\n- Nombre: ${nombreCliente}\n- Teléfono: ${telefonoCliente}\n- Dirección: ${direccionCliente}\n\n💰 *Estado del Pago:* ${metodoPago}`;
 
             let token = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
-            let chatId = "-1002649667521";
-            let url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensaje)}`;
+            let chatId = "-1002649667521D";
+            let url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensaje)}&parse_mode=Markdown`;
 
             fetch(url)
-                .then(() => {
-                    alert("Pedido enviado a Telegram");
-                    document.getElementById("formularios-pedidos").innerHTML = ""; // Ocultar el formulario tras enviarlo
-                })
-                .catch(() => alert("Error al enviar pedido"));
+                .then(response => alert("📨 Pedido enviado a Telegram"))
+                .catch(error => alert("❌ Error al enviar pedido"));
+
+            document.getElementById("formulario-pedido").reset();
+            document.getElementById("formulario-pedido").style.display = "none";
         }
     </script>
 </body>
