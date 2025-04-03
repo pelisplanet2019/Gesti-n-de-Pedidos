@@ -3,201 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Pedidos y Repartidores</title>
+    <title>Gestión de Repartidores</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #34495e;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-        .container {
-            width: 90%;
-            max-width: 900px;
-            margin: auto;
-            background: #566573;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-        }
-        h2 { margin-bottom: 10px; }
-        .section {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .box {
-            flex: 1;
-            padding: 10px;
-            background: #2C3E50;
-            border-radius: 8px;
-            text-align: center;
-            margin: 5px;
-        }
-        .pedido-btn, .boton-accion {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            border-radius: 5px;
-            margin: 5px;
-        }
-        .boton-accion {
-            width: 100%;
-        }
-        .pedido-btn { background-color: #2980B9; }
-        .formulario {
-            display: none;
-            background: #566573;
-            padding: 15px;
-            border-radius: 8px;
-            color: white;
-            text-align: left;
-        }
-        input, select {
-            width: calc(100% - 20px);
-            padding: 6px;
-            margin: 5px 0;
-            border: none;
-            border-radius: 5px;
-            display: block;
-        }
-        .temporizador {
-            font-size: 16px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-        .repartidor-btn {
-            background-color: #f39c12;
-            padding: 10px 15px;
-            border-radius: 5px;
-            color: white;
-            cursor: pointer;
-        }
-        .activo { background-color: red !important; }
-        .libre { background-color: green !important; }
+        body { font-family: Arial, sans-serif; background-color: #34495e; color: white; text-align: center; padding: 20px; }
+        .container { width: 80%; max-width: 600px; margin: auto; background: #566573; padding: 20px; border-radius: 8px; }
+        .repartidor-btn { background-color: #27ae60; color: white; padding: 10px; margin: 5px; border: none; cursor: pointer; border-radius: 5px; }
+        .estado { font-size: 18px; font-weight: bold; margin-top: 10px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Gestión de Pedidos</h2>
-        <div class="section">
-            <div class="box">
-                <h3>Pedidos</h3>
-                <button class="pedido-btn" onclick="mostrarFormulario(1)">Pedido 1</button>
-                <button class="pedido-btn" onclick="mostrarFormulario(2)">Pedido 2</button>
-                <button class="pedido-btn" onclick="mostrarFormulario(3)">Pedido 3</button>
-            </div>
-            <div class="box">
-                <h3>Repartidores</h3>
-                <button class="repartidor-btn" onclick="iniciarReparto(1)">Repartidor 1</button>
-                <button class="repartidor-btn" onclick="iniciarReparto(2)">Repartidor 2</button>
-                <button class="repartidor-btn" onclick="iniciarReparto(3)">Repartidor 3</button>
-            </div>
-        </div>
-
-        <!-- Formulario -->
-        <div id="formulario-pedido" class="formulario">
-            <h3>Detalles del Pedido</h3>
-            <h4>Datos de la Empresa</h4>
-            <label>Nombre:</label>
-            <input type="text" id="nombreEmpresa" value="Mi Empresa" readonly>
-            <label>Dirección:</label>
-            <input type="text" id="direccionEmpresa" value="Calle Principal, Ciudad" readonly>
-            <label>Teléfono:</label>
-            <input type="text" id="telefonoEmpresa" value="123456789" readonly>
-
-            <h4>Datos del Cliente</h4>
-            <label>Nombre:</label>
-            <input type="text" id="nombreCliente">
-            <label>Dirección:</label>
-            <input type="text" id="direccionCliente">
-            <label>Teléfono:</label>
-            <input type="text" id="telefonoCliente">
-            <label>Estado del Pago:</label>
-            <select id="metodoPago">
-                <option value="Pendiente">Pendiente</option>
-                <option value="Pagado">Pagado</option>
-            </select>
-
-            <button class="boton-accion" onclick="enviarPedido()">Enviar Pedido a Telegram</button>
-        </div>
-
-        <!-- Temporizadores -->
-        <div id="temporizadores"></div>
+        <h2>Gestión de Repartidores</h2>
+        <button class="repartidor-btn" onclick="iniciarEntrega(1)">Repartidor 1</button>
+        <button class="repartidor-btn" onclick="iniciarEntrega(2)">Repartidor 2</button>
+        
+        <div id="estado-repartidor" class="estado"></div>
     </div>
 
     <script>
-        let temporizadores = {};
-        let pedidoSeleccionado = null;
+        let repartidorSeleccionado = null;
+        let temporizador;
 
-        function mostrarFormulario(pedido) {
-            pedidoSeleccionado = pedido;
-            document.getElementById("formulario-pedido").style.display = "block";
-        }
-
-        function enviarPedido() {
-            let nombreEmpresa = document.getElementById("nombreEmpresa").value;
-            let direccionEmpresa = document.getElementById("direccionEmpresa").value;
-            let telefonoEmpresa = document.getElementById("telefonoEmpresa").value;
-
-            let nombreCliente = document.getElementById("nombreCliente").value;
-            let direccionCliente = document.getElementById("direccionCliente").value;
-            let telefonoCliente = document.getElementById("telefonoCliente").value;
-            let metodoPago = document.getElementById("metodoPago").value;
-
-            let mensaje = `📦 Nueva Solicitud de Reparto 📦\n\n🏪 Establecimiento:\n- Nombre: ${nombreEmpresa}\n- Dirección: ${direccionEmpresa}\n- Teléfono: ${telefonoEmpresa}\n\n👤 Cliente:\n- Nombre: ${nombreCliente}\n- Teléfono: ${telefonoCliente}\n- Dirección: ${direccionCliente}\n\n💰 Estado del Pago: ${metodoPago}`;
-
-            let token = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
-            let chatId = "-1002649667521";
-            let url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensaje)}`;
-
-            fetch(url)
-                .then(response => alert("Pedido enviado a Telegram"))
-                .catch(error => alert("Error al enviar pedido"));
-
-            document.getElementById("formulario-pedido").style.display = "none";
-            document.getElementById("nombreCliente").value = "";
-            document.getElementById("direccionCliente").value = "";
-            document.getElementById("telefonoCliente").value = "";
-        }
-
-        function iniciarReparto(id) {
-            let btn = document.querySelector(`.repartidor-btn:nth-child(${id})`);
-            if (btn.classList.contains("activo")) return;
-
-            btn.classList.add("activo");
-            btn.textContent = `Repartidor ${id} - En camino`;
-
-            if (!temporizadores[id]) {
-                temporizadores[id] = { segundos: 0, minutos: 0, interval: null };
-            }
-
-            let timer = temporizadores[id];
-
-            timer.interval = setInterval(() => {
-                timer.segundos++;
-                if (timer.segundos === 60) {
-                    timer.minutos++;
-                    timer.segundos = 0;
+        function iniciarEntrega(repartidor) {
+            repartidorSeleccionado = repartidor;
+            document.getElementById("estado-repartidor").innerHTML = `🚴 Repartidor ${repartidor} <span style="color: red;">En camino...</span>`;
+            
+            let tiempo = 30 * 60;
+            temporizador = setInterval(() => {
+                let minutos = Math.floor(tiempo / 60);
+                let segundos = tiempo % 60;
+                document.getElementById("estado-repartidor").innerHTML = `🚴 Repartidor ${repartidor} - En camino: ${minutos}:${segundos}`;
+                tiempo--;
+                if (tiempo < 0) {
+                    clearInterval(temporizador);
                 }
-                btn.textContent = `Repartidor ${id} - ${String(timer.minutos).padStart(2, "0")}:${String(timer.segundos).padStart(2, "0")}`;
             }, 1000);
-
-            btn.onclick = () => finalizarReparto(id);
         }
 
-        function finalizarReparto(id) {
-            let btn = document.querySelector(`.repartidor-btn:nth-child(${id})`);
-            clearInterval(temporizadores[id].interval);
-            btn.classList.remove("activo");
-            btn.classList.add("libre");
-            btn.textContent = `Repartidor ${id} - Entregado ✅`;
-            btn.onclick = () => iniciarReparto(id);
+        function marcarEntregado() {
+            clearInterval(temporizador);
+            document.getElementById("estado-repartidor").innerHTML = `✅ Repartidor ${repartidorSeleccionado} Entregado`;
         }
     </script>
+
+    <button class="repartidor-btn" style="background-color: #e74c3c;" onclick="marcarEntregado()">Marcar como Entregado</button>
 </body>
 </html>
