@@ -7,47 +7,76 @@
     <style>
         body { font-family: Arial, sans-serif; background-color: #34495e; color: white; text-align: center; padding: 20px; }
         .container { width: 80%; max-width: 600px; margin: auto; background: #566573; padding: 20px; border-radius: 8px; }
-        .pedido-btn { background-color: #3498db; color: white; padding: 10px; margin: 5px; border: none; cursor: pointer; border-radius: 5px; }
-        .formulario { display: none; background-color: #2C3E50; padding: 15px; border-radius: 8px; text-align: left; }
+        .pedido-btn { background-color: #3498db; color: white; padding: 10px; margin: 5px; border: none; cursor: pointer; border-radius: 5px; width: 100%; }
+        .formulario { display: none; background-color: #2C3E50; padding: 15px; border-radius: 8px; text-align: left; margin-top: 10px; }
         input, select { width: 100%; padding: 8px; margin: 5px 0; border-radius: 5px; }
-        .boton-enviar { background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; }
+        .boton-enviar { background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; width: 100%; }
+        .datos-empresa { background-color: #1C2833; padding: 10px; border-radius: 8px; margin-bottom: 10px; text-align: left; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Gestión de Pedidos</h2>
-        <button class="pedido-btn" onclick="mostrarFormulario(1)">Pedido 1</button>
-        <button class="pedido-btn" onclick="mostrarFormulario(2)">Pedido 2</button>
+        <h2>📦 Gestión de Pedidos 📦</h2>
 
-        <div id="formulario-pedido" class="formulario">
-            <h3>Detalles del Pedido</h3>
-            <label>Nombre del Cliente:</label>
-            <input type="text" id="nombreCliente">
-            <label>Teléfono:</label>
-            <input type="text" id="telefonoCliente">
-            <label>Dirección:</label>
-            <input type="text" id="direccionCliente">
-            <label>Método de Pago:</label>
-            <select id="metodoPago">
-                <option value="Pendiente">Pendiente</option>
-                <option value="Pagado">Pagado</option>
-            </select>
-            <button class="boton-enviar" onclick="enviarPedido()">Enviar a Telegram</button>
+        <!-- Datos fijos de la empresa -->
+        <div class="datos-empresa">
+            <h3>🏪 Establecimiento</h3>
+            <p><strong>Nombre:</strong>Burger King</p>
+            <p><strong>Dirección:</strong>Kinepolis</p>
+            <p><strong>Teléfono:</strong> 600000</p>
         </div>
+
+        <!-- Botones para cada pedido -->
+        <h3>📋 Selecciona un Pedido:</h3>
+        <div id="botones-pedidos">
+            <button class="pedido-btn" onclick="mostrarFormulario(1)">Pedido 1</button>
+            <button class="pedido-btn" onclick="mostrarFormulario(2)">Pedido 2</button>
+            <button class="pedido-btn" onclick="mostrarFormulario(3)">Pedido 3</button>
+            <button class="pedido-btn" onclick="mostrarFormulario(4)">Pedido 4</button>
+            <button class="pedido-btn" onclick="mostrarFormulario(5)">Pedido 5</button>
+            <button class="pedido-btn" onclick="mostrarFormulario(6)">Pedido 6</button>
+            <button class="pedido-btn" onclick="mostrarFormulario(7)">Pedido 7</button>
+            <button class="pedido-btn" onclick="mostrarFormulario(8)">Pedido 8</button>
+            <button class="pedido-btn" onclick="mostrarFormulario(9)">Pedido 9</button>
+            <button class="pedido-btn" onclick="mostrarFormulario(10)">Pedido 10</button>
+        </div>
+
+        <!-- Formularios de pedidos -->
+        <div id="formularios-pedidos"></div>
     </div>
 
     <script>
-        let pedidoSeleccionado = null;
-        function mostrarFormulario(pedido) {
-            pedidoSeleccionado = pedido;
-            document.getElementById("formulario-pedido").style.display = "block";
+        function mostrarFormulario(pedidoId) {
+            // Eliminar cualquier formulario anterior
+            document.getElementById("formularios-pedidos").innerHTML = "";
+
+            // Crear un nuevo formulario
+            let formulario = document.createElement("div");
+            formulario.className = "formulario";
+            formulario.innerHTML = `
+                <h3>Detalles del Pedido ${pedidoId}</h3>
+                <label>Nombre del Cliente:</label>
+                <input type="text" id="nombreCliente${pedidoId}">
+                <label>Teléfono:</label>
+                <input type="text" id="telefonoCliente${pedidoId}">
+                <label>Dirección:</label>
+                <input type="text" id="direccionCliente${pedidoId}">
+                <label>Método de Pago:</label>
+                <select id="metodoPago${pedidoId}">
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Pagado">Pagado</option>
+                </select>
+                <button class="boton-enviar" onclick="enviarPedido(${pedidoId})">Enviar a Telegram</button>
+            `;
+
+            document.getElementById("formularios-pedidos").appendChild(formulario);
         }
 
-        function enviarPedido() {
-            let nombreCliente = document.getElementById("nombreCliente").value;
-            let telefonoCliente = document.getElementById("telefonoCliente").value;
-            let direccionCliente = document.getElementById("direccionCliente").value;
-            let metodoPago = document.getElementById("metodoPago").value;
+        function enviarPedido(pedidoId) {
+            let nombreCliente = document.getElementById(`nombreCliente${pedidoId}`).value;
+            let telefonoCliente = document.getElementById(`telefonoCliente${pedidoId}`).value;
+            let direccionCliente = document.getElementById(`direccionCliente${pedidoId}`).value;
+            let metodoPago = document.getElementById(`metodoPago${pedidoId}`).value;
 
             let mensaje = `📦 Nueva Solicitud de Reparto 📦\n🏪 Establecimiento:\n- Nombre: Mi Tienda\n- Dirección: Calle Principal 123\n- Teléfono: 600123456\n\n👤 Cliente:\n- Nombre: ${nombreCliente}\n- Teléfono: ${telefonoCliente}\n- Dirección: ${direccionCliente}\n\n💰 Estado del Pago: ${metodoPago}`;
 
@@ -58,8 +87,7 @@
             fetch(url)
                 .then(() => {
                     alert("Pedido enviado a Telegram");
-                    document.getElementById("formulario-pedido").reset();
-                    document.getElementById("formulario-pedido").style.display = "none";
+                    document.getElementById("formularios-pedidos").innerHTML = ""; // Ocultar el formulario tras enviarlo
                 })
                 .catch(() => alert("Error al enviar pedido"));
         }
