@@ -21,9 +21,9 @@
         <!-- Datos fijos de la empresa -->
         <div class="datos-empresa">
             <h3>🏪 Establecimiento</h3>
-            <p><strong>Nombre:</strong>Burger King</p>
-            <p><strong>Dirección:</strong>Kinepolis</p>
-            <p><strong>Teléfono:</strong> 600000</p>
+            <p><strong>Nombre:</strong> Mi Tienda</p>
+            <p><strong>Dirección:</strong> Calle Principal 123</p>
+            <p><strong>Teléfono:</strong> 600123456</p>
         </div>
 
         <!-- Botones para cada pedido -->
@@ -80,8 +80,8 @@
 
             let mensaje = `📦 Nueva Solicitud de Reparto 📦\n🏪 Establecimiento:\n- Nombre: Mi Tienda\n- Dirección: Calle Principal 123\n- Teléfono: 600123456\n\n👤 Cliente:\n- Nombre: ${nombreCliente}\n- Teléfono: ${telefonoCliente}\n- Dirección: ${direccionCliente}\n\n💰 Estado del Pago: ${metodoPago}`;
 
-            let token = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
-            let chatId = "-1002649667521";
+            let token = "TU_BOT_TOKEN";
+            let chatId = "TU_CHAT_ID";
             let url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensaje)}`;
 
             fetch(url)
