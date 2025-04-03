@@ -8,55 +8,54 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #34495e;
-            text-align: center;
             color: white;
+            text-align: center;
             padding: 20px;
         }
         .container {
             width: 90%;
-            max-width: 800px;
+            max-width: 900px;
             margin: auto;
             background: #566573;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
-        .seccion {
+        h2 { margin-bottom: 10px; }
+        .section {
+            display: flex;
+            justify-content: space-between;
             margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 8px;
-            background-color: #2C3E50;
         }
-        .pedido-btn, .repartidor-btn {
+        .box {
+            flex: 1;
+            padding: 10px;
+            background: #2C3E50;
+            border-radius: 8px;
+            text-align: center;
+            margin: 5px;
+        }
+        .pedido-btn, .boton-accion {
             background-color: #4CAF50;
             color: white;
             padding: 10px 15px;
-            margin: 5px;
             border: none;
             cursor: pointer;
             font-size: 14px;
             border-radius: 5px;
-        }
-        .repartidor-btn.bloqueado {
-            background-color: red;
-        }
-        .repartidor-btn.liberado {
-            background-color: green;
+            margin: 5px;
         }
         .boton-accion {
-            background-color: #28a745;
-            color: white;
-            padding: 8px 12px;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            border-radius: 5px;
-            margin-top: 5px;
+            width: 100%;
         }
-        .temporizador {
-            font-size: 16px;
-            font-weight: bold;
-            margin-top: 10px;
+        .pedido-btn { background-color: #2980B9; }
+        .formulario {
+            display: none;
+            background: #566573;
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+            text-align: left;
         }
         input, select {
             width: calc(100% - 20px);
@@ -66,65 +65,74 @@
             border-radius: 5px;
             display: block;
         }
-        .separador {
-            border-top: 2px solid white;
-            margin: 10px 0;
+        .temporizador {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 10px;
         }
+        .repartidor-btn {
+            background-color: #f39c12;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+        .activo { background-color: red !important; }
+        .libre { background-color: green !important; }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Gestión de Pedidos</h2>
-        <div class="seccion">
-            <h3>Pedidos</h3>
-            <div>
+        <div class="section">
+            <div class="box">
+                <h3>Pedidos</h3>
                 <button class="pedido-btn" onclick="mostrarFormulario(1)">Pedido 1</button>
                 <button class="pedido-btn" onclick="mostrarFormulario(2)">Pedido 2</button>
                 <button class="pedido-btn" onclick="mostrarFormulario(3)">Pedido 3</button>
             </div>
-            <div id="formulario-pedido" class="formulario" style="display: none;">
-                <h4>Datos de la Empresa</h4>
-                <p>Nombre: <b>Restaurante X</b></p>
-                <p>Dirección: <b>Avenida Central 123</b></p>
-                <p>Teléfono: <b>+34 123 456 789</b></p>
-                <div class="separador"></div>
-                <h4>Datos del Cliente</h4>
-                <label>Nombre:</label>
-                <input type="text" id="nombreCliente">
-                <label>Teléfono:</label>
-                <input type="text" id="telefonoCliente">
-                <label>Dirección:</label>
-                <input type="text" id="direccionCliente">
-                <label>Estado del Pago:</label>
-                <select id="estadoPago">
-                    <option value="Pendiente">Pendiente</option>
-                    <option value="Pagado">Pagado</option>
-                </select>
-                <button class="boton-accion" onclick="enviarPedido()">Enviar a Telegram</button>
+            <div class="box">
+                <h3>Repartidores</h3>
+                <button class="repartidor-btn" onclick="iniciarReparto(1)">Repartidor 1</button>
+                <button class="repartidor-btn" onclick="iniciarReparto(2)">Repartidor 2</button>
+                <button class="repartidor-btn" onclick="iniciarReparto(3)">Repartidor 3</button>
             </div>
         </div>
 
-        <div class="seccion">
-            <h3>Repartidores</h3>
-            <div>
-                <button class="repartidor-btn" id="repartidor1" onclick="gestionarReparto(1)">Repartidor 1</button>
-                <button class="repartidor-btn" id="repartidor2" onclick="gestionarReparto(2)">Repartidor 2</button>
-                <button class="repartidor-btn" id="repartidor3" onclick="gestionarReparto(3)">Repartidor 3</button>
-            </div>
-            <div id="control-repartidor" class="formulario" style="display: none;">
-                <button class="boton-accion" id="btnIniciar" onclick="iniciarReparto()">Iniciar Reparto</button>
-                <button class="boton-accion" id="btnEntregado" onclick="entregarPedido()" disabled>Entregado</button>
-                <p class="temporizador" id="temporizador">Tiempo: 00:00</p>
-            </div>
+        <!-- Formulario -->
+        <div id="formulario-pedido" class="formulario">
+            <h3>Detalles del Pedido</h3>
+            <h4>Datos de la Empresa</h4>
+            <label>Nombre:</label>
+            <input type="text" id="nombreEmpresa" value="Mi Empresa" readonly>
+            <label>Dirección:</label>
+            <input type="text" id="direccionEmpresa" value="Calle Principal, Ciudad" readonly>
+            <label>Teléfono:</label>
+            <input type="text" id="telefonoEmpresa" value="123456789" readonly>
+
+            <h4>Datos del Cliente</h4>
+            <label>Nombre:</label>
+            <input type="text" id="nombreCliente">
+            <label>Dirección:</label>
+            <input type="text" id="direccionCliente">
+            <label>Teléfono:</label>
+            <input type="text" id="telefonoCliente">
+            <label>Estado del Pago:</label>
+            <select id="metodoPago">
+                <option value="Pendiente">Pendiente</option>
+                <option value="Pagado">Pagado</option>
+            </select>
+
+            <button class="boton-accion" onclick="enviarPedido()">Enviar Pedido a Telegram</button>
         </div>
+
+        <!-- Temporizadores -->
+        <div id="temporizadores"></div>
     </div>
 
     <script>
+        let temporizadores = {};
         let pedidoSeleccionado = null;
-        let repartidorSeleccionado = null;
-        let temporizador;
-        let segundos = 0;
-        let minutos = 0;
 
         function mostrarFormulario(pedido) {
             pedidoSeleccionado = pedido;
@@ -132,12 +140,16 @@
         }
 
         function enviarPedido() {
-            let nombreCliente = document.getElementById("nombreCliente").value;
-            let telefonoCliente = document.getElementById("telefonoCliente").value;
-            let direccionCliente = document.getElementById("direccionCliente").value;
-            let estadoPago = document.getElementById("estadoPago").value;
+            let nombreEmpresa = document.getElementById("nombreEmpresa").value;
+            let direccionEmpresa = document.getElementById("direccionEmpresa").value;
+            let telefonoEmpresa = document.getElementById("telefonoEmpresa").value;
 
-            let mensaje = `📦 Nueva Solicitud de Reparto 📦\n\n🏪 Establecimiento:\n- Nombre: Restaurante X\n- Dirección: Avenida Central 123\n- Teléfono: +34 123 456 789\n\n👤 Cliente:\n- Nombre: ${nombreCliente}\n- Teléfono: ${telefonoCliente}\n- Dirección: ${direccionCliente}\n\n💰 Estado del Pago: ${estadoPago}`;
+            let nombreCliente = document.getElementById("nombreCliente").value;
+            let direccionCliente = document.getElementById("direccionCliente").value;
+            let telefonoCliente = document.getElementById("telefonoCliente").value;
+            let metodoPago = document.getElementById("metodoPago").value;
+
+            let mensaje = `📦 Nueva Solicitud de Reparto 📦\n\n🏪 Establecimiento:\n- Nombre: ${nombreEmpresa}\n- Dirección: ${direccionEmpresa}\n- Teléfono: ${telefonoEmpresa}\n\n👤 Cliente:\n- Nombre: ${nombreCliente}\n- Teléfono: ${telefonoCliente}\n- Dirección: ${direccionCliente}\n\n💰 Estado del Pago: ${metodoPago}`;
 
             let token = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
             let chatId = "-1002649667521";
@@ -148,28 +160,43 @@
                 .catch(error => alert("Error al enviar pedido"));
 
             document.getElementById("formulario-pedido").style.display = "none";
+            document.getElementById("nombreCliente").value = "";
+            document.getElementById("direccionCliente").value = "";
+            document.getElementById("telefonoCliente").value = "";
         }
 
-        function gestionarReparto(repartidor) {
-            repartidorSeleccionado = repartidor;
-            document.getElementById("control-repartidor").style.display = "block";
-        }
+        function iniciarReparto(id) {
+            let btn = document.querySelector(`.repartidor-btn:nth-child(${id})`);
+            if (btn.classList.contains("activo")) return;
 
-        function iniciarReparto() {
-            document.getElementById(`repartidor${repartidorSeleccionado}`).classList.add("bloqueado");
-            temporizador = setInterval(() => {
-                segundos++;
-                if (segundos === 60) {
-                    minutos++;
-                    segundos = 0;
+            btn.classList.add("activo");
+            btn.textContent = `Repartidor ${id} - En camino`;
+
+            if (!temporizadores[id]) {
+                temporizadores[id] = { segundos: 0, minutos: 0, interval: null };
+            }
+
+            let timer = temporizadores[id];
+
+            timer.interval = setInterval(() => {
+                timer.segundos++;
+                if (timer.segundos === 60) {
+                    timer.minutos++;
+                    timer.segundos = 0;
                 }
-                document.getElementById("temporizador").innerText = `Tiempo: ${String(minutos).padStart(2, "0")}:${String(segundos).padStart(2, "0")}`;
+                btn.textContent = `Repartidor ${id} - ${String(timer.minutos).padStart(2, "0")}:${String(timer.segundos).padStart(2, "0")}`;
             }, 1000);
+
+            btn.onclick = () => finalizarReparto(id);
         }
 
-        function entregarPedido() {
-            clearInterval(temporizador);
-            document.getElementById(`repartidor${repartidorSeleccionado}`).classList.remove("bloqueado");
+        function finalizarReparto(id) {
+            let btn = document.querySelector(`.repartidor-btn:nth-child(${id})`);
+            clearInterval(temporizadores[id].interval);
+            btn.classList.remove("activo");
+            btn.classList.add("libre");
+            btn.textContent = `Repartidor ${id} - Entregado ✅`;
+            btn.onclick = () => iniciarReparto(id);
         }
     </script>
 </body>
