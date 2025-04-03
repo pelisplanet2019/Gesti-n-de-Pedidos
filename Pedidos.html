@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pedidos</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #34495e; color: white; text-align: center; padding: 20px; }
+        .container { width: 80%; max-width: 600px; margin: auto; background: #566573; padding: 20px; border-radius: 8px; }
+        .pedido-btn { background-color: #3498db; color: white; padding: 10px; margin: 5px; border: none; cursor: pointer; border-radius: 5px; }
+        .formulario { display: none; background-color: #2C3E50; padding: 15px; border-radius: 8px; text-align: left; }
+        input, select { width: 100%; padding: 8px; margin: 5px 0; border-radius: 5px; }
+        .boton-enviar { background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Gestión de Pedidos</h2>
+        <button class="pedido-btn" onclick="mostrarFormulario(1)">Pedido 1</button>
+        <button class="pedido-btn" onclick="mostrarFormulario(2)">Pedido 2</button>
+
+        <div id="formulario-pedido" class="formulario">
+            <h3>Detalles del Pedido</h3>
+            <label>Nombre del Cliente:</label>
+            <input type="text" id="nombreCliente">
+            <label>Teléfono:</label>
+            <input type="text" id="telefonoCliente">
+            <label>Dirección:</label>
+            <input type="text" id="direccionCliente">
+            <label>Método de Pago:</label>
+            <select id="metodoPago">
+                <option value="Pendiente">Pendiente</option>
+                <option value="Pagado">Pagado</option>
+            </select>
+            <button class="boton-enviar" onclick="enviarPedido()">Enviar a Telegram</button>
+        </div>
+    </div>
+
+    <script>
+        let pedidoSeleccionado = null;
+        function mostrarFormulario(pedido) {
+            pedidoSeleccionado = pedido;
+            document.getElementById("formulario-pedido").style.display = "block";
+        }
+
+        function enviarPedido() {
+            let nombreCliente = document.getElementById("nombreCliente").value;
+            let telefonoCliente = document.getElementById("telefonoCliente").value;
+            let direccionCliente = document.getElementById("direccionCliente").value;
+            let metodoPago = document.getElementById("metodoPago").value;
+
+            let mensaje = `📦 Nueva Solicitud de Reparto 📦\n🏪 Establecimiento:\n- Nombre: Mi Tienda\n- Dirección: Calle Principal 123\n- Teléfono: 600123456\n\n👤 Cliente:\n- Nombre: ${nombreCliente}\n- Teléfono: ${telefonoCliente}\n- Dirección: ${direccionCliente}\n\n💰 Estado del Pago: ${metodoPago}`;
+
+            let token = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
+            let chatId = "-1002649667521";
+            let url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensaje)}`;
+
+            fetch(url)
+                .then(() => {
+                    alert("Pedido enviado a Telegram");
+                    document.getElementById("formulario-pedido").reset();
+                    document.getElementById("formulario-pedido").style.display = "none";
+                })
+                .catch(() => alert("Error al enviar pedido"));
+        }
+    </script>
+</body>
+</html>
