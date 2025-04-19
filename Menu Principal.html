@@ -115,8 +115,8 @@
       <h2>Mi Reparto</h2>
     </div>
     <div class="navbar-right">
-      <button class="nav-btn" onclick="mostrar('contacto')">Contacto</button>
-      <button class="nav-btn" onclick="mostrar('sobre')">Sobre Nosotros</button>
+      <button class="nav-btn" onclick="toggle('contacto')">Contacto</button>
+      <button class="nav-btn" onclick="toggle('sobre')">Sobre Nosotros</button>
     </div>
   </div>
 
@@ -126,7 +126,7 @@
     <p style="color:white;">Conectamos negocios locales con repartidores independientes.</p>
 
     <!-- BOTONES -->
-    <button class="main-btn" onclick="mostrar('repartidores')">📋 Ver Repartidores</button>
+    <button class="main-btn" onclick="toggle('repartidores')">📋 Ver Repartidores</button>
     <a href="appcreator24://SolicitarRepartidor" class="main-btn">🚚 Solicitar Repartidor</a>
 
     <!-- SECCIÓN: Repartidores -->
@@ -154,13 +154,10 @@
     </div>
   </div>
 
-  <!-- SCRIPT -->
   <script>
-    function mostrar(id) {
-      const secciones = ['repartidores', 'contacto', 'sobre'];
-      secciones.forEach(sec => {
-        document.getElementById(sec).style.display = (sec === id) ? 'block' : 'none';
-      });
+    function toggle(id) {
+      const el = document.getElementById(id);
+      el.style.display = (el.style.display === "block") ? "none" : "block";
     }
   </script>
 
