@@ -124,9 +124,9 @@
   <div class="navbar">
     <h2>📦 Mi Reparto</h2>
     <div class="navbar-buttons">
-      <button class="nav-btn" onclick="alert('Ir al Menú Principal')">Menú Principal</button>
-      <button class="nav-btn" onclick="alert('Sección de Contacto')">Contacto</button>
-      <button class="nav-btn" onclick="alert('Sección Sobre Nosotros')">Sobre Nosotros</button>
+      <button class="nav-btn" onclick="alert('Menú Principal')">Menú Principal</button>
+      <button class="nav-btn" onclick="alert('Contacto')">Contacto</button>
+      <button class="nav-btn" onclick="alert('Sobre Nosotros')">Sobre Nosotros</button>
     </div>
   </div>
 
@@ -195,9 +195,8 @@
       let telefonoCliente = document.getElementById("telefonoCliente").value;
       let metodoPago = document.getElementById("metodoPago").value;
 
-      // Mensaje a Telegram
+      // === Enviar a Telegram ===
       let mensaje = `📦 Nueva Solicitud de Reparto\n\n🏪 Establecimiento:\n- Nombre: ${nombreEmpresa}\n- Dirección: ${direccionEmpresa}\n- Teléfono: ${telefonoEmpresa}\n\n👤 Cliente:\n- Nombre: ${nombreCliente}\n- Teléfono: ${telefonoCliente}\n- Dirección: ${direccionCliente}\n\n💰 Estado del Pago: ${metodoPago}`;
-
       let token = "7801474135:AAGXatqMi_F_Nl2cVOKd7eliwtVJMHAWRiU";
       let chatId = "-1002649667521D";
       let urlTelegram = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensaje)}&parse_mode=Markdown`;
@@ -206,8 +205,9 @@
         .then(response => alert("📨 Pedido enviado a Telegram"))
         .catch(error => alert("❌ Error al enviar a Telegram"));
 
-      // Enviar a Google Sheets (via Apps Script WebApp)
-      let urlSheets = "https://script.google.com/macros/s/AKfycby8jlRpfXGrN69Vq0bcHlpQkllkUlHWdmFfMhDP0zhs2HiC1-nYPlz-ykSWpk8_27kc9A/exec";
+      // === Enviar a Google Sheets ===
+      let urlSheets = "https://script.google.com/macros/s/AKfycbx1iaBPQHL474EtyMtihQKxX80_mA1P558g5nMT9Sym8fGIGkEsCBx51XGPEYQBB4JLrA/exec"; // <-- Pega aquí tu URL del Apps Script Web App
+
       fetch(urlSheets, {
         method: "POST",
         mode: "no-cors",
@@ -224,6 +224,7 @@
         })
       });
 
+      // Limpiar y ocultar formulario
       document.getElementById("formulario-pedido").reset();
       document.getElementById("formulario-pedido").style.display = "none";
     }
