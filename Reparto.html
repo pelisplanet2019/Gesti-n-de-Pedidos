@@ -1,51 +1,119 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Repartidores</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #34495e; color: white; text-align: center; padding: 20px; }
-        .container { width: 80%; max-width: 600px; margin: auto; background: #566573; padding: 20px; border-radius: 8px; }
-        .repartidor-btn { background-color: #27ae60; color: white; padding: 10px; margin: 5px; border: none; cursor: pointer; border-radius: 5px; }
-        .estado { font-size: 18px; font-weight: bold; margin-top: 10px; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Mi Reparto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    .navbar {
+      background-color: #34495e;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+    }
+    .navbar img {
+      height: 40px;
+      margin-right: 10px;
+    }
+    .navbar-left {
+      display: flex;
+      align-items: center;
+    }
+    .navbar-right a {
+      color: white;
+      margin-left: 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .navbar-right a:hover {
+      text-decoration: underline;
+    }
+    .content {
+      padding: 20px;
+    }
+    .button {
+      background-color: #27ae60;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 15px;
+    }
+    .repartidores {
+      display: none;
+      margin-top: 20px;
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .footer {
+      padding: 20px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Gestión de Repartidores</h2>
-        <button class="repartidor-btn" onclick="iniciarEntrega(1)">Repartidor 1</button>
-        <button class="repartidor-btn" onclick="iniciarEntrega(2)">Repartidor 2</button>
-        
-        <div id="estado-repartidor" class="estado"></div>
+
+  <!-- Menú superior -->
+  <div class="navbar">
+    <div class="navbar-left">
+      <img src="https://i.ibb.co/5WxLc0c6/726472.png" alt="logo">
+      <h2 style="margin:0;font-size:20px;">Mi Reparto</h2>
+    </div>
+    <div class="navbar-right">
+      <a href="#contacto">Contacto</a>
+      <a href="#sobre">Sobre Nosotros</a>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="content">
+    <h3>Bienvenido</h3>
+    <p>Solicita repartidores o revisa los disponibles cerca de ti.</p>
+
+    <!-- Botón para ver repartidores -->
+    <button class="button" onclick="document.getElementById('repartidores').style.display='block'">
+      Ver Repartidores
+    </button>
+
+    <!-- Sección de repartidores oculta -->
+    <div id="repartidores" class="repartidores">
+      <h4>📋 Repartidores Disponibles</h4>
+      <p><strong>Laura Gómez</strong> – Zona Centro – Tel: 600 000 001</p>
+      <hr>
+      <p><strong>Pedro Díaz</strong> – Zona Norte – Tel: 600 000 002</p>
+      <hr>
+      <p><strong>Carla Ruiz</strong> – Zona Sur – Tel: 600 000 003</p>
     </div>
 
-    <script>
-        let repartidorSeleccionado = null;
-        let temporizador;
+    <!-- Botón para ir a sección del formulario -->
+    <a href="appcreator24://SolicitarRepartidor" class="button">
+      Solicitar Repartidor
+    </a>
+  </div>
 
-        function iniciarEntrega(repartidor) {
-            repartidorSeleccionado = repartidor;
-            document.getElementById("estado-repartidor").innerHTML = `🚴 Repartidor ${repartidor} <span style="color: red;">En camino...</span>`;
-            
-            let tiempo = 30 * 60;
-            temporizador = setInterval(() => {
-                let minutos = Math.floor(tiempo / 60);
-                let segundos = tiempo % 60;
-                document.getElementById("estado-repartidor").innerHTML = `🚴 Repartidor ${repartidor} - En camino: ${minutos}:${segundos}`;
-                tiempo--;
-                if (tiempo < 0) {
-                    clearInterval(temporizador);
-                }
-            }, 1000);
-        }
+  <!-- Sección contacto -->
+  <div id="contacto" class="footer">
+    <h3>📞 Contacto</h3>
+    <p>Email: contacto@midominio.com</p>
+    <p>Teléfono: 958 123 456</p>
+    <p>Dirección: Calle Ejemplo, Granada</p>
+  </div>
 
-        function marcarEntregado() {
-            clearInterval(temporizador);
-            document.getElementById("estado-repartidor").innerHTML = `✅ Repartidor ${repartidorSeleccionado} Entregado`;
-        }
-    </script>
+  <!-- Sobre nosotros -->
+  <div id="sobre" class="footer">
+    <h3>ℹ️ Sobre Nosotros</h3>
+    <p>Somos una plataforma que conecta negocios locales con repartidores independientes.</p>
+  </div>
 
-    <button class="repartidor-btn" style="background-color: #e74c3c;" onclick="marcarEntregado()">Marcar como Entregado</button>
 </body>
 </html>
