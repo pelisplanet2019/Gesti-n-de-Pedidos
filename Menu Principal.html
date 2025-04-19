@@ -11,7 +11,6 @@
       background-color: #3a79c6;
     }
 
-    /* NAVBAR */
     .navbar {
       background-color: #4189e1;
       color: white;
@@ -59,7 +58,6 @@
       color: white;
     }
 
-    /* CONTENIDO PRINCIPAL */
     .content {
       padding: 20px;
     }
@@ -72,8 +70,12 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 
+    .btn-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
     .main-btn {
-      display: inline-block;
       background-color: #900027;
       color: #3a79c6;
       font-size: 16px;
@@ -81,8 +83,9 @@
       border: none;
       border-radius: 5px;
       text-decoration: none;
-      margin-top: 10px;
+      margin: 10px;
       cursor: pointer;
+      display: inline-block;
     }
 
     .main-btn:hover {
@@ -90,7 +93,6 @@
       color: white;
     }
 
-    /* Ocultas por defecto */
     #repartidores, #contacto, #sobre {
       display: none;
     }
@@ -123,11 +125,17 @@
   <!-- CONTENIDO PRINCIPAL -->
   <div class="content">
     <h3 style="color:white;">Bienvenido</h3>
-    <p style="color:white;">Conectamos negocios locales con repartidores independientes.</p>
+    <p style="color:white;">
+      Esta plataforma permite a negocios publicar sus necesidades de reparto de forma directa.  
+      Los repartidores registrados pueden consultar las ofertas disponibles y decidir si las aceptan según sus condiciones y disponibilidad.  
+      Es una forma libre, práctica y sin intermediarios para gestionar envíos locales de forma eficiente.
+    </p>
 
-    <!-- BOTONES -->
-    <button class="main-btn" onclick="toggle('repartidores')">📋 Ver Repartidores</button>
-    <a href="appcreator24://SolicitarRepartidor" class="main-btn">🚚 Solicitar Repartidor</a>
+    <!-- BOTONES CENTRADOS -->
+    <div class="btn-container">
+      <button class="main-btn" onclick="toggle('repartidores')">📋 Ver Repartidores</button>
+      <a href="appcreator24://SolicitarRepartidor" class="main-btn">🚚 Publicar Oferta</a>
+    </div>
 
     <!-- SECCIÓN: Repartidores -->
     <div id="repartidores" class="section">
@@ -150,10 +158,11 @@
     <!-- SECCIÓN: Sobre Nosotros -->
     <div id="sobre" class="section">
       <h4>ℹ️ Sobre Nosotros</h4>
-      <p>Somos una plataforma que conecta pequeños negocios con repartidores autónomos para repartos rápidos y directos.</p>
+      <p>Mi Reparto es una solución flexible pensada para conectar pequeños comercios con repartidores independientes. Tú decides cuándo y qué repartir.</p>
     </div>
   </div>
 
+  <!-- SCRIPT TOGGLE -->
   <script>
     function toggle(id) {
       const el = document.getElementById(id);
