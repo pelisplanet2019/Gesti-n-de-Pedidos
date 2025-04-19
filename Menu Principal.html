@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi Reparto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #3a79c6;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      background-color: #4189e1;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 15px;
+      flex-wrap: wrap;
+    }
+
+    .navbar-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-left img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .navbar-left h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .navbar-right {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .nav-btn {
+      background-color: transparent;
+      color: #900027;
+      border: 1px solid #900027;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .nav-btn:hover {
+      background-color: #900027;
+      color: white;
+    }
+
+    /* CONTENIDO PRINCIPAL */
+    .content {
+      padding: 20px;
+    }
+
+    .section {
+      background-color: white;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .main-btn {
+      display: inline-block;
+      background-color: #900027;
+      color: #3a79c6;
+      font-size: 16px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .main-btn:hover {
+      background-color: #750021;
+      color: white;
+    }
+
+    /* Ocultas por defecto */
+    #repartidores, #contacto, #sobre {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .navbar-right {
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <div class="navbar-left">
+      <img src="https://i.ibb.co/5WxLc0c6/726472.png" alt="logo">
+      <h2>Mi Reparto</h2>
+    </div>
+    <div class="navbar-right">
+      <button class="nav-btn" onclick="mostrar('contacto')">Contacto</button>
+      <button class="nav-btn" onclick="mostrar('sobre')">Sobre Nosotros</button>
+    </div>
+  </div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="content">
+    <h3 style="color:white;">Bienvenido</h3>
+    <p style="color:white;">Conectamos negocios locales con repartidores independientes.</p>
+
+    <!-- BOTONES -->
+    <button class="main-btn" onclick="mostrar('repartidores')">📋 Ver Repartidores</button>
+    <a href="appcreator24://SolicitarRepartidor" class="main-btn">🚚 Solicitar Repartidor</a>
+
+    <!-- SECCIÓN: Repartidores -->
+    <div id="repartidores" class="section">
+      <h4>Repartidores Disponibles</h4>
+      <p><strong>Laura Gómez</strong> – Zona Centro – Tel: 600 000 001</p>
+      <hr>
+      <p><strong>Pedro Díaz</strong> – Zona Norte – Tel: 600 000 002</p>
+      <hr>
+      <p><strong>Carla Ruiz</strong> – Zona Sur – Tel: 600 000 003</p>
+    </div>
+
+    <!-- SECCIÓN: Contacto -->
+    <div id="contacto" class="section">
+      <h4>📞 Contacto</h4>
+      <p>Email: contacto@midominio.com</p>
+      <p>Teléfono: 958 123 456</p>
+      <p>Dirección: Calle Ejemplo, Granada</p>
+    </div>
+
+    <!-- SECCIÓN: Sobre Nosotros -->
+    <div id="sobre" class="section">
+      <h4>ℹ️ Sobre Nosotros</h4>
+      <p>Somos una plataforma que conecta pequeños negocios con repartidores autónomos para repartos rápidos y directos.</p>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    function mostrar(id) {
+      const secciones = ['repartidores', 'contacto', 'sobre'];
+      secciones.forEach(sec => {
+        document.getElementById(sec).style.display = (sec === id) ? 'block' : 'none';
+      });
+    }
+  </script>
+
+</body>
+</html>
