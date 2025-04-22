@@ -2,189 +2,129 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reproductor Multimedia</title>
   <style>
     body {
+      background-color: #1a1a1a;
+      color: #f5f5f5;
       font-family: Arial, sans-serif;
-      background-color: #0d1117;
-      color: #f0f6fc;
-      margin: 0;
-      padding: 0;
-    }
-
-    .container {
       text-align: center;
-      padding: 40px 20px;
-    }
-
-    h1 {
-      color: #ffa31a;
-      margin-bottom: 5px;
-    }
-
-    p {
-      color: #c9d1d9;
-      margin-bottom: 20px;
+      padding: 20px;
     }
 
     input[type="text"], input[type="file"] {
       padding: 10px;
-      width: 90%;
-      max-width: 500px;
-      margin: 10px 0;
-      border-radius: 5px;
-      background-color: #161b22;
+      margin: 10px;
+      width: 60%;
+      max-width: 400px;
       border: none;
-      color: #f0f6fc;
+      border-radius: 5px;
     }
 
     button {
-      background-color: #ff2d2d;
+      padding: 10px 20px;
+      background-color: #e74c3c;
       color: white;
       border: none;
-      padding: 12px 25px;
-      margin-top: 10px;
-      border-radius: 30px;
-      font-size: 16px;
+      border-radius: 5px;
       cursor: pointer;
-      box-shadow: 0 0 12px #ff2d2d;
+      margin: 10px;
     }
 
     button:hover {
-      background-color: #ff5555;
+      background-color: #ff6b5a;
     }
 
-    .overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.9);
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
-
-    .player-box {
-      position: relative;
-      background-color: #1a1a1a;
+    .player-container {
+      background-color: #222;
       padding: 20px;
-      border-radius: 12px;
-      border: 5px solid #ff2d2d;
-      width: 90%;
-      max-width: 800px;
-      box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-    }
-
-    .player-box video, .player-box iframe {
-      width: 100%;
-      height: 460px;
       border-radius: 10px;
-      border: none;
+      margin-top: 20px;
+      border: 4px solid #e74c3c;
+      display: inline-block;
+      position: relative;
     }
 
-    .close-btn {
+    video {
+      width: 100%;
+      max-width: 800px;
+      height: 450px;
+      border-radius: 10px;
+    }
+
+    .close-button {
       position: absolute;
-      top: -15px;
-      right: -15px;
-      background-color: #ff2d2d;
+      top: -10px;
+      right: -10px;
+      background-color: #e74c3c;
       color: white;
       border: none;
       border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      font-size: 18px;
+      font-size: 16px;
+      width: 30px;
+      height: 30px;
       cursor: pointer;
-      box-shadow: 0 0 6px #ff2d2d;
     }
 
-    .close-btn:hover {
-      background-color: #ff6666;
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Mi Reproductor Multimedia</h1>
-    <p>Reproduce archivos MKV, MP4, AC-3, H.265 desde URL o tu dispositivo</p>
+  <h1>Reproductor Multimedia</h1>
+  <p>Introduce una URL o selecciona un archivo de tu dispositivo</p>
 
-    <input type="text" id="videoUrl" placeholder="Pega una URL de video aquí">
-    <br>
-    <input type="file" id="videoFile" accept="video/*">
-    <br>
-    <button onclick="reproducirDesdeUrl()">Reproducir URL</button>
-    <button onclick="reproducirDesdeArchivo()">Reproducir archivo local</button>
-  </div>
+  <!-- Entrada por URL -->
+  <input type="text" id="videoURL" placeholder="Pega aquí el enlace del video">
+  <br>
 
-  <!-- Overlay del reproductor -->
-  <div class="overlay" id="overlay">
-    <div class="player-box">
-      <button class="close-btn" onclick="cerrar()">✕</button>
-      <video id="videoPlayer" controls hidden>
-        <source id="videoSource" src="" type="video/mp4">
-        Tu navegador no soporta la reproducción de video.
-      </video>
-      <iframe id="iframePlayer" src="" hidden allowfullscreen></iframe>
-    </div>
+  <!-- Entrada por archivo local -->
+  <input type="file" id="videoFile" accept="video/*">
+  <br>
+
+  <button onclick="reproducirVideo()">Reproducir</button>
+
+  <div id="reproductor" class="player-container hidden">
+    <button class="close-button" onclick="cerrarReproductor()">✕</button>
+    <video id="videoPlayer" controls>
+      <source src="" id="videoSource" type="video/mp4">
+      Tu navegador no soporta video HTML5.
+    </video>
   </div>
 
   <script>
-    function reproducirDesdeUrl() {
-      const url = document.getElementById("videoUrl").value.trim();
-      if (!url) return;
+    function reproducirVideo() {
+      const urlInput = document.getElementById('videoURL').value;
+      const fileInput = document.getElementById('videoFile').files[0];
+      const video = document.getElementById('videoPlayer');
+      const source = document.getElementById('videoSource');
+      const container = document.getElementById('reproductor');
 
-      const overlay = document.getElementById("overlay");
-      const videoPlayer = document.getElementById("videoPlayer");
-      const videoSource = document.getElementById("videoSource");
-      const iframePlayer = document.getElementById("iframePlayer");
-
-      overlay.style.display = "flex";
-      document.getElementById("videoUrl").value = "";
-
-      if (url.includes("youtube") || url.includes("embed") || url.includes("streamtape")) {
-        videoPlayer.hidden = true;
-        videoPlayer.pause();
-        iframePlayer.hidden = false;
-        iframePlayer.src = url;
+      if (fileInput) {
+        const localURL = URL.createObjectURL(fileInput);
+        source.src = localURL;
+      } else if (urlInput.trim() !== '') {
+        source.src = urlInput;
       } else {
-        iframePlayer.hidden = true;
-        iframePlayer.src = "";
-        videoPlayer.hidden = false;
-        videoSource.src = url;
-        videoPlayer.load();
-        videoPlayer.play();
+        alert("Introduce una URL válida o selecciona un archivo.");
+        return;
       }
+
+      video.load();
+      container.classList.remove('hidden');
     }
 
-    function reproducirDesdeArchivo() {
-      const archivo = document.getElementById("videoFile").files[0];
-      if (!archivo) return;
+    function cerrarReproductor() {
+      const video = document.getElementById('videoPlayer');
+      const source = document.getElementById('videoSource');
+      const container = document.getElementById('reproductor');
 
-      const url = URL.createObjectURL(archivo);
-      const overlay = document.getElementById("overlay");
-      const videoPlayer = document.getElementById("videoPlayer");
-      const videoSource = document.getElementById("videoSource");
-      const iframePlayer = document.getElementById("iframePlayer");
-
-      overlay.style.display = "flex";
-      iframePlayer.hidden = true;
-      iframePlayer.src = "";
-      videoPlayer.hidden = false;
-      videoSource.src = url;
-      videoPlayer.load();
-      videoPlayer.play();
-    }
-
-    function cerrar() {
-      document.getElementById("overlay").style.display = "none";
-      const videoPlayer = document.getElementById("videoPlayer");
-      const iframePlayer = document.getElementById("iframePlayer");
-
-      videoPlayer.pause();
-      videoPlayer.src = "";
-      iframePlayer.src = "";
+      video.pause();
+      video.currentTime = 0;
+      source.src = "";
+      video.load();
+      container.classList.add('hidden');
     }
   </script>
 </body>
