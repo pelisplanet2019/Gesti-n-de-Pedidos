@@ -26,10 +26,10 @@
     p {
       color: #8b949e;
       font-size: 14px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
-    input[type="text"] {
+    input[type="text"], input[type="file"] {
       padding: 10px;
       width: 90%;
       max-width: 600px;
@@ -37,6 +37,8 @@
       border-radius: 5px;
       outline: none;
       margin-bottom: 15px;
+      background-color: #161b22;
+      color: #f0f6fc;
     }
 
     button {
@@ -49,6 +51,7 @@
       cursor: pointer;
       box-shadow: 0 0 10px #ff2d2d;
       transition: transform 0.2s ease;
+      margin: 5px;
     }
 
     button:hover {
@@ -75,7 +78,7 @@
       border-radius: 12px;
       max-width: 900px;
       width: 90%;
-      box-shadow: 0 0 20px rgba(255, 163, 26, 0.6);
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
       position: relative;
     }
 
@@ -109,17 +112,21 @@
 <body>
   <div class="container">
     <h1>Mi Reproductor Multimedia</h1>
-    <p>Introduce un enlace de video compatible (MP4, MKV, YouTube embed, etc.)</p>
+    <p>Pega una URL o selecciona un archivo local para reproducir</p>
+
     <input type="text" id="videoUrl" placeholder="Pega aquí el enlace de video" />
     <br>
-    <button onclick="reproducir()">Reproducir</button>
+    <input type="file" id="videoFile" accept="video/*">
+    <br>
+    <button onclick="reproducirURL()">Reproducir URL</button>
+    <button onclick="reproducirArchivo()">Reproducir archivo</button>
   </div>
 
   <div class="overlay" id="overlay">
     <div class="player-box">
       <button class="close-btn" onclick="cerrar()">✕</button>
       <video id="videoPlayer" controls hidden>
-        <source src="" type="video/mp4">
+        <source id="videoSource" src="" type="video/mp4">
         Tu navegador no soporta el video.
       </video>
       <iframe id="iframePlayer" hidden allowfullscreen></iframe>
@@ -127,7 +134,7 @@
   </div>
 
   <script>
-    function reproducir() {
+    function reproducirURL() {
       const url = document.getElementById("videoUrl").value.trim();
       const overlay = document.getElementById("overlay");
       const videoPlayer = document.getElementById("videoPlayer");
@@ -149,6 +156,22 @@
       }
 
       document.getElementById("videoUrl").value = "";
+    }
+
+    function reproducirArchivo() {
+      const archivo = document.getElementById("videoFile").files[0];
+      const overlay = document.getElementById("overlay");
+      const videoPlayer = document.getElementById("videoPlayer");
+      const iframePlayer = document.getElementById("iframePlayer");
+
+      if (!archivo) return;
+
+      const url = URL.createObjectURL(archivo);
+      overlay.style.display = "flex";
+      iframePlayer.hidden = true;
+      videoPlayer.hidden = false;
+      videoPlayer.src = url;
+      videoPlayer.play();
     }
 
     function cerrar() {
