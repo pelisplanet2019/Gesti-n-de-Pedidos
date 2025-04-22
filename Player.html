@@ -6,120 +6,156 @@
   <title>Reproductor Multimedia</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #111;
-      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0d1117;
+      color: #f0f6fc;
       margin: 0;
+      padding: 0;
+    }
+
+    .container {
       padding: 20px;
       text-align: center;
     }
 
     h1 {
       color: #ffa31a;
+      margin-bottom: 10px;
     }
 
-    input[type="text"], input[type="file"] {
+    p {
+      color: #8b949e;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+
+    input[type="text"] {
       padding: 10px;
       width: 90%;
-      max-width: 500px;
-      margin-bottom: 10px;
-      border: 2px solid #ffa31a;
+      max-width: 600px;
+      border: none;
       border-radius: 5px;
-      background-color: #1a1a1a;
-      color: #fff;
+      outline: none;
+      margin-bottom: 15px;
     }
 
     button {
-      background-color: #ffa31a;
+      background-color: #ff2d2d;
+      color: white;
       border: none;
-      padding: 10px 20px;
-      color: #000;
-      font-weight: bold;
-      border-radius: 5px;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 16px;
       cursor: pointer;
-      margin-top: 10px;
+      box-shadow: 0 0 10px #ff2d2d;
+      transition: transform 0.2s ease;
     }
 
     button:hover {
-      background-color: #ffcc66;
+      transform: scale(1.05);
     }
 
-    .player-container {
-      margin-top: 30px;
-    }
-
-    video {
-      width: 100%;
-      max-width: 800px;
-      height: auto;
-      border: 4px solid #ffa31a;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-    }
-
-    .close-button {
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
       display: none;
-      margin-top: 15px;
-      background-color: crimson;
-      color: white;
-      font-size: 14px;
-      padding: 8px 15px;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0,0,0,0.85);
+      width: 100%;
+      height: 100%;
+      z-index: 1000;
+      transition: all 0.4s ease;
     }
 
-    .visible {
-      display: inline-block !important;
+    .player-box {
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 900px;
+      width: 90%;
+      box-shadow: 0 0 20px rgba(255, 163, 26, 0.6);
+      position: relative;
+    }
+
+    video, iframe {
+      width: 100%;
+      height: 480px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: -15px;
+      right: -15px;
+      background-color: #ff2d2d;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 0 8px #ff2d2d;
+    }
+
+    .close-btn:hover {
+      background-color: #ff5757;
     }
   </style>
 </head>
 <body>
-  <h1>Reproductor Multimedia</h1>
+  <div class="container">
+    <h1>Mi Reproductor Multimedia</h1>
+    <p>Introduce un enlace de video compatible (MP4, MKV, YouTube embed, etc.)</p>
+    <input type="text" id="videoUrl" placeholder="Pega aquí el enlace de video" />
+    <br>
+    <button onclick="reproducir()">Reproducir</button>
+  </div>
 
-  <input type="text" id="videoURL" placeholder="Pega aquí la URL del video (MP4, MKV, etc)" />
-  <br />
-  <input type="file" id="videoFile" accept="video/*" />
-  <br />
-  <button onclick="reproducir()">Reproducir</button>
-
-  <div class="player-container" id="playerContainer" style="display:none;">
-    <video id="videoPlayer" controls></video>
-    <br />
-    <button class="close-button" id="closeBtn" onclick="cerrarReproductor()">Cerrar reproductor</button>
+  <div class="overlay" id="overlay">
+    <div class="player-box">
+      <button class="close-btn" onclick="cerrar()">✕</button>
+      <video id="videoPlayer" controls hidden>
+        <source src="" type="video/mp4">
+        Tu navegador no soporta el video.
+      </video>
+      <iframe id="iframePlayer" hidden allowfullscreen></iframe>
+    </div>
   </div>
 
   <script>
     function reproducir() {
-      const urlInput = document.getElementById("videoURL").value.trim();
-      const fileInput = document.getElementById("videoFile").files[0];
+      const url = document.getElementById("videoUrl").value.trim();
+      const overlay = document.getElementById("overlay");
       const videoPlayer = document.getElementById("videoPlayer");
-      const container = document.getElementById("playerContainer");
-      const closeBtn = document.getElementById("closeBtn");
+      const iframePlayer = document.getElementById("iframePlayer");
 
-      if (fileInput) {
-        const fileURL = URL.createObjectURL(fileInput);
-        videoPlayer.src = fileURL;
-      } else if (urlInput) {
-        videoPlayer.src = urlInput;
+      if (!url) return;
+
+      overlay.style.display = "flex";
+
+      if (url.includes("youtube") || url.includes("embed") || url.includes("streamtape")) {
+        videoPlayer.hidden = true;
+        iframePlayer.hidden = false;
+        iframePlayer.src = url;
       } else {
-        alert("Por favor, introduce una URL o selecciona un archivo.");
-        return;
+        iframePlayer.hidden = true;
+        videoPlayer.hidden = false;
+        videoPlayer.src = url;
+        videoPlayer.play();
       }
 
-      container.style.display = "block";
-      closeBtn.classList.add("visible");
-
-      // Ocultar barra de URL al reproducir
-      document.getElementById("videoURL").style.display = "none";
+      document.getElementById("videoUrl").value = "";
     }
 
-    function cerrarReproductor() {
-      const videoPlayer = document.getElementById("videoPlayer");
-      const container = document.getElementById("playerContainer");
-
-      videoPlayer.pause();
-      videoPlayer.src = "";
-      container.style.display = "none";
-      document.getElementById("videoURL").style.display = "inline-block";
-      document.getElementById("closeBtn").classList.remove("visible");
+    function cerrar() {
+      document.getElementById("overlay").style.display = "none";
+      document.getElementById("videoPlayer").pause();
+      document.getElementById("videoPlayer").src = "";
+      document.getElementById("iframePlayer").src = "";
     }
   </script>
 </body>
